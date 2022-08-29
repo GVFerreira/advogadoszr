@@ -1,0 +1,24 @@
+{
+  "name": "rzadvogados",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GVFerreira/rzadvogados.git"
+  },
+  "author": "Gustavo Ferreira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GVFerreira/rzadvogados/issues"
+  },
+  "homepage": "https://github.com/GVFerreira/rzadvogados#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "node": "^16.17.0"
+  }
+}
