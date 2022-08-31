@@ -1,0 +1,42 @@
+<style>
+    .red {
+        color: #FF0000
+    }
+</style>
+<main class="mt-5">
+    <section>
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Cadastro de cliente</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/registering-client" method="post">
+                        <label for="name">Nome:<span class="red">*</span></label>
+                        <input type="text" name="name" id="name" class="form-control mb-4" required>
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="email">E-mail:<span class="red">*</span></label>
+                                <input type="email" name="email" id="email" placeholder="email@example.com" class="form-control mb-4" required>
+                            </div>
+                            <div class="col">
+                                <label for="tel">Telefone:</label>
+                                <input type="text" name="tel" id="tel" class="form-control mb-4">
+                            </div>
+                        </div>
+                        
+                        <label for="country">País:<span class="red">*</span></label>
+                        <input type="text" name="country" id="country" class="form-control mb-4" required>
+                        
+                        <label for="observations">Observações:</label>
+                        <textarea name="observations" id="observations" cols="25" rows="10" class="form-control mb-4"></textarea>
+                        
+                        <p class="mb-4">Os itens marcados com (<span class="red">*</span>) são obrigatórios.</p>
+
+                        <input type="submit" value="Cadastrar" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

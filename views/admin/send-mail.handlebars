@@ -1,0 +1,25 @@
+<main class="mt-5">
+    <section>
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Formulário para envio de  e-mails</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/sending-mail" method="post">
+                        <label for="receiver">Destinatário:</label>
+                        <input type="email" placeholder="email@example.com" name="receiver" id="receiver" class="form-control mb-4" required>
+                        
+                        <label for="subject">Assunto:</label>
+                        <input type="text" name="subject" id="subject" class="form-control mb-4" required>
+                        
+                        <label for="message">Mensagem:</label> 
+                        <textarea name="message" id="message" rows="10" cols="25" class="form-control mb-4"></textarea>
+                        
+                        <input type="submit" value="Enviar" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

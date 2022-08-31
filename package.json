@@ -1,7 +1,6 @@
 {
   "name": "rzadvogados",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,8 +16,15 @@
   },
   "homepage": "https://github.com/GVFerreira/rzadvogados#readme",
   "dependencies": {
+    "body-parser": "^1.20.0",
+    "bootstrap": "^5.2.0",
     "express": "^4.18.1",
     "express-handlebars": "^6.0.6",
-    "node": "^16.17.0"
-  }
+    "moment": "^2.29.4",
+    "mongodb": "^4.9.0",
+    "mongoose": "^6.5.4",
+    "node": "^16.17.0",
+    "nodemailer": "^6.7.8"
+  },
+  "description": ""
 }
