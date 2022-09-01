@@ -1,0 +1,113 @@
+<main class="my-5">
+    <section>
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Registro de processo</h1>
+                </div>
+                <div class="card-body">
+                    <form action="">
+                        <div class="row">
+                            <div class="col">
+                                <label for="relatedClient">Cliente atrelado:</label>
+                                <select name="relatedClient" id="relatedClient" class="form-select mb-4">
+                                    <option value="0"></option>
+                                    {{#each clients}}
+                                        <option value="{{_id}}">{{name}}</option>
+                                    {{else}}
+                                    {{/each}}
+                                </select>
+
+                                <label for="numberProcess">Número do processo:</label>
+                                <input type="text" name="numberProcess" id="numberProcess" class="form-control mb-4">
+
+                                <label for="process">Tipo de processo</label>
+                                <input type="text" name="process" id="process" class="form-control mb-4">
+
+                                <label for="datailsProcess">Detalhes do processo:</label>
+                
+                                <div class="card p-4 mb-4">
+                                    <label for="">1. Recebido</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="received" id="received1" value="1">
+                                    <label class="form-check-label" for="received1">Sim</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="received" id="received2" value="2">
+                                    <label class="form-check-label mb-4" for="received2">Não</label>
+                                </div>
+
+                                <label for="">2. Registrado</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="registered" id="registered1" value="1">
+                                    <label class="form-check-label" for="registered1">Sim</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="registered" id="registered2" value="2">
+                                    <label class="form-check-label mb-4" for="registered2">Não</label>
+                                </div>
+
+                                <label for="">3. Aguardando consultas</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries1" value="1">
+                                    <label class="form-check-label" for="waitingQueries1">Sim</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries2" value="2">
+                                    <label class="form-check-label mb-4" for="waitingQueries2">Não</label>
+                                </div>
+
+                                <label for="">4. Verificando documentos</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs1" value="1">
+                                    <label class="form-check-label" for="checkingDocs1">Sim</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="checkingDocs2" id="checkingDocs2" value="2">
+                                    <label class="form-check-label mb-4" for="checkingDocs2">Não</label>
+                                </div>
+
+                                <label for="">5. Análise do pedido</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis1" value="1">
+                                    <label class="form-check-label" for="orderAnalysis1">Sim</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis2" value="2">
+                                    <label class="form-check-label mb-4" for="orderAnalysis2">Não</label>
+                                </div>
+
+                                <label for="">6. Despacho</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="dispatch" id="dispatch1" value="1">
+                                    <label class="form-check-label" for="dispatch1">Sim</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="dispatch" id="dispatch2" value="2">
+                                    <label class="form-check-label mb-4" for="dispatch2">Não</label>
+                                </div>
+
+                                <label for="">7. Finalizado</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="finished" id="finished1" value="1">
+                                    <label class="form-check-label" for="finished1">Sim</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="finished" id="finished2" value="2">
+                                    <label class="form-check-label" for="finished2">Não</label>
+                                </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col"></div>   
+                        </div>
+                        <label for="comments">Comentários da fase do processo:</label>
+                        <textarea name="comments" id="comments" cols="30" rows="10" class="form-control mb-4">Digite aqui algum comentário ou observação da fase do processo.</textarea>
+
+                        <input type="submit" value="Cadastrar" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

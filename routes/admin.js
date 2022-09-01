@@ -67,4 +67,12 @@ router.post('/sending-mail', (req, res) => {
     })
 })
 
+router.get('/register-process', (req, res) => {
+    Client.find().then((clients) => {
+        res.render('admin/register-process', {clients: clients})
+    }).catch((err) => {
+
+    })
+})
+
 module.exports = router
