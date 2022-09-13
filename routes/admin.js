@@ -4,8 +4,11 @@ router = express.Router()
 const mongoose = require('mongoose')
 require('../models/Client')
 const Client = mongoose.model("clients")
+require('../models/Process')
+const Process = mongoose.model("processes")
 
 const nodemailer = require('nodemailer')
+const crypto = require('crypto')
 
 router.get('/', (req, res) => {
     res.render('admin/index')
@@ -72,6 +75,28 @@ router.get('/register-process', (req, res) => {
         res.render('admin/register-process', {clients: clients})
     }).catch((err) => {
 
+    })
+})
+
+router.post('/registering-process', (req, res) => {
+    const newProcess = new Process({
+        relatedClient: req.body.relatedClient,
+        numberProcess: req.body.numberProcess,
+        process: req.body.process,
+        received: req.body.received,
+        registered: req.body.registered,
+        waitingQueries: req.body.waitingQueries,
+        checkingDocs: req.body.checkingDocs,
+        orderAnalysis: req.body.orderAnalysis,
+        dispatch: req.bodydispatch,
+        finished: req.body.finished,
+        comments: req.body.comments
+    })
+
+    newProcess.save().then(() => {
+        res.redirect('/admin')
+    }).catch((err) => {
+        res.redirect('/')
     })
 })
 
