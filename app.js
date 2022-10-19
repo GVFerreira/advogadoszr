@@ -24,6 +24,10 @@ const nodemailer = require('nodemailer')
 
 const bodyParser = require('body-parser')
 
+const session = require("express-session")
+
+const flash = require("connect-flash")
+
 const path = require('path')
 
 const admin = require('./routes/admin')
@@ -36,6 +40,14 @@ const db = require("./config/db")
 /*SETTINGS*/
 app.use(express.static(path.join(__dirname, "public")))
 
+app.use(session({
+    secret: "123456",
+    resave: true,
+    saveUninitialized: true
+}))
+
+app.use(flash())
+
 //Handlerbars
 app.engine('handlebars', handle.engine)
 app.set('view engine', 'handlebars')
@@ -43,6 +55,14 @@ app.set('view engine', 'handlebars')
 //Body Parser
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+
+ //Middleware
+ app.use((req, res, next) => {
+    res.locals.success_msg = req.flash("success_msg")
+    res.locals.error_msg = req.flash("error_msg")
+    res.locals.error = req.flash("error")
+    next()
+})
 
 //Mongoose
 mongoose.connect("mongodb+srv://gustavo_admin:UPsqha23mljKbA4T@cluster0.bbkeaad.mongodb.net/rzadvogados?retryWrites=true&w=majority").then(() => {

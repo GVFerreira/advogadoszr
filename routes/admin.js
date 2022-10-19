@@ -8,7 +8,7 @@ require('../models/Process')
 const Process = mongoose.model("processes")
 
 const nodemailer = require('nodemailer')
-const crypto = require('crypto')
+const bcrypt = require('bcryptjs')
 
 router.get('/', (req, res) => {
     res.render('admin/index')
@@ -79,25 +79,50 @@ router.get('/register-process', (req, res) => {
 })
 
 router.post('/registering-process', (req, res) => {
-    const newProcess = new Process({
-        relatedClient: req.body.relatedClient,
-        numberProcess: req.body.numberProcess,
-        process: req.body.process,
-        received: req.body.received,
-        registered: req.body.registered,
-        waitingQueries: req.body.waitingQueries,
-        checkingDocs: req.body.checkingDocs,
-        orderAnalysis: req.body.orderAnalysis,
-        dispatch: req.bodydispatch,
-        finished: req.body.finished,
-        comments: req.body.comments
+    
+
+    if(followingCode !== undefined) {
+        req.flash("error_msg", "Erro")
+        res.redirect("/admin")
+    } else {
+        const newProcess = new Process({
+            relatedClient: req.body.relatedClient,
+            numberProcess: req.body.numberProcess,
+            process: req.body.process,
+            received: req.body.received,
+            registered: req.body.registered,
+            waitingQueries: req.body.waitingQueries,
+            checkingDocs: req.body.checkingDocs,
+            orderAnalysis: req.body.orderAnalysis,
+            dispatch: req.bodydispatch,
+            finished: req.body.finished,
+            comments: req.body.comments,
+            code: followingCode
+        })
+
+        newProcess.save().then(() => {
+            res.redirect('/admin')
+        }).catch((err) => {
+            req.flash("error_msg", `Deu um erro aqui: ${err}`)
+            res.redirect('/')
+        })
+    }
+})
+
+router.get('/teste', (req, res) => {
+    let followingCode = bcrypt.genSalt(10, (error, salt) => {
+        let code = ''
+        let hashing = bcrypt.hash(code, salt, (error, hash) => {
+            let codeProcess = ''
+            code = hash.toString("hex")
+            codeProcess = code.substring(40, 45).replace(/[^A-Z a-z 0-9]/g, "X").toUpperCase()
+        })
     })
 
-    newProcess.save().then(() => {
-        res.redirect('/admin')
-    }).catch((err) => {
-        res.redirect('/')
-    })
+    let teste = 'teste'
+
+    req.flash("success_msg", `Código: ${followingCode} e ${teste}`)
+    res.redirect("/admin")
 })
 
 module.exports = router

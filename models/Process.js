@@ -39,6 +39,9 @@ const Process = new Schema({
     comments: {
         type: String
     },
+    code: {
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now()
