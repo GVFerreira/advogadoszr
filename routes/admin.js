@@ -79,50 +79,89 @@ router.get('/register-process', (req, res) => {
 })
 
 router.post('/registering-process', (req, res) => {
-    
+    bcrypt.genSalt(10, (error, salt) => {
+        let code = ''
+        bcrypt.hash(code, salt, (error, hash) => {
+            let codeProcess = ''
+            code = hash
+            codeProcess = code.substring(40, 45).replace(/[^A-Z a-z 0-9]/g, "X").toUpperCase()
 
-    if(followingCode !== undefined) {
-        req.flash("error_msg", "Erro")
-        res.redirect("/admin")
-    } else {
-        const newProcess = new Process({
-            relatedClient: req.body.relatedClient,
-            numberProcess: req.body.numberProcess,
-            process: req.body.process,
-            received: req.body.received,
-            registered: req.body.registered,
-            waitingQueries: req.body.waitingQueries,
-            checkingDocs: req.body.checkingDocs,
-            orderAnalysis: req.body.orderAnalysis,
-            dispatch: req.bodydispatch,
-            finished: req.body.finished,
-            comments: req.body.comments,
-            code: followingCode
-        })
+            //verificar o switch e enviar o e-mail de acordo com o status
+            if(req.body.sendNotification === "on") {
+                Client.find({_id: req.body.relatedClient}).then((client) => {
+                    console.log(client)
+                    const user = 'contato@gvfwebdesign.com.br'
+                    const pass = 'Contato*8351*'
+                    
+                    //sendind data
+                    const receiver = client.email
+                    const subject = "Houve uma atualização no status do seu processo"
+                    const message = req.body.comments
 
-        newProcess.save().then(() => {
-            res.redirect('/admin')
-        }).catch((err) => {
-            req.flash("error_msg", `Deu um erro aqui: ${err}`)
-            res.redirect('/')
+
+                    const transporter = nodemailer.createTransport({
+                        host: 'smtp.umbler.com',
+                        port: 587,
+                        auth: {
+                            user,
+                            pass
+                        },
+                    })
+
+                    transporter.sendMail({
+                        from: `Agência GVF <${user}>`,
+                        to: receiver,
+                        subject,
+                        text: message,
+
+                    })
+                })
+                
+            }
+
+
+            const newProcess = new Process({
+                relatedClient: req.body.relatedClient,
+                numberProcess: req.body.numberProcess,
+                process: req.body.process,
+                received: req.body.received,
+                registered: req.body.registered,
+                waitingQueries: req.body.waitingQueries,
+                checkingDocs: req.body.checkingDocs,
+                orderAnalysis: req.body.orderAnalysis,
+                dispatch: req.bodydispatch,
+                finished: req.body.finished,
+                comments: req.body.comments,
+                sendNotification: req.body.sendNotification,
+                code: codeProcess,
+            })
+
+            
+            //salvar dados do formulário
+            newProcess.save().then(() => {
+                req.flash("success_msg", `Seu processo foi cadastrado com sucesso. Esse é o código de acompanhamento: ${codeProcess}`)
+                res.redirect('/admin')
+            }).catch((err) => {
+                req.flash("error_msg", `Deu um erro aqui: ${err}`)
+                res.redirect('/')
+            })
+
+            
         })
-    }
+    }) 
 })
 
 router.get('/teste', (req, res) => {
-    let followingCode = bcrypt.genSalt(10, (error, salt) => {
+   bcrypt.genSalt(10, (error, salt) => {
         let code = ''
-        let hashing = bcrypt.hash(code, salt, (error, hash) => {
+        bcrypt.hash(code, salt, (error, hash) => {
             let codeProcess = ''
-            code = hash.toString("hex")
+            code = hash
             codeProcess = code.substring(40, 45).replace(/[^A-Z a-z 0-9]/g, "X").toUpperCase()
+            req.flash("success_msg", `Código: ${codeProcess}`)
+            res.redirect("/admin")
         })
     })
-
-    let teste = 'teste'
-
-    req.flash("success_msg", `Código: ${followingCode} e ${teste}`)
-    res.redirect("/admin")
 })
 
 module.exports = router

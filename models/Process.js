@@ -39,6 +39,9 @@ const Process = new Schema({
     comments: {
         type: String
     },
+    sendNotification: {
+        type: String
+    },
     code: {
         type: String
     },
