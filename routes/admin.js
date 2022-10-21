@@ -88,15 +88,14 @@ router.post('/registering-process', (req, res) => {
 
             //verificar o switch e enviar o e-mail de acordo com o status
             if(req.body.sendNotification === "on") {
-                Client.find({_id: req.body.relatedClient}).then((client) => {
-                    console.log(client)
+                Client.findOne({_id: req.body.relatedClient}).then((client) => {
                     const user = 'contato@gvfwebdesign.com.br'
                     const pass = 'Contato*8351*'
                     
                     //sendind data
                     const receiver = client.email
-                    const subject = "Houve uma atualização no status do seu processo"
-                    const message = req.body.comments
+                    const subject = `Houve uma atualização no status do seu processo. Código: ${codeProcess}`
+                    const comments = req.body.comments
 
 
                     const transporter = nodemailer.createTransport({
@@ -112,7 +111,11 @@ router.post('/registering-process', (req, res) => {
                         from: `Agência GVF <${user}>`,
                         to: receiver,
                         subject,
-                        text: message,
+                        text: `
+                            Houve um comentário em seu processo, confira abaixo:
+                            ${comments}
+                            Seu código para acompanhar no portal é: ${codeProcess}
+                        `,
 
                     })
                 })
@@ -139,28 +142,19 @@ router.post('/registering-process', (req, res) => {
             
             //salvar dados do formulário
             newProcess.save().then(() => {
-                req.flash("success_msg", `Seu processo foi cadastrado com sucesso. Esse é o código de acompanhamento: ${codeProcess}`)
+                req.flash("success_msg", `O processo foi cadastrado com sucesso. Esse é o código de acompanhamento: ${codeProcess}`)
                 res.redirect('/admin')
             }).catch((err) => {
                 req.flash("error_msg", `Deu um erro aqui: ${err}`)
                 res.redirect('/')
             })
-
-            
         })
     }) 
 })
 
-router.get('/teste', (req, res) => {
-   bcrypt.genSalt(10, (error, salt) => {
-        let code = ''
-        bcrypt.hash(code, salt, (error, hash) => {
-            let codeProcess = ''
-            code = hash
-            codeProcess = code.substring(40, 45).replace(/[^A-Z a-z 0-9]/g, "X").toUpperCase()
-            req.flash("success_msg", `Código: ${codeProcess}`)
-            res.redirect("/admin")
-        })
+router.get('/consult-process', (req, res) => {
+    Process.find().populate("relatedClient").sort({createdAt: "DESC"}).then((processes) => {
+        res.render('admin/consult-process', {processes: processes})
     })
 })
 

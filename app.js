@@ -73,8 +73,12 @@ mongoose.connect("mongodb+srv://gustavo_admin:UPsqha23mljKbA4T@cluster0.bbkeaad.
 
 
 /*ROUTES*/
-app. get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.render('index')
+})
+
+app.post('/consulting-process', (req, res) => {
+
 })
 
 app.use('/admin', admin)
