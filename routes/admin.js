@@ -1,5 +1,6 @@
 const express = require('express')
 router = express.Router()
+const path = require('path')
 
 const mongoose = require('mongoose')
 require('../models/Client')
@@ -8,7 +9,9 @@ require('../models/Process')
 const Process = mongoose.model("processes")
 
 const nodemailer = require('nodemailer')
+const hbs = require('nodemailer-express-handlebars')
 const bcrypt = require('bcryptjs')
+
 
 router.get('/', (req, res) => {
     res.render('admin/index')
@@ -94,7 +97,8 @@ router.post('/registering-process', (req, res) => {
                     
                     //sendind data
                     const receiver = client.email
-                    const subject = `Houve uma atualização no status do seu processo. Código: ${codeProcess}`
+                    const clientName = client.name
+                    const subject = `O processo de ${req.body.process} foi atualizado.`
                     const comments = req.body.comments
 
 
@@ -107,16 +111,34 @@ router.post('/registering-process', (req, res) => {
                         },
                     })
 
-                    transporter.sendMail({
+                    const handlebarOptions = {
+                        viewEngine: {
+                          partialsDir: "D:/rzadvogados/views/email",
+                          defaultLayout: false,
+                        },
+                        viewPath: "D:/rzadvogados/views/email",
+                      };
+
+                    transporter.use('compile', hbs(handlebarOptions))
+
+                    const mailOptions = {
                         from: `Agência GVF <${user}>`,
                         to: receiver,
                         subject,
-                        text: `
-                            Houve um comentário em seu processo, confira abaixo:
-                            ${comments}
-                            Seu código para acompanhar no portal é: ${codeProcess}
-                        `,
+                        template: 'template-email',
+                        context: {
+                            comments,
+                            codeProcess,
+                            clientName
+                        }
+                    }
 
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if(err) {
+                            console.log(`Error: ${err}`)
+                        } else {
+                            console.log('Message sent')
+                        }
                     })
                 })
                 
@@ -150,6 +172,10 @@ router.post('/registering-process', (req, res) => {
             })
         })
     }) 
+})
+
+router.get('/teste', (req, res) => {
+    res.render('email/template-email')
 })
 
 router.get('/consult-process', (req, res) => {
