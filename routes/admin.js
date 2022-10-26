@@ -1,6 +1,6 @@
 const express = require('express')
 router = express.Router()
-const path = require('path')
+// const path = require('path')
 
 const mongoose = require('mongoose')
 require('../models/Client')
@@ -98,8 +98,9 @@ router.post('/registering-process', (req, res) => {
                     //sendind data
                     const receiver = client.email
                     const clientName = client.name
-                    const subject = `O processo de ${req.body.process} foi atualizado.`
+                    const subject = `O processo ${req.body.numberProcess} foi atualizado.`
                     const comments = req.body.comments
+                    const numberProcess = req.body.numberProcess
 
 
                     const transporter = nodemailer.createTransport({
@@ -129,6 +130,7 @@ router.post('/registering-process', (req, res) => {
                         context: {
                             comments,
                             codeProcess,
+                            numberProcess,
                             clientName
                         }
                     }

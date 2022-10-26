@@ -4,25 +4,73 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/css/bootstrap.css">
     </head>
-    <body>
-        <div class="container">
-            <p>Houve uma atualização no processo. Acompanhe no portal com este código: {{codeProcess}}</p>
+    <body style="background-color: #e3e3e3;">
 
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="p-0 m-0">Olá, {{clientName}}</h1>
+        <header style="width: 100%; padding: 2rem 0 6rem 0; display: flex; justify-content: center; background-color: #333;">
+            <section>
+                <img src="../img/logo_name-white.svg" style="width: 8rem" alt="">
+            </section>
+        </header>
+
+        <main style="width: 100%; margin: -4rem 0 0 0;">
+            <section style=" width: 85%; margin: 0 auto; padding: 1rem .5rem 5rem; background-color: #FFF; border-radius: .2rem .2rem 0 0; z-index: 100;">
+                <h1 style="margin: 2rem 0; text-align: center;">Olá, {{clientName}}</h1>
+                <article style="padding: 1rem 2rem;">
+                    <p style="margin: 0;">Houve uma atualização no processo {{numberProcess}}</p>
+                    <p>Acompanhe no portal com este código:</p>
+                    <h2 style="text-align: center;">{{codeProcess}}</h2>
+                </article>
+                <article style="padding: 1rem 2rem;">
+                    <p>Comentário do advogado:</p>
+                    <p>{{comments}}</p>
+                </article>
+            </section>
+
+            <section style="width: 85%; margin: 0 auto; padding: 1rem .5rem; background-color: #333; border-radius: 0 0 .2rem .2rem;">
+                <article style="padding: 1rem 2rem;">
+                    <h2 style="margin: 0 0 2rem 0; color: #FFF">Nos acompanhe nas redes sociais</h2>
+                    <ul style="list-style: none; padding: 0; display: flex; justify-content: space-evenly; align-items: center;">
+                        <li>
+                            <a href="" style="text-decoration: none; color: #FFF; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                                <img src="../img/facebook.png" style="width: 3rem;" alt="">
+                                <p>Facebook</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" style="text-decoration: none; color: #FFF; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                                <img src="../img/instagram.png" style="width: 3rem;" alt="">
+                                <p>Instagram</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" style="text-decoration: none; color: #FFF; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                                <img src="../img/twitter.png" style="width: 3rem;" alt="">
+                                <p>Twitter</p>
+                            </a>
+                        </li>
+                    </ul>
+                </article>
+            </section>
+
+            <section style="width: 85%; margin: 2rem auto 0; padding: 1rem .5rem; background-color: #FFF; border-radius: .2rem;">
+                <div>
+                    <p style=" margin: 0; text-align: center;">Precisa de ajuda?</p>
+                    <p style="text-align: center;"><a href="" style="color: #ff7272;">Fale conosco</a></p>
                 </div>
-                <div class="card-body">
-                    <div>{{comments}}</div>
+            </section>
+        </main>
+        
+        <footer style="width: 100%; margin: 2rem 0;">
+            <section style="width: 85%; margin: 0 auto; padding: 1rem .5rem;">
+                <p>Endereço - Cidade - UF - CEP</p>
+                <div style="display: flex; justify-content: center;">
+                    <img src="../img/logo_name-black.svg" style="width: 8rem;" alt="">
                 </div>
-            </div>
-        </div>
+            </section>
+        </footer>
+
     </body>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
-    <script src="/js/bootstrap.js"></script>
 </html>
 
 
