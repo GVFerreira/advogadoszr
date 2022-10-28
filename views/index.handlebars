@@ -3,20 +3,20 @@
         <div class="container">
             <div class="card">
                 <div class="card-header">
-                    <h1>Seja bem-vindo</h1>
+                    <h1 class="p-0 m-0">Seja bem-vindo</h1>
                 </div>
                 <div class="card-body">
-                    <form action="">
+                    <form action="/consulting-process" method="POST">
                         <p>Insira o seu código acompanhamento abaixo</p>
                         <div class="row">
                             <div class="col">
-                                <label for="codeInsert">Código:</label>
-                                <input type="text" name="codeInsert" id="codeInsert" class="form-control mb-4">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="codeInsert" name="codeInsert" placeholder="Código" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                    <button class="btn btn-primary" type="submit" id="button-addon2">Buscar<i class="ms-2 bi bi-search"></i></button>
+                                </div>
                             </div>
                             <div class="col"></div>
                         </div>
-
-                        <input type="submit" value="Consultar" class="btn btn-primary">
                     </form>
                 </div>
             </div>

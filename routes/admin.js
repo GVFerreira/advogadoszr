@@ -159,7 +159,6 @@ router.post('/registering-process', (req, res) => {
                 dispatch: req.bodydispatch,
                 finished: req.body.finished,
                 comments: req.body.comments,
-                sendNotification: req.body.sendNotification,
                 code: codeProcess,
             })
 

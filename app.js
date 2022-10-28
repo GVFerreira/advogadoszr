@@ -3,6 +3,10 @@ const express = require('express')
 app = express()
 
 const mongoose = require('mongoose')
+require('./models/Client')
+const Client = mongoose.model("clients")
+require('./models/Process')
+const Process = mongoose.model("processes")
 
 const moment = require('moment')
 
@@ -78,7 +82,14 @@ app.get('/', (req, res) => {
 })
 
 app.post('/consulting-process', (req, res) => {
-
+    Process.findOne({code: req.body.codeInsert}).then((result) => {
+        Client.find({id: req.body.relatedClient}).then((client) => {
+            res.json(result)
+        })
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro: ${err}`)
+        res.redirect('/')
+    })
 })
 
 app.use('/admin', admin)
