@@ -1,0 +1,93 @@
+<main class="my-5">
+    <section>
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="p-0 m-0">Seja bem-vindo</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/consulting-process" method="POST">
+                        <p>Insira o seu código acompanhamento abaixo</p>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="codeInsert" name="codeInsert" placeholder="Código" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                    <button class="btn btn-primary" type="submit" id="button-addon2">Buscar<i class="ms-2 bi bi-search"></i></button>
+                                </div>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                    </form>
+                    <hr>
+                    <section>
+                        {{#search_result}}
+                            <p>Nome: {{relatedClient.name}}</p>
+                            <p>N° processo: {{numberProcess}}</p>
+                            <div class="progress-bar my-5">
+                                <ol class="list-group list-group-horizontal list-group-numbered d-flex justify-content-between align-items-center">
+                                    <li>
+                                        {{#if received}}
+                                            <div class="btn btn-success">Recebido</div>
+                                        {{else}}
+                                            <div class="btn btn-secondary">Recebido</div>
+                                        {{/if}}
+                                    </li>
+                                    <li>
+                                        {{#if registered}}
+                                            <div class="btn btn-success">Registrado</div>
+                                        {{else}}
+                                            <div class="btn btn-secondary">Registrado</div>
+                                        {{/if}}
+                                    </li>
+                                    <li>
+                                        {{#if waitingQueries}}
+                                            <div class="btn btn-success">Aguardando consultas</div>
+                                        {{else}}
+                                            <div class="btn btn-secondary">Aguardando consultas</div>
+                                        {{/if}}
+                                    </li>
+                                    <li>
+                                        {{#if checkingDocs}}
+                                            <div class="btn btn-success">Verificando documentos</div>
+                                        {{else}}
+                                            <div class="btn btn-secondary">Verificando documentos</div>
+                                        {{/if}}
+                                    </li>
+                                    <li>
+                                        {{#if orderAnalysis}}
+                                            <div class="btn btn-success">Análise do pedido</div>
+                                        {{else}}
+                                            <div class="btn btn-secondary">Análise do pedido</div>
+                                        {{/if}}
+                                    </li>
+                                    <li>
+                                        {{#if dispatch}}
+                                            <div class="btn btn-success">Despacho</div>
+                                        {{else}}
+                                            <div class="btn btn-secondary">Despacho</div>
+                                        {{/if}}
+                                    </li>
+                                    <li>
+                                        {{#if finished}}
+                                            <div class="btn btn-success">Finalizado</div>
+                                        {{else}}
+                                            <div class="btn btn-secondary">Finalizado</div>
+                                        {{/if}}
+                                    </li>
+                                </ol>
+                            </div>
+                            <section class="my-4">
+                                <h3>Observações:</h3>
+                                <p>{{comments}}</p>
+                            </section>
+                        {{else}}
+                            <h4>Não há nenhum processo</h4>
+                        {{/search_result}}
+                    </section>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+</main>

@@ -20,6 +20,10 @@ const Client = new Schema({
     },
     observations: {
         type: String
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
 })
 

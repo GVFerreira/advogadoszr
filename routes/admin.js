@@ -37,6 +37,12 @@ router.post('/registering-client', (req, res) => {
     })
 })
 
+router.get('/consult-clients', (req, res) => {
+    Client.find().sort({createdAt: "DESC"}).then((clients) => {
+        res.render('admin/consult-clients', {clients: clients})
+    })
+})
+
 router.get('/send-mail', (req, res) => {
     res.render('admin/send-mail')
 })
@@ -156,7 +162,7 @@ router.post('/registering-process', (req, res) => {
                 waitingQueries: req.body.waitingQueries,
                 checkingDocs: req.body.checkingDocs,
                 orderAnalysis: req.body.orderAnalysis,
-                dispatch: req.bodydispatch,
+                dispatch: req.body.dispatch,
                 finished: req.body.finished,
                 comments: req.body.comments,
                 code: codeProcess,

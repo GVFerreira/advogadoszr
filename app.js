@@ -82,14 +82,18 @@ app.get('/', (req, res) => {
 })
 
 app.post('/consulting-process', (req, res) => {
-    Process.findOne({code: req.body.codeInsert}).then((result) => {
+    Process.findOne({code: req.body.codeInsert}).populate('relatedClient').then((search_result) => {
         Client.find({id: req.body.relatedClient}).then((client) => {
-            res.json(result)
+            res.render('view-process', {search_result: search_result, client: client})
         })
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro: ${err}`)
         res.redirect('/')
     })
+})
+
+app.get('/teste', (req, res) => {
+    res.render('view-process')
 })
 
 app.use('/admin', admin)
