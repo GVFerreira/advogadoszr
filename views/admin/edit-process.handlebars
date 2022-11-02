@@ -1,0 +1,194 @@
+<main class="my-5">
+    <section>
+        <div class="container">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h1 class="m-0 p-0">Atualizar de processo</h1>
+                    <a href="/admin/register-process" class="btn btn-success">ADICIONAR NOVO <b>+</b></a>
+                </div>
+                <div class="card-body">
+                    {{#process}}
+                        <form action="/admin/registering-process" class="needs-validation" method="POST">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="relatedClient">Cliente atrelado:</label>
+                                    <input type="text" name="relatedClient" id="relatedClient" class="form-control mb-4" value="{{relatedClient.name}}" disabled>
+
+                                    <label for="numberProcess">Número do processo:</label>
+                                    <input type="text" name="numberProcess" id="numberProcess" class="form-control mb-4" value="{{numberProcess}}">
+
+                                    <label for="process">Tipo de processo</label>
+                                    <input type="text" name="process" id="process" class="form-control mb-4" value="{{process}}">
+
+                                    <label for="datailsProcess">Detalhes do processo:</label>
+                    
+                                    <div class="card p-4 mb-4">
+                                        <label for="">1. Recebido</label>
+                                        {{#if received}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="received" id="received1" value="1" checked>
+                                                <label class="form-check-label" for="received1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="received" id="received2" value="0">
+                                                <label class="form-check-label mb-4" for="received2">Não</label>
+                                            </div>
+                                        {{else}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="received" id="received1" value="1">
+                                                <label class="form-check-label" for="received1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="received" id="received2" value="0" checked>
+                                                <label class="form-check-label mb-4" for="received2">Não</label>
+                                            </div>
+                                        {{/if}}
+
+                                        <label for="">2. Registrado</label>
+                                        {{#if registered}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="registered" id="registered1" value="1" checked>
+                                                <label class="form-check-label" for="registered1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="registered" id="registered2" value="0">
+                                                <label class="form-check-label mb-4" for="registered2">Não</label>
+                                            </div>
+                                        {{else}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="registered" id="registered1" value="1">
+                                                <label class="form-check-label" for="registered1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="registered" id="registered2" value="0" checked>
+                                                <label class="form-check-label mb-4" for="registered2">Não</label>
+                                            </div>
+                                        {{/if}}
+
+                                        <label for="">3. Aguardando consultas</label>
+                                        {{#if waitingQueries}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries1" value="1" checked>
+                                                <label class="form-check-label" for="waitingQueries1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries2" value="0">
+                                                <label class="form-check-label mb-4" for="waitingQueries2">Não</label>
+                                            </div>
+                                        {{else}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries1" value="1">
+                                                <label class="form-check-label" for="waitingQueries1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries2" value="0" checked>
+                                                <label class="form-check-label mb-4" for="waitingQueries2">Não</label>
+                                            </div>
+                                        {{/if}}
+
+                                        <label for="">4. Verificando documentos</label>
+                                        {{#if checkingDocs}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs1" value="1" checked>
+                                                <label class="form-check-label" for="checkingDocs1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs2" value="0">
+                                                <label class="form-check-label mb-4" for="checkingDocs2">Não</label>
+                                            </div>
+                                        {{else}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs1" value="1">
+                                                <label class="form-check-label" for="checkingDocs1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs2" value="0" checked>
+                                                <label class="form-check-label mb-4" for="checkingDocs2">Não</label>
+                                            </div>
+                                        {{/if}}
+
+                                        <label for="">5. Análise do pedido</label>
+                                        {{#if orderAnalysis}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis1" value="1" checked>
+                                                <label class="form-check-label" for="orderAnalysis1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis2" value="0">
+                                                <label class="form-check-label mb-4" for="orderAnalysis2">Não</label>
+                                            </div>
+                                        {{else}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis1" value="1">
+                                                <label class="form-check-label" for="orderAnalysis1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis2" value="0" checked>
+                                                <label class="form-check-label mb-4" for="orderAnalysis2">Não</label>
+                                            </div>
+                                        {{/if}}
+
+                                        <label for="">6. Despacho</label>
+                                        {{#if dispatch}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="dispatch" id="dispatch1" value="1" checked>
+                                                <label class="form-check-label" for="dispatch1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="dispatch" id="dispatch2" value="0">
+                                                <label class="form-check-label mb-4" for="dispatch2">Não</label>
+                                            </div>
+                                        {{else}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="dispatch" id="dispatch1" value="1">
+                                                <label class="form-check-label" for="dispatch1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="dispatch" id="dispatch2" value="0" checked>
+                                                <label class="form-check-label mb-4" for="dispatch2">Não</label>
+                                            </div>
+                                        {{/if}}
+
+                                        <label for="">7. Finalizado</label>
+                                        {{#if finished}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="finished" id="finished1" value="1" checked>
+                                                <label class="form-check-label" for="finished1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="finished" id="finished2" value="0">
+                                                <label class="form-check-label" for="finished2">Não</label>
+                                            </div>
+                                        {{else}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="finished" id="finished1" value="1">
+                                                <label class="form-check-label" for="finished1">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="finished" id="finished2" value="0" checked>
+                                                <label class="form-check-label" for="finished2">Não</label>
+                                            </div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                                <div class="col"></div>   
+                            </div>
+
+
+                            <label for="comments">Comentários da fase do processo:</label>
+                            <textarea name="comments" id="comments" cols="30" rows="10" class="form-control mb-4">{{comments}}</textarea>
+
+                            <div class="form-check form-switch mb-4">
+                                <input class="form-check-input d-flex" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="sendNotification">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Enviar notificação para o cliente?</label>
+                            </div>
+
+                            <input type="submit" value="Atualizar" class="btn btn-primary">
+                        </form>
+                            <a href="/admin/consult-processes" class="btn btn-danger mt-3">Cancelar edição</a>
+                    {{/process}}
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

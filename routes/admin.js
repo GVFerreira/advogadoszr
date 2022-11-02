@@ -17,32 +17,6 @@ router.get('/', (req, res) => {
     res.render('admin/index')
 })
 
-router.get('/register-client', (req, res) => {
-    res.render('admin/register-client.handlebars')
-})
-
-router.post('/registering-client', (req, res) => {
-    const newClient = new Client({
-        name: req.body.name,
-        email: req.body.email,
-        tel: req.body.tel,
-        country: req.body.country,
-        observations: req.body.observations
-    })
-
-    newClient.save().then(() => {
-        res.redirect('/admin')
-    }).catch((err) => {
-        res.redirect('/')
-    })
-})
-
-router.get('/consult-clients', (req, res) => {
-    Client.find().sort({createdAt: "DESC"}).then((clients) => {
-        res.render('admin/consult-clients', {clients: clients})
-    })
-})
-
 router.get('/send-mail', (req, res) => {
     res.render('admin/send-mail')
 })
@@ -79,11 +53,69 @@ router.post('/sending-mail', (req, res) => {
     })
 })
 
+router.get('/register-client', (req, res) => {
+    res.render('admin/register-client')
+})
+
+router.post('/registering-client', (req, res) => {
+    const newClient = new Client({
+        name: req.body.name,
+        email: req.body.email,
+        tel: req.body.tel,
+        country: req.body.country,
+        observations: req.body.observations
+    })
+
+    newClient.save().then(() => {
+        req.flash('success_msg', 'Cadasrto do cliente feito com sucesso')
+        res.redirect('/admin/consult-clients')
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro ao criar: ${err}`)
+        res.redirect('/admin')
+    })
+})
+
+router.get('/consult-clients', (req, res) => {
+    Client.find().sort({createdAt: "DESC"}).then((clients) => {
+        res.render('admin/consult-clients', { clients: clients })
+    }).catch((err) => {
+        req.flash('erro_msg', `Ocorreu um erro ao listar os clientes. Erro: ${err}`)
+        res.redirect('/admin')
+    })
+})
+
+router.get('/edit-client/:id', (req, res) => {
+    Client.findOne({ _id: req.params.id }).then((client) => {
+        res.render('admin/edit-client', { client: client })
+    })
+})
+
+router.post('/editing-client/:id', (req, res) => {
+    Client.findByIdAndUpdate({_id: req.params.id}, req.body).then(() => {
+        req.flash('success_msg', 'Cadastro do cliente editado com sucesso')
+        res.redirect('/admin/consult-clients')
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro: ${err}`)
+        res.render('admin/edit-client')
+    })
+})
+
+router.get('/delete-client/:id', (req, res) => {
+    Client.findByIdAndDelete({_id: req.params.id}).then(() => {
+        req.flash('success_msg', 'Cadastro do cliente excluído com sucesso')
+        res.redirect('/admin/consult-clients')
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro: ${err}`)
+        res.render('admin/consult-clients')
+    })
+})
+
 router.get('/register-process', (req, res) => {
     Client.find().then((clients) => {
-        res.render('admin/register-process', {clients: clients})
+        res.render('admin/register-process', { clients: clients })
     }).catch((err) => {
-
+        req.flash('error_msg', `Ocorreu um erro ao carregar o formulário. Erro: ${err}`)
+        res.redirect('/admin/consult-processes')
     })
 })
 
@@ -165,30 +197,51 @@ router.post('/registering-process', (req, res) => {
                 dispatch: req.body.dispatch,
                 finished: req.body.finished,
                 comments: req.body.comments,
-                code: codeProcess,
+                code: codeProcess
             })
 
             
             //salvar dados do formulário
             newProcess.save().then(() => {
                 req.flash("success_msg", `O processo foi cadastrado com sucesso. Esse é o código de acompanhamento: ${codeProcess}`)
-                res.redirect('/admin')
+                res.redirect('/admin/consult-processes')
             }).catch((err) => {
                 req.flash("error_msg", `Deu um erro aqui: ${err}`)
-                res.redirect('/')
+                res.redirect('/admin')
             })
         })
     }) 
 })
 
-router.get('/teste', (req, res) => {
-    res.render('email/template-email')
+router.get('/consult-processes', (req, res) => {
+    Process.find().populate("relatedClient").sort({createdAt: "DESC"}).then((processes) => {
+        res.render('admin/consult-process', { processes: processes })
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro ao listar os processos. Erro: ${err}`)
+    })
 })
 
-router.get('/consult-process', (req, res) => {
-    Process.find().populate("relatedClient").sort({createdAt: "DESC"}).then((processes) => {
-        res.render('admin/consult-process', {processes: processes})
+router.get('/edit-process/:id', (req, res) => {
+    Process.findOne({_id: req.params.id}).populate("relatedClient").then((process) => {
+        res.render('admin/edit-process', { process: process })
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro carregar o formulário. Erro: ${err}`)
+        res.redirect('/admin/consult-processes')
     })
+})
+
+router.post('/editing-process/:id', (req, res) => {
+    Process.findByIdAndUpdate({_id: req.params.id}, req.body).then(() => {
+        req.flash('success_msg', 'Cadastro do processo editado com sucesso')
+        res.redirect('/admin/consult-processes')
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro ao salvar a atualização. Erro: ${err}`)
+        res.redirect('/admin/consult-processes')
+    })
+})
+
+router.get('/teste', (req, res) => {
+    res.render('email/template-email')
 })
 
 module.exports = router

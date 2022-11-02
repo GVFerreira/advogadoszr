@@ -1,0 +1,48 @@
+<style>
+    .red {
+        color: #FF0000
+    }
+</style>
+<main class="my-5">
+    <section>
+        <div class="container">
+            {{#client}}
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h1 class="p-0 m-0">Edição de cliente</h1>
+                        <a href="/admin/consult-clients" class="btn btn-success">CONSULTAR</a>
+                    </div>
+                    <div class="card-body">
+                        <form action="/admin/editing-client/{{_id}}" method="POST">
+                            <input type="hidden" class="form-control my-4"  name="id" id="id" value="{{_id}}" disabled>
+
+                            <label for="name">Nome:<span class="red">*</span></label>
+                            <input type="text" name="name" id="name" class="form-control mb-4" value="{{name}}" required>
+
+                            <div class="row g-3">
+                                <div class="col">
+                                    <label for="email">E-mail:<span class="red">*</span></label>
+                                    <input type="email" name="email" id="email" class="form-control mb-4" value="{{email}}" required>
+                                </div>
+                                <div class="col">
+                                    <label for="tel">Telefone:</label>
+                                    <input type="text" name="tel" id="tel" class="form-control mb-4" value="{{tel}}">
+                                </div>
+                            </div>
+                            
+                            <label for="country">País:<span class="red">*</span></label>
+                            <input type="text" name="country" id="country" class="form-control mb-4" value="{{country}}" required>
+                            
+                            <label for="observations">Observações:</label>
+                            <textarea name="observations" id="observations" cols="25" rows="10" class="form-control mb-4">{{observations}}</textarea>
+                            
+                            <p class="mb-4">Os itens marcados com (<span class="red">*</span>) são obrigatórios.</p>
+
+                            <input type="submit" value="Editar" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            {{/client}}
+        </div>
+    </section>
+</main>

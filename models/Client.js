@@ -11,8 +11,7 @@ const Client = new Schema({
         required: true
     },
     tel: {
-        type: String,
-        required: true
+        type: String
     },
     country: {
         type: String,
