@@ -53,6 +53,9 @@ router.post('/sending-mail', (req, res) => {
     })
 })
 
+/* ==== CLIENT ==== */
+/* ==== CLIENT ==== */
+/* ==== CLIENT ==== */
 router.get('/register-client', (req, res) => {
     res.render('admin/register-client')
 })
@@ -110,6 +113,10 @@ router.get('/delete-client/:id', (req, res) => {
     })
 })
 
+
+/* ==== PROCESS ==== */
+/* ==== PROCESS ==== */
+/* ==== PROCESS ==== */
 router.get('/register-process', (req, res) => {
     Client.find().then((clients) => {
         res.render('admin/register-process', { clients: clients })
@@ -232,11 +239,78 @@ router.get('/edit-process/:id', (req, res) => {
 
 router.post('/editing-process/:id', (req, res) => {
     Process.findByIdAndUpdate({_id: req.params.id}, req.body).then(() => {
-        req.flash('success_msg', 'Cadastro do processo editado com sucesso')
+        //verificar o switch e enviar o e-mail de acordo com o status
+        if(req.body.sendNotification === "on") {
+            Client.findOne({_id: req.body.relatedClient}).then((client) => {
+                const user = 'contato@gvfwebdesign.com.br'
+                const pass = 'Contato*8351*'
+                
+                //sendind data
+                const receiver = client.email
+                const clientName = client.name
+                const subject = `O processo ${req.body.numberProcess} foi atualizado.`
+                const comments = req.body.comments
+                const numberProcess = req.body.numberProcess
+                const codeProcess = req.body.code
+
+
+                const transporter = nodemailer.createTransport({
+                    host: 'smtp.umbler.com',
+                    port: 587,
+                    auth: {
+                        user,
+                        pass
+                    },
+                })
+
+                const handlebarOptions = {
+                    viewEngine: {
+                      partialsDir: "D:/rzadvogados/views/email",
+                      defaultLayout: false,
+                    },
+                    viewPath: "D:/rzadvogados/views/email",
+                  };
+
+                transporter.use('compile', hbs(handlebarOptions))
+
+                const mailOptions = {
+                    from: `Agência GVF <${user}>`,
+                    to: receiver,
+                    subject,
+                    template: 'template-email',
+                    context: {
+                        comments,
+                        codeProcess,
+                        numberProcess,
+                        clientName
+                    }
+                }
+
+                transporter.sendMail(mailOptions, (err, info) => {
+                    if(err) {
+                        console.log(`Error: ${err}`)
+                    } else {
+                        console.log(`Message sent: ${info}`)
+                    }
+                })
+            })
+            
+        }
+        req.flash('success_msg', 'Processo atualizado com sucesso')
         res.redirect('/admin/consult-processes')
     }).catch((err) => {
-        req.flash('error_msg', `Ocorreu um erro ao salvar a atualização. Erro: ${err}`)
+        req.flash('error_msg', `Ocorreu um erro ao salvar a atualização. Erro: ${err}.`)
         res.redirect('/admin/consult-processes')
+    })
+})
+
+router.get('/delete-process/:id', (req, res) => {
+    Process.findByIdAndDelete({_id: req.params.id}).then(() => {
+        req.flash('success_msg', 'Processo excluído com sucesso')
+        res.redirect('/admin/consult-processes')
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro: ${err}`)
+        res.render('admin/consult-processes')
     })
 })
 

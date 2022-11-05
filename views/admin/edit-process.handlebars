@@ -8,12 +8,17 @@
                 </div>
                 <div class="card-body">
                     {{#process}}
-                        <form action="/admin/registering-process" class="needs-validation" method="POST">
+                        <form action="/admin/editing-process/{{_id}}" method="POST">
                             <div class="row">
                                 <div class="col">
-                                    <label for="relatedClient">Cliente atrelado:</label>
-                                    <input type="text" name="relatedClient" id="relatedClient" class="form-control mb-4" value="{{relatedClient.name}}" disabled>
+                                    <input type="hidden" name="code" id="code" class="form-control mb-4" value="{{code}}">
 
+                                    <label for="relatedClient">Cliente atrelado:</label>
+                                    <select name="relatedClient" id="relatedClient" class="form-select">
+                                        <option value="{{relatedClient._id}}">{{relatedClient.name}}</option>
+                                    </select>
+                                    <span class="d-block mb-4 small" style="color: #FF0000">Valor não editável</span>
+                                    
                                     <label for="numberProcess">Número do processo:</label>
                                     <input type="text" name="numberProcess" id="numberProcess" class="form-control mb-4" value="{{numberProcess}}">
 
@@ -185,7 +190,8 @@
 
                             <input type="submit" value="Atualizar" class="btn btn-primary">
                         </form>
-                            <a href="/admin/consult-processes" class="btn btn-danger mt-3">Cancelar edição</a>
+
+                        <a href="/admin/consult-processes" class="btn btn-danger mt-3">Cancelar edição</a>
                     {{/process}}
                 </div>
             </div>
