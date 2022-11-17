@@ -11,18 +11,31 @@
                             <div class="col">
                                 <label for="relatedClient">Cliente atrelado:</label>
                                 <select name="relatedClient" id="relatedClient" class="form-select mb-4">
-                                    <option value="0">SELECIONE</option>
+                                    <option value="0">Selecione um cliente</option>
                                     {{#each clients}}
                                         <option value="{{_id}}">{{name}}</option>
                                     {{else}}
                                     {{/each}}
                                 </select>
 
+                                <label for="process">Tipo de processo</label>
+                                <select name="process" id="process" class="form-select mb-4">
+                                    <option value="0">Escolha um tipo</option>
+                                    <option value="001 - PEDIDO DE NACIONALIDADE 1">001 - PEDIDO DE NACIONALIDADE 1</option>
+                                    <option value="002 - PEDIDO DE NACIONALIDADE 2">002 - PEDIDO DE NACIONALIDADE 2</option>
+                                    <option value="003 - PEDIDO DE NACIONALIDADE 3">003 - PEDIDO DE NACIONALIDADE 3</option>
+                                    <option value="004 - PEDIDO DE NACIONALIDADE 6">004 - PEDIDO DE NACIONALIDADE 6</option>
+                                    <option value="005 - PEDIDO DE NACIONALIDADE TL">005 - PEDIDO DE NACIONALIDADE TL</option>
+                                    <option value="006 - TRANSCRIÇÃO DE CASAMENTO">006 - TRANSCRIÇÃO DE CASAMENTO</option>
+                                    <option value="007 - AÇÃO DE REVISÃO E CONFIRMAÇÃO DE SENTENÇA">007 - AÇÃO DE REVISÃO E CONFIRMAÇÃO DE SENTENÇA</option>
+                                    <option value="008 - PEDIDO DE VISTO">008 - PEDIDO DE VISTO</option>
+                                    <option value="009 - MANIFESTAÇÃO DE INTERESSE">009 - MANIFESTAÇÃO DE INTERESSE</option>
+                                    <option value="010 - REGULARIZAÇÃO (SEF)">010 - REGULARIZAÇÃO (SEF)</option>
+                                    <option value="011 - OUTROS">011 - OUTROS</option>
+                                </select>
+
                                 <label for="numberProcess">Número do processo:</label>
                                 <input type="text" name="numberProcess" id="numberProcess" class="form-control mb-4">
-
-                                <label for="process">Tipo de processo</label>
-                                <input type="text" name="process" id="process" class="form-control mb-4">
 
                                 <label for="datailsProcess">Detalhes do processo:</label>
                 
@@ -105,8 +118,15 @@
                         <label for="comments">Comentários da fase do processo:</label>
                         <textarea name="comments" id="comments" cols="30" rows="10" class="form-control mb-4"></textarea>
 
+
+                        <div class="mb-3">
+                            <label for="formFileMultiple" class="form-label">Anexos do processo</label>
+                            <input type="file" class="form-control" id="formFileMultiple" name="attachments" multiple>
+                        </div>
+
+
                         <div class="form-check form-switch mb-4">
-                            <input class="form-check-input d-flex" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="sendNotification">
+                            <input type="checkbox" class="form-check-input d-flex" role="switch" id="flexSwitchCheckDefault" name="sendNotification">
                             <label class="form-check-label" for="flexSwitchCheckDefault">Enviar notificação para o cliente?</label>
                         </div>
 

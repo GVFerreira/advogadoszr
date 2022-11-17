@@ -14,17 +14,19 @@
                 <div class="card-body overflow-auto d-flex justify-content-around flex-row flex-wrap">
                     {{#each clients}}
                         <div class="my-2 px-2 py-4 border border-secondary rounded w-100">
-                            <p class="p-0 m-0">Nome:</p>
-                            <p>{{name}}</p>
-                            <hr>
-                            <p class="p-0 m-0">E-mail:</p>
-                            <p>{{email}}</p>
-                            <hr>
-                            <p class="p-0 m-0">País:</p>
-                            <p>{{country}}</p>
-                            <div class="d-flex flex-row gap-5 w-50">
-                                <a href="/admin/edit-client/{{_id}}" class="btn btn-warning w-25">Editar</a>
-                                <a href="/admin/delete-client/{{_id}}" class="btn btn-danger w-25">Excluir</a>
+                            <div class="w-100">
+                                <p class="p-0 m-0">Nome:</p>
+                                <p>{{name}}</p>
+                                <hr>
+                                <p class="p-0 m-0">E-mail:</p>
+                                <p>{{email}}</p>
+                                <hr>
+                                <p class="p-0 m-0">País:</p>
+                                <p>{{country}}</p>
+                                <div class="d-flex flex-row gap-5 w-50">
+                                    <a href="/admin/edit-client/{{_id}}" class="btn btn-warning w-25">Editar</a>
+                                    <a href="/admin/delete-client/{{_id}}" class="btn btn-danger w-25">Excluir</a>
+                                </div>
                             </div>
                         </div>
                     {{else}}

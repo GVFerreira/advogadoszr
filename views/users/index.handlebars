@@ -1,0 +1,28 @@
+<style>
+    header {
+        background: #3E7A96;
+        position: relative;
+        display: none;
+    }
+</style>
+
+<div class="container px-5 my-5" id="card">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-center">Insira seus dados para acessar o painel administrativo</h3>
+        </div>
+        <div class="card-body">
+            <form action="/users/login" method="POST">
+                <label for="email">E-mail:</label>
+                <input type="email" name="email" class="form-control mb-4" required>
+
+                <label for="password">Senha:</label>
+                <input type="password" name="password" class="form-control mb-4" required>
+
+                <button type="submit" class="btn btn-success">Entrar</button>
+            </form>
+            <br>
+            <span>Não possui conta? Entre em contato com o administrador do sistema</span>
+        </div>
+    </div>
+</div>

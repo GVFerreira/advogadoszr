@@ -1,20 +1,25 @@
 const express = require('express')
 router = express.Router()
-// const path = require('path')
-
 const mongoose = require('mongoose')
-require('../models/Client')
+    require('../models/Client')
 const Client = mongoose.model("clients")
-require('../models/Process')
+    require('../models/Process')
 const Process = mongoose.model("processes")
-
+    require('../models/User')
+const User = mongoose.model("users")
 const nodemailer = require('nodemailer')
 const hbs = require('nodemailer-express-handlebars')
 const bcrypt = require('bcryptjs')
 
-
 router.get('/', (req, res) => {
-    res.render('admin/index')
+    User.findOne().then((user) => {
+        res.render('/', {user: user})
+    }).catch((err) => {
+        req.flash('error_msg', `Houve um erro interno ao carregar o usuário: ${err}`)
+        res.redirect('/')
+    })
+    let user = req.user
+    res.render('admin/index', user)
 })
 
 router.get('/send-mail', (req, res) => {
@@ -50,6 +55,134 @@ router.post('/sending-mail', (req, res) => {
         res.send(info)
     }).catch((err) => {
         res.send(`Ocorreu o seguinte erro: ${err}`)
+    })
+})
+
+/* ==== USER ==== */
+/* ==== USER ==== */
+/* ==== USER ==== */
+router.get("/register-user", (req, res) => {
+    res.render("admin/register-user")
+})
+
+//Rota que recebe os dados do novo usuário, que são inseridos no formulário de cadastro
+router.post("/registering-user", (req, res) => {
+    let errors = []
+
+    if(!req.body.name || typeof !req.body.name == undefined || req.body.name == null) {
+        errors.push({text: "Nome inválido"})
+    }
+
+    if(!req.body.email || typeof !req.body.email == undefined || req.body.email == null) {
+        errors.push({text: "E-mail inválido"})
+    }
+
+    if(req.body.password.length < 4) {
+        errors.push({text: "Senha muito curta"})
+    }
+
+    if(req.body.password != req.body.password2) {
+        errors.push({text: "As senhas não são iguais"})
+    }
+
+    if(errors.length > 0) {
+        res.render("admin/register-user", {errors: errors})
+    }else {
+        User.findOne({email: req.body.email}).then((user) => {
+            if(user) {
+                req.flash("error_msg", "E-mail já cadastrado")
+                res.redirect("/admin/register-user")
+            } else{
+                const newUser = new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: req.body.password
+                })
+
+                //criptografar senha
+                bcrypt.genSalt(10, (error, salt) => {
+                    bcrypt.hash(newUser.password, salt, (error, hash) => {
+                        if(error){
+                            req.flash("error_msg", "Houve um erro durante o registro do usuário")
+                            res.redirect("/admin")
+                        } 
+
+                        newUser.password = hash
+
+                        newUser.save().then(() => {
+                            req.flash("success_msg", "Usuário registrado com sucesso")
+                            res.redirect("/admin")
+                        }).catch(() => {
+                            req.flash("error_msg", "Houve um erro ao registrar o seu uusário")
+                            res.redirect("/admin")
+                        })
+                    })
+                })
+            }
+        }).catch((err) => {
+            req.flash("error_msg", `Houve um erro interno: ${err}`)
+            res.redirect("admin/consult-users")
+        })
+    }
+})
+
+router.get('/consult-users', (req, res) => {
+    User.find().sort({createdAt: 'DESC'}).then((users) => {
+        res.render('admin/consult-users', {users: users})
+    }).catch((err) => {
+        req.flash('error_msg', `Houve um erro ao listar os usuários ${err}`)
+        res.redirect('/admin')
+    })
+})
+
+router.get('/edit-user/:id' ,(req, res) => {
+    User.findOne({_id: req.params.id}).then((user) => {
+        res.render('admin/edit-user', {user: user})
+    }).catch((err) => {
+        req.flash('error_msg', 'Houve um erro ao carregar o usuário a ser editado')
+        res.redirect('/admin/consult-users')
+    })
+})
+
+router.post('/editing-user', (req, res) => {
+    User.findOne({_id: req.body.id}).then((user) => {
+        user.name = req.body.name
+        user.email = req.body.email
+        user.password = req.body.password
+        user.password2 = req.body.password2
+        
+        let errors = []
+
+        if(user.password != user.password2) {
+            errors.push({text: 'As senhas digitadas não coincidem'})
+        }
+
+        if(errors.length > 0) {
+            res.render('admin/edit-user', {errors: errors, user: user})
+        } else {
+            bcrypt.genSalt(10, (error, salt) => {
+                bcrypt.hash(user.password, salt, (err, hash) => {
+                    if(err){
+                        req.flash("error_msg", `Houve um erro durante o registro do usuário: ${err}`)
+                        res.redirect("/admin")
+                    } 
+    
+                    user.password = hash
+    
+                    user.save().then(() => {
+                        req.flash("success_msg", "Usuário registrado com sucesso")
+                        res.redirect('/admin/consult-users')
+                    }).catch((err) => {
+                        req.flash("error_msg", `Houve um erro ao registrar o seu usuário: ${err}` )
+                        res.redirect('/admin')
+                    })
+                })
+            })
+        }
+  
+    }).catch((err) => {
+            req.flash('error_msg', `Não foi possível encontrar esse usuário: ${err}` )
+            res.redirect('/admin/consult-users')
     })
 })
 

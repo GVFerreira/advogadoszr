@@ -3,7 +3,9 @@
         <div class="container">
             <div class="card">
                 <div class="card-header">
-                    <h1>Seja bem-vindo ao painel administrativo!</h1>
+                    {{#user}}
+                        <h1 class="p-0 m-0">{{name}}, seja bem-vindo!</h1>
+                    {{/user}}
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
@@ -21,6 +23,12 @@
                         <div class="col">
                             <a href="/admin/register-process" class="btn btn-primary">Registrar processo</a>
                             <a href="/admin/consult-processes" class="btn btn-primary">Consultar processos</a>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <a href="/admin/register-user" class="btn btn-primary">Registrar usuário</a>
+                            <a href="/admin/consult-users" class="btn btn-primary">Consultar usuários</a>
                         </div>
                     </div>
                 </div>
