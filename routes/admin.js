@@ -10,16 +10,17 @@ const User = mongoose.model("users")
 const nodemailer = require('nodemailer')
 const hbs = require('nodemailer-express-handlebars')
 const bcrypt = require('bcryptjs')
+const multer = require('multer')
+const path = require("path")
+const uploadAttach = require('../helpers/uploadAttachments')
 
 router.get('/', (req, res) => {
     User.findOne().then((user) => {
-        res.render('/', {user: user})
+        res.render('admin/index', {user: user})
     }).catch((err) => {
         req.flash('error_msg', `Houve um erro interno ao carregar o usuário: ${err}`)
         res.redirect('/')
     })
-    let user = req.user
-    res.render('admin/index', user)
 })
 
 router.get('/send-mail', (req, res) => {
@@ -259,7 +260,7 @@ router.get('/register-process', (req, res) => {
     })
 })
 
-router.post('/registering-process', (req, res) => {
+router.post('/registering-process', uploadAttach.array('attachments'), (req, res) => {
     bcrypt.genSalt(10, (error, salt) => {
         let code = ''
         bcrypt.hash(code, salt, (error, hash) => {
@@ -279,7 +280,7 @@ router.post('/registering-process', (req, res) => {
                     const subject = `O processo ${req.body.numberProcess} foi atualizado.`
                     const comments = req.body.comments
                     const numberProcess = req.body.numberProcess
-
+                    const attachments = req.files
 
                     const transporter = nodemailer.createTransport({
                         host: 'smtp.umbler.com',
@@ -305,6 +306,7 @@ router.post('/registering-process', (req, res) => {
                         to: receiver,
                         subject,
                         template: 'template-email',
+                        attachments,
                         context: {
                             comments,
                             codeProcess,
@@ -324,6 +326,7 @@ router.post('/registering-process', (req, res) => {
                 
             }
 
+            console.log(req.body, req.files)
 
             const newProcess = new Process({
                 relatedClient: req.body.relatedClient,
@@ -449,6 +452,20 @@ router.get('/delete-process/:id', (req, res) => {
 
 router.get('/teste', (req, res) => {
     res.render('email/template-email')
+})
+
+router.get('/teste-attach', (req, res) => {
+    res.render('admin/teste')
+})
+
+router.post('/teste-attach', uploadAttach.array('attachments'), (req, res, next) => {
+    const attachments = req.files
+    attachments.forEach(attach => {
+        const filename = attach.filename
+        console.log(filename)
+    });
+    
+    res.redirect('/admin')
 })
 
 module.exports = router

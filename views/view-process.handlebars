@@ -7,7 +7,8 @@
                 </div>
                 <div class="card-body">
                     <form action="/consulting-process" method="POST">
-                        <p>Insira o seu código acompanhamento abaixo</p>
+                        <h2>Qual é o estado do meu processo?</h2>
+                        <p>Indique o seu código de acesso.</p>
                         <div class="row">
                             <div class="col">
                                 <div class="input-group mb-3">
@@ -76,13 +77,27 @@
                                     </li>
                                 </ol>
                             </div>
-                            <section class="my-4">
+                            <section class="card my-4 px-3 py-4">
                                 <h3>Observações:</h3>
-                                <p>{{comments}}</p>
+                                <p class="m-0">{{comments}}</p>
                             </section>
                         {{else}}
                             <h4>Não há nenhum processo</h4>
                         {{/search_result}}
+                    </section>
+
+                    <section>
+                        <ul class="m-0 ps-2" style="list-style: none;">
+                            <li class="mb-2">1) Realizada consulta, aguarda remessa dos documentos.</li>
+                            <li class="mb-2">2) Recebidos documentos no escritório, preparação para entrega.</li>
+                            <li class="mb-2">3) Documentos entregues nos Registos Centrais.</li>
+                            <li class="mb-2">4) Aguarda análise pelo serviço.</li>
+                            <li>5) Aprovado pedido</li>
+                            <li>OU</li>
+                            <li class="mb-2">5) Solicitadas novos documentos ou esclarecimentos.</li>
+                            <li class="mb-2">6) Entregues as correções e documentos.</li>
+                            <li class="mb-2">7) Aprovado o pedido.</li></li>
+                        </ul>
                     </section>
                 </div>
             </div>
