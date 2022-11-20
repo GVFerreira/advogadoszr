@@ -23,6 +23,9 @@ router.get('/', (req, res) => {
     })
 })
 
+/* ==== EMAIL ==== */
+/* ==== EMAIL ==== */
+/* ==== EMAIL ==== */
 router.get('/send-mail', (req, res) => {
     res.render('admin/send-mail')
 })
@@ -57,6 +60,41 @@ router.post('/sending-mail', (req, res) => {
     }).catch((err) => {
         res.send(`Ocorreu o seguinte erro: ${err}`)
     })
+})
+
+router.get('/sending-mass-mail', (req, res) => {
+    Client.find().then((clients) => {
+        const user = 'contato@gvfwebdesign.com.br'
+        const pass = 'Contato*8351*'
+
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.umbler.com',
+            port: 587,
+            auth: {
+                user,
+                pass
+            },
+        })
+        
+        clients.forEach(client => {
+            const receiver = client.email
+            const subject = 'Não se esqueça do seu processo. Confira em nosso portal'
+
+            transporter.sendMail(
+                {
+                    from: `Agência GVF <${user}>`,
+                    to: receiver,
+                    subject,
+                    text: 'Esse é um teste de disparo',
+                }
+            )
+        })
+        
+        req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
+        res.redirect('/admin')
+    })
+        
+    
 })
 
 /* ==== USER ==== */
@@ -325,8 +363,6 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                 })
                 
             }
-
-            console.log(req.body, req.files)
 
             const newProcess = new Process({
                 relatedClient: req.body.relatedClient,
