@@ -99,6 +99,6 @@ const { isAdmin } = require('./helpers/isAdmin')
     app.use('/users', users)
 
 /*SERVER*/
-    app.listen(8000, () => {
+    app.listen(process.env.PORT || 8000, () => {
         console.log('Server ON')
     })
