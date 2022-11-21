@@ -331,10 +331,10 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
 
                     const handlebarOptions = {
                         viewEngine: {
-                          partialsDir: "D:/rzadvogados/views/email",
+                          partialsDir: path.join(__dirname, '..', 'views/email'),
                           defaultLayout: false,
                         },
-                        viewPath: "D:/rzadvogados/views/email",
+                        viewPath: path.join(__dirname, '..', 'views/email'),
                       };
 
                     transporter.use('compile', hbs(handlebarOptions))
@@ -437,10 +437,10 @@ router.post('/editing-process/:id', (req, res) => {
 
                 const handlebarOptions = {
                     viewEngine: {
-                      partialsDir: "D:/rzadvogados/views/email",
+                      partialsDir: path.join(__dirname, '..', 'views/email'),
                       defaultLayout: false,
                     },
-                    viewPath: "D:/rzadvogados/views/email",
+                    viewPath: path.join(__dirname, '..', 'views/email'),
                   };
 
                 transporter.use('compile', hbs(handlebarOptions))
