@@ -9,7 +9,7 @@ const Process = new Schema({
     },
     numberProcess: {
         type: String,
-        required: true
+        /*required: true*/
     },
     process: {
         type: String,
@@ -37,6 +37,9 @@ const Process = new Schema({
         type: Number
     },
     comments: {
+        type: String
+    },
+    monetaryPendency: {
         type: String
     },
     code: {

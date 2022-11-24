@@ -56,7 +56,8 @@ router.post('/sending-mail', (req, res) => {
         text: message,
 
     }).then((info) => {
-        res.send(info)
+        req.flash('success_msg', 'Envio feito com sucesso')
+        res.redirect('/admin')
     }).catch((err) => {
         res.send(`Ocorreu o seguinte erro: ${err}`)
     })
@@ -357,7 +358,7 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                         if(err) {
                             console.log(`Error: ${err}`)
                         } else {
-                            console.log('Message sent')
+                            console.log(`Message sent: ${info}`)
                         }
                     })
                 })
@@ -376,6 +377,7 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                 dispatch: req.body.dispatch,
                 finished: req.body.finished,
                 comments: req.body.comments,
+                monetaryPendency: req.body.monetaryPendency,
                 code: codeProcess
             })
 
@@ -409,7 +411,7 @@ router.get('/edit-process/:id', (req, res) => {
     })
 })
 
-router.post('/editing-process/:id', (req, res) => {
+router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res) => {
     Process.findByIdAndUpdate({_id: req.params.id}, req.body).then(() => {
         //verificar o switch e enviar o e-mail de acordo com o status
         if(req.body.sendNotification === "on") {
@@ -424,7 +426,7 @@ router.post('/editing-process/:id', (req, res) => {
                 const comments = req.body.comments
                 const numberProcess = req.body.numberProcess
                 const codeProcess = req.body.code
-
+                const attachments = req.files
 
                 const transporter = nodemailer.createTransport({
                     host: 'smtp.umbler.com',
@@ -450,6 +452,7 @@ router.post('/editing-process/:id', (req, res) => {
                     to: receiver,
                     subject,
                     template: 'template-email',
+                    attachments,
                     context: {
                         comments,
                         codeProcess,

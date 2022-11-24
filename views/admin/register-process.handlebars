@@ -118,19 +118,27 @@
                         <textarea name="comments" id="comments" cols="30" rows="10" class="form-control mb-4"></textarea>
 
 
-                        <div class="mb-3">
+                        <div class="form-check form-switch mb-3">
+                            <input type="checkbox" class="form-check-input d-flex" role="switch" id="monetaryPendency" name="monetaryPendency">
+                            <label class="form-check-label" for="monetaryPendency">Pendências monetárias?</label>
+                        </div>
+
+
+                        <div class="mb-4">
                             <label for="formFileMultiple" class="form-label">Anexos do processo</label>
                             <input type="file" class="form-control" id="formFileMultiple" name="attachments" multiple>
                         </div>
 
 
                         <div class="form-check form-switch mb-4">
-                            <input type="checkbox" class="form-check-input d-flex" role="switch" id="flexSwitchCheckDefault" name="sendNotification">
-                            <label class="form-check-label" for="flexSwitchCheckDefault">Enviar notificação para o cliente?</label>
+                            <input type="checkbox" class="form-check-input d-flex" role="switch" id="sendNotification" name="sendNotification">
+                            <label class="form-check-label" for="sendNotification">Enviar notificação para o cliente?</label>
                         </div>
 
-                        <input type="submit" value="Cadastrar" class="btn btn-primary">
+                        <input type="submit" value="Cadastrar" class="btn btn-primary w-25">
                     </form>
+
+                    <a href="/admin" class="btn btn-danger w-25 mt-3">Cancelar cadastro</a>
                 </div>
             </div>
         </div>

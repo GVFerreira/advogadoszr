@@ -76,17 +76,25 @@
                                         {{/if}}
                                     </li>
                                 </ol>
+                                
                             </div>
                             <section class="card my-4 px-3 py-4">
                                 <h3>Observações:</h3>
                                 <p class="m-0">{{comments}}</p>
                             </section>
+                            <div>
+                                {{#if monetaryPendency}}
+                                    <button class="btn btn-danger">Possui pendência monetária</button>
+                                {{else}}
+                                    <button class="btn btn-success">Não possui pendência monetária</button>
+                                {{/if}}
+                            </div>
                         {{else}}
                             <h4>Não há nenhum processo</h4>
                         {{/search_result}}
                     </section>
 
-                    <section>
+                    <section class="mt-5">
                         <ul class="m-0 ps-2" style="list-style: none;">
                             <li class="mb-2">1) Realizada consulta, aguarda remessa dos documentos.</li>
                             <li class="mb-2">2) Recebidos documentos no escritório, preparação para entrega.</li>

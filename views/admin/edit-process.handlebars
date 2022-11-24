@@ -187,15 +187,34 @@
                             <label for="comments">Comentários da fase do processo:</label>
                             <textarea name="comments" id="comments" cols="30" rows="10" class="form-control mb-4">{{comments}}</textarea>
 
-                            <div class="form-check form-switch mb-4">
-                                <input class="form-check-input d-flex" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="sendNotification">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Enviar notificação para o cliente?</label>
+                            {{#if monetaryPendency}}
+                                <div class="form-check form-switch mb-3">
+                                    <input type="checkbox" class="form-check-input d-flex" role="switch" id="monetaryPendency" name="monetaryPendency" checked>
+                                    <label class="form-check-label" for="monetaryPendency">Pendências monetárias?</label>
+                                </div>
+                            {{else}}
+                                <div class="form-check form-switch mb-3">
+                                    <input type="checkbox" class="form-check-input d-flex" role="switch" id="monetaryPendency" name="monetaryPendency">
+                                    <label class="form-check-label" for="monetaryPendency">Pendências monetárias?</label>
+                                </div>
+                            {{/if}}
+
+
+                            <div class="mb-4">
+                                <label for="formFileMultiple" class="form-label">Anexos do processo</label>
+                                <input type="file" class="form-control" id="formFileMultiple" name="attachments" multiple>
                             </div>
 
-                            <input type="submit" value="Atualizar" class="btn btn-primary">
+
+                            <div class="form-check form-switch mb-4">
+                                <input class="form-check-input d-flex" type="checkbox" role="switch" id="sendNotification" name="sendNotification">
+                                <label class="form-check-label" for="sendNotification">Enviar notificação para o cliente?</label>
+                            </div>
+
+                            <input type="submit" value="Atualizar" class="btn btn-success w-25">
                         </form>
 
-                        <a href="/admin/consult-processes" class="btn btn-danger mt-3">Cancelar edição</a>
+                        <a href="/admin/consult-processes" class="btn btn-danger w-25 mt-3">Cancelar edição</a>
                     {{/process}}
                 </div>
             </div>
