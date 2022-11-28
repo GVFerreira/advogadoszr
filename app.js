@@ -35,6 +35,7 @@ const { isAdmin } = require('./helpers/isAdmin')
 
 /*AUTHENTICATION*/
     const passport = require("passport")
+const router = require('./routes/users')
     require("./config/auth")(passport)
 
 /*SETTINGS*/
@@ -89,6 +90,14 @@ const { isAdmin } = require('./helpers/isAdmin')
             req.flash('error_msg', `Ocorreu um erro: ${err}`)
             res.redirect('/')
         })
+    })
+
+    app.get('/downlaod', (req, res) => {
+        res.download(path.join(__dirname, `/img/facebook.png`))
+    })
+
+    app.get('/download/:filename', (req, res) => {
+        res.download(`public/uploads/attachments/${req.params.filename}`)
     })
 
     app.get('/teste', (req, res) => {

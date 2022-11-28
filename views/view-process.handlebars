@@ -24,7 +24,7 @@
                         {{#search_result}}
                             <p>Nome: {{relatedClient.name}}</p>
                             <p>N° processo: {{numberProcess}}</p>
-                            <div class="progress-bar my-5">
+                            <section class="progress-bar my-5">
                                 <ol class="list-group list-group-horizontal list-group-numbered d-flex justify-content-between align-items-center">
                                     <li>
                                         {{#if received}}
@@ -76,19 +76,27 @@
                                         {{/if}}
                                     </li>
                                 </ol>
-                                
-                            </div>
+                            </section>
+
+                            <section class="card my-4 px-3 py-4">
+                                <h3>Baixe seus anexos</h3>
+                                {{#each attachments}}
+                                    <a href="/download/{{filename}}" class="mb-2">{{originalname}}</a>
+                                {{/each}}
+                            </section>
+
                             <section class="card my-4 px-3 py-4">
                                 <h3>Observações:</h3>
                                 <p class="m-0">{{comments}}</p>
                             </section>
-                            <div>
+
+                            <section>
                                 {{#if monetaryPendency}}
                                     <button class="btn btn-danger">Possui pendência monetária</button>
                                 {{else}}
                                     <button class="btn btn-success">Não possui pendência monetária</button>
                                 {{/if}}
-                            </div>
+                            </section>
                         {{else}}
                             <h4>Não há nenhum processo</h4>
                         {{/search_result}}

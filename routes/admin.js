@@ -15,12 +15,12 @@ const path = require("path")
 const uploadAttach = require('../helpers/uploadAttachments')
 
 router.get('/', (req, res) => {
-    User.findOne().then((user) => {
-        res.render('admin/index', {user: user})
-    }).catch((err) => {
-        req.flash('error_msg', `Houve um erro interno ao carregar o usuário: ${err}`)
-        res.redirect('/')
-    })
+    //User.findOne().then((user) => {
+        res.render('admin/index', /*{user: user}*/)
+    //}).catch((err) => {
+        //req.flash('error_msg', `Houve um erro interno ao carregar o usuário: ${err}`)
+        //res.redirect('/')
+    //})
 })
 
 /* ==== EMAIL ==== */
@@ -30,15 +30,14 @@ router.get('/send-mail', (req, res) => {
     res.render('admin/send-mail')
 })
 
-router.post('/sending-mail', (req, res) => {
+router.post('/sending-mail', uploadAttach.array('attachments'), (req, res) => {
     const user = 'contato@gvfwebdesign.com.br'
     const pass = 'Contato*8351*'
     
-    //sendind data
     const receiver = req.body.receiver
     const subject = req.body.subject
     const message = req.body.message
-
+    const attachments = req.files
 
     const transporter = nodemailer.createTransport({
         host: 'smtp.umbler.com',
@@ -49,17 +48,37 @@ router.post('/sending-mail', (req, res) => {
         },
     })
 
-    transporter.sendMail({
+    const handlebarOptions = {
+        viewEngine: {
+          partialsDir: path.join(__dirname, '..', 'views/email'),
+          defaultLayout: false,
+        },
+        viewPath: path.join(__dirname, '..', 'views/email'),
+    }
+
+    transporter.use('compile', hbs(handlebarOptions))
+
+    const mailOptions = {
         from: `Agência GVF <${user}>`,
         to: receiver,
         subject,
-        text: message,
+        template: 'email-individual',
+        attachments,
+        context: {
+            message
+        }
+    }
 
-    }).then((info) => {
-        req.flash('success_msg', 'Envio feito com sucesso')
-        res.redirect('/admin')
-    }).catch((err) => {
-        res.send(`Ocorreu o seguinte erro: ${err}`)
+    transporter.sendMail(mailOptions, (err, info) => {
+        if(err) {
+            console.log(err)
+            req.flash('error_msg', `Houve um erro ao enviar este e-mail`)
+            res.redirect('/admin')
+        } else {
+            console.log(info)
+            req.flash('success_msg', `Envio feito com sucesso`)
+            res.redirect('/admin')
+        }
     })
 })
 
@@ -312,8 +331,7 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                 Client.findOne({_id: req.body.relatedClient}).then((client) => {
                     const user = 'contato@gvfwebdesign.com.br'
                     const pass = 'Contato*8351*'
-                    
-                    //sendind data
+
                     const receiver = client.email
                     const clientName = client.name
                     const subject = `O processo ${req.body.numberProcess} foi atualizado.`
@@ -378,6 +396,7 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                 finished: req.body.finished,
                 comments: req.body.comments,
                 monetaryPendency: req.body.monetaryPendency,
+                attachments: req.files,
                 code: codeProcess
             })
 
@@ -395,7 +414,17 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
 })
 
 router.get('/consult-processes', (req, res) => {
-    Process.find().populate("relatedClient").sort({createdAt: "DESC"}).then((processes) => {
+    Process.find().populate("relatedClient").sort({createdAt: -1}).then((processes) => {
+        res.render('admin/consult-process', { processes: processes })
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro ao listar os processos. Erro: ${err}`)
+    })
+})
+
+router.get('/consult-processes/:filter/:filtervalue', (req, res) => {
+    const filter = req.params.filter
+    const filterValue = req.params.filtervalue
+    Process.find().populate("relatedClient").sort({filter: filterValue}).then((processes) => {
         res.render('admin/consult-process', { processes: processes })
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro ao listar os processos. Erro: ${err}`)
@@ -491,20 +520,6 @@ router.get('/delete-process/:id', (req, res) => {
 
 router.get('/teste', (req, res) => {
     res.render('email/template-email')
-})
-
-router.get('/teste-attach', (req, res) => {
-    res.render('admin/teste')
-})
-
-router.post('/teste-attach', uploadAttach.array('attachments'), (req, res, next) => {
-    const attachments = req.files
-    attachments.forEach(attach => {
-        const filename = attach.filename
-        console.log(filename)
-    });
-    
-    res.redirect('/admin')
 })
 
 module.exports = router

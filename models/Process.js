@@ -42,6 +42,9 @@ const Process = new Schema({
     monetaryPendency: {
         type: String
     },
+    attachments: {
+        type: Array
+    },
     code: {
         type: String
     },

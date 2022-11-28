@@ -6,7 +6,7 @@
                     <h1>Formulário para envio de  e-mails</h1>
                 </div>
                 <div class="card-body">
-                    <form action="/admin/sending-mail" method="post">
+                    <form action="/admin/sending-mail" method="post" enctype="multipart/form-data">
                         <label for="receiver">Destinatário:</label>
                         <input type="email" placeholder="email@example.com" name="receiver" id="receiver" class="form-control mb-4" required>
                         
@@ -15,6 +15,11 @@
                         
                         <label for="message">Mensagem:</label> 
                         <textarea name="message" id="message" rows="10" cols="25" class="form-control mb-4"></textarea>
+
+                        <div class="mb-4">
+                            <label for="formFileMultiple" class="form-label">Anexos do processo</label>
+                            <input type="file" class="form-control" id="formFileMultiple" name="attachments" multiple>
+                        </div>
                         
                         <input type="submit" value="Enviar" class="btn btn-primary">
                     </form>
