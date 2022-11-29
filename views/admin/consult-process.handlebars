@@ -11,13 +11,17 @@
                     <h1 class="p-0 m-0">Consulte os processos</h1>
                     <a href="/admin/register-process" class="btn btn-success">ADICIONAR NOVO <b>+</b></a>
                 </div>
+                
                 <div class="card-header">
-                    <div class="d-flex justify-content-around">
-                        <a href="/admin/consult-processes/relatedClient.name/1">Ordem alfabética (A-Z)</a>
-                        <a href="/admin/consult-processes/relatedClient.name/-1">Ordem alfabética (Z-A)</a>
-                        <a href="/admin/consult-processes/createdAt/1">Mais recente</a>
-                        <a href="/admin/consult-processes/createdAt/-1">Mais antigo</a>
-                    </div>
+                    <form method="POST" action="/admin/consult-process" class="d-flex align-items-center gap-2">
+                        <select name="selectResult" id="selectResult" class="form-select w-25">
+                            <option value="1">Ordem alfabética (A-Z)</option>
+                            <option value="2">Ordem alfabética (Z-A)</option>
+                            <option value="-1">Mais recente</option>
+                            <option value="-2">Mais antigo</option>
+                        </select>
+                        <input type="submit" value="Filtar" class="btn btn-primary">
+                    </form>
                 </div>
                 <div class="card-body overflow-auto d-flex justify-content-center flex-row flex-wrap">
                     {{#each processes}}

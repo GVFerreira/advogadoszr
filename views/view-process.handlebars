@@ -28,91 +28,98 @@
                                 <ol class="list-group list-group-horizontal list-group-numbered d-flex justify-content-between align-items-center">
                                     <li>
                                         {{#if received}}
-                                            <div class="btn btn-success">Recebido</div>
+                                            <div class="btn btn-success">Consulta jurídica</div>
                                         {{else}}
-                                            <div class="btn btn-secondary">Recebido</div>
+                                            <div class="btn btn-secondary">Consulta jurídica</div>
                                         {{/if}}
                                     </li>
                                     <li>
                                         {{#if registered}}
-                                            <div class="btn btn-success">Registrado</div>
+                                            <div class="btn btn-success">Aguarda documentos</div>
                                         {{else}}
-                                            <div class="btn btn-secondary">Registrado</div>
+                                            <div class="btn btn-secondary">Aguarda documentos</div>
                                         {{/if}}
                                     </li>
                                     <li>
                                         {{#if waitingQueries}}
-                                            <div class="btn btn-success">Aguardando consultas</div>
+                                            <div class="btn btn-success">Documentos Recebidos</div>
                                         {{else}}
-                                            <div class="btn btn-secondary">Aguardando consultas</div>
+                                            <div class="btn btn-secondary">Documentos Recebidos</div>
                                         {{/if}}
                                     </li>
                                     <li>
                                         {{#if checkingDocs}}
-                                            <div class="btn btn-success">Verificando documentos</div>
+                                            <div class="btn btn-success">Pedido realizado</div>
                                         {{else}}
-                                            <div class="btn btn-secondary">Verificando documentos</div>
+                                            <div class="btn btn-secondary">Pedido realizado</div>
                                         {{/if}}
                                     </li>
                                     <li>
                                         {{#if orderAnalysis}}
-                                            <div class="btn btn-success">Análise do pedido</div>
+                                            <div class="btn btn-success">Aguarda análise</div>
                                         {{else}}
-                                            <div class="btn btn-secondary">Análise do pedido</div>
+                                            <div class="btn btn-secondary">Aguarda análise</div>
                                         {{/if}}
                                     </li>
                                     <li>
                                         {{#if dispatch}}
-                                            <div class="btn btn-success">Despacho</div>
+                                            <div class="btn btn-success">Pedido concluído</div>
                                         {{else}}
-                                            <div class="btn btn-secondary">Despacho</div>
+                                            <div class="btn btn-secondary">Pedido concluído</div>
                                         {{/if}}
                                     </li>
                                     <li>
                                         {{#if finished}}
-                                            <div class="btn btn-success">Finalizado</div>
+                                            <div class="btn btn-success">Exigência</div>
                                         {{else}}
-                                            <div class="btn btn-secondary">Finalizado</div>
+                                            <div class="btn btn-secondary">Exigência</div>
                                         {{/if}}
                                     </li>
                                 </ol>
                             </section>
 
                             <section class="card my-4 px-3 py-4">
-                                <h3>Baixe seus anexos</h3>
-                                {{#each attachments}}
-                                    <a href="/download/{{filename}}" class="mb-2">{{originalname}}</a>
-                                {{/each}}
+                                <h3>Observações:</h3>
+                                <p class="m-0">{{comments}}</p>
+                                <section>
+                                    {{#if monetaryPendency}}
+                                        <div class="btn btn-danger mt-3">Possui pendência monetária<i class="bi bi-cash ms-2"></i></div>
+                                    {{else}}
+                                        <div class="btn btn-success mt-3">Não possui pendência monetária<i class="bi bi-cash ms-2"></i></div>
+                                    {{/if}}
+                                </section>
                             </section>
 
                             <section class="card my-4 px-3 py-4">
-                                <h3>Observações:</h3>
-                                <p class="m-0">{{comments}}</p>
+                                <h3>Baixe seus anexos</h3>
+                                {{#each attachments}}
+                                    <a href="/download/{{filename}}" class="mb-2">{{originalname}}</a>
+                                {{else}}
+                                    <p class="m-0 p-0">Não foi anexado nenhum arquivo</p>
+                                {{/each}}
                             </section>
 
-                            <section>
-                                {{#if monetaryPendency}}
-                                    <button class="btn btn-danger">Possui pendência monetária</button>
-                                {{else}}
-                                    <button class="btn btn-success">Não possui pendência monetária</button>
-                                {{/if}}
-                            </section>
+                            
                         {{else}}
                             <h4>Não há nenhum processo</h4>
                         {{/search_result}}
                     </section>
 
-                    <section class="mt-5">
+                    <section class="ps-2">
+                        <h3>Entre em contato:</h3>
+                        <a class="btn btn-outline-success" href="tel:+351937126034"><i class="bi bi-whatsapp"></i> +351937126034</a>
+                    </section>
+
+                    <section class="mt-4">
+                        <h3 class="ps-2">Descrição das etapas do processo</h3>
                         <ul class="m-0 ps-2" style="list-style: none;">
-                            <li class="mb-2">1) Realizada consulta, aguarda remessa dos documentos.</li>
-                            <li class="mb-2">2) Recebidos documentos no escritório, preparação para entrega.</li>
-                            <li class="mb-2">3) Documentos entregues nos Registos Centrais.</li>
-                            <li class="mb-2">4) Aguarda análise pelo serviço.</li>
-                            <li>5) Aprovado pedido</li>
-                            <li>OU</li>
-                            <li class="mb-2">5) Solicitadas novos documentos ou esclarecimentos.</li>
-                            <li class="mb-2">6) Entregues as correções e documentos.</li>
-                            <li class="mb-2">7) Aprovado o pedido.</li></li>
+                            <li class="mb-2">1) Aguarda realização da consulta jurídica </li>
+                            <li class="mb-2">2) Realizada consulta, aguarda entrega do documentos solicitados.</li>
+                            <li class="mb-2">3) Recebidos documentos no escritório, processo em preparação para entrega no Serviço responsável </li>
+                            <li class="mb-2">4) Pedido entregue ao Serviço responsável.</li>
+                            <li class="mb-2">5) Aguarda análise do pedido por parte da Serviço responsável.</li>
+                            <li class="mb-2">6) O pedido foi concluído e aprovado.</li>
+                            <li class="mb-2">7) O Serviço responsável exigiu a apresentação de novos documentos ou esclarecimentos</li></li>
                         </ul>
                     </section>
                 </div>

@@ -385,6 +385,7 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
 
             const newProcess = new Process({
                 relatedClient: req.body.relatedClient,
+                clientName: req.body.relatedClient.name,
                 numberProcess: req.body.numberProcess,
                 process: req.body.process,
                 received: req.body.received,
@@ -407,6 +408,7 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                 res.redirect('/admin/consult-processes')
             }).catch((err) => {
                 req.flash("error_msg", `Deu um erro aqui: ${err}`)
+                console.log(req.body.relatedClient.name)
                 res.redirect('/admin')
             })
         })
@@ -421,10 +423,17 @@ router.get('/consult-processes', (req, res) => {
     })
 })
 
-router.get('/consult-processes/:filter/:filtervalue', (req, res) => {
+router.get('/consult-processes/:filter/:filterValue', (req, res) => {
     const filter = req.params.filter
-    const filterValue = req.params.filtervalue
-    Process.find().populate("relatedClient").sort({filter: filterValue}).then((processes) => {
+    const filterValue = req.params.filterValue
+
+    if(filter === 'createdAt') {
+        var query = {createdAt: filterValue}
+    } else if (filter === 'name') {
+        var query = {name: filterValue}
+    }
+    
+    Process.find().populate("relatedClient").sort(query).then((processes) => {
         res.render('admin/consult-process', { processes: processes })
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro ao listar os processos. Erro: ${err}`)
