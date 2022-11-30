@@ -7,10 +7,6 @@ const Process = new Schema({
         ref: "clients",
         required: true
     },
-    clientName: {
-        type: String,
-        required: true
-    },
     numberProcess: {
         type: String
     },

@@ -385,7 +385,6 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
 
             const newProcess = new Process({
                 relatedClient: req.body.relatedClient,
-                clientName: req.body.relatedClient.name,
                 numberProcess: req.body.numberProcess,
                 process: req.body.process,
                 received: req.body.received,
@@ -415,29 +414,46 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
     }) 
 })
 
-router.get('/consult-processes', (req, res) => {
+/*router.get('/consult-processes', (req, res) => {
     Process.find().populate("relatedClient").sort({createdAt: -1}).then((processes) => {
         res.render('admin/consult-process', { processes: processes })
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro ao listar os processos. Erro: ${err}`)
     })
-})
+})*/
 
-router.get('/consult-processes/:filter/:filterValue', (req, res) => {
-    const filter = req.params.filter
-    const filterValue = req.params.filterValue
+router.get('/consult-processes', async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) -1 || 0
+        const limit = parseInt(req.query.limit) || 10
+        const search = req.query.search || ''
+        let sort = req.query.sort || 'createdAt'
 
-    if(filter === 'createdAt') {
-        var query = {createdAt: filterValue}
-    } else if (filter === 'name') {
-        var query = {name: filterValue}
+        req.query.sort ? (sort = req.query.sort.split(',')) : (sort = [sort])
+
+        let sortBy = {}
+        if (sort[1]) {
+            sortBy[sort[0]] = sort[1]
+        } else {
+            sortBy[sort[0]] = 'ASC'
+        }
+
+        const processes = await Process.find().populate('relatedClient').sort(sortBy).skip(page * limit).limit(limit)
+
+        const response = {
+            error: false,
+            page: page + 1,
+            limit,
+            processes
+        }
+        
+        //res.status(200).json(response)
+        res.status(200).render('admin/consult-process', {processes: response.processes})
     }
-    
-    Process.find().populate("relatedClient").sort(query).then((processes) => {
-        res.render('admin/consult-process', { processes: processes })
-    }).catch((err) => {
-        req.flash('error_msg', `Ocorreu um erro ao listar os processos. Erro: ${err}`)
-    })
+    catch(err){
+        console.log(err)
+        res.status(500).json({error: true, message: "Erro interno no servidor"})
+    }
 })
 
 router.get('/edit-process/:id', (req, res) => {

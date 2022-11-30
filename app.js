@@ -97,7 +97,7 @@ const router = require('./routes/users')
     })
 
     app.get('/download/:filename', (req, res) => {
-        res.download(`public/uploads/attachments/${req.params.filename}`)
+        res.download(`public /uploads/attachments/${req.params.filename}`)
     })
 
     app.get('/teste', (req, res) => {
