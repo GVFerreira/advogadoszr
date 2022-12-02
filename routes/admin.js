@@ -426,8 +426,8 @@ router.get('/consult-processes', async (req, res) => {
     try {
         const page = parseInt(req.query.page) -1 || 0
         const limit = parseInt(req.query.limit) || 10
-        const search = req.query.search || ''
         let sort = req.query.sort || 'createdAt'
+        
 
         req.query.sort ? (sort = req.query.sort.split(',')) : (sort = [sort])
 
@@ -439,20 +439,39 @@ router.get('/consult-processes', async (req, res) => {
         }
 
         const processes = await Process.find().populate('relatedClient').sort(sortBy).skip(page * limit).limit(limit)
+        const total = await Process.countDocuments()
+
+
+        const totalPages = Math.ceil(total / limit)
+
+        const btnPages = totalPages > 0 && [...Array(totalPages)].map((val, i) =>{
+            i++
+            return {
+                element: `<button class="btn btn-outline-secondary">${i}</button>`
+            }
+        })
+
+        console.log(btnPages)
+
 
         const response = {
             error: false,
             page: page + 1,
             limit,
+            totalPages,
+            btnPages,
             processes
         }
         
         //res.status(200).json(response)
-        res.status(200).render('admin/consult-process', {processes: response.processes})
+        res.status(200).render('admin/consult-process', {processes: processes})
     }
     catch(err){
         console.log(err)
-        res.status(500).json({error: true, message: "Erro interno no servidor"})
+        res.status(500).json({
+            error: true,
+            message: "Erro interno no servidor"
+        })
     }
 })
 

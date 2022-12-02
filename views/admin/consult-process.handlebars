@@ -9,11 +9,25 @@
                 
                 <div class="card-header">
                     <form method="GET" class="d-flex align-items-center gap-2">
-                        <select name="sort" id="sort" class="form-select w-25">
-                            <option value=""></option>
-                            <option value="DESC">Mais recente</option>
-                            <option value="ASC">Mais antigo</option>
-                        </select>
+                        <div class="w-25">
+                            <label for="">Data de criação:</label>
+                            <select name="sort" id="sort" class="form-select">
+                                <option value=""></option>
+                                <option value="-1">Decrescente</option>
+                                <option value="1">Crescente</option>
+                            </select>
+                        </div>
+
+                        <div class="w-25">
+                            <label>Limite por página:</label>
+                            <select name="limit" id="limit" class="form-select">
+                                <option value=""></option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
                         <input type="submit" value="Filtar" class="btn btn-primary">
                     </form>
                 </div>
@@ -41,6 +55,14 @@
                     {{else}}
                         <h3> Não há registro de processos</h3>
                     {{/each}}
+                    <div class="d-flex flex-row my-2">
+                        {{#btnPages}}
+                            {{{element}}}
+                        {{else}}
+                            <button class="btn btn-outline-secondary">1</button>
+                        {{/btnPages}}
+                    </div>
+                    
                 </div>
             </div>
         </div>
