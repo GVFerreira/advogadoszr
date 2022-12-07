@@ -124,7 +124,6 @@ router.get("/register-user", (req, res) => {
     res.render("admin/register-user")
 })
 
-//Rota que recebe os dados do novo usuário, que são inseridos no formulário de cadastro
 router.post("/registering-user", (req, res) => {
     let errors = []
 
@@ -414,14 +413,6 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
     }) 
 })
 
-/*router.get('/consult-processes', (req, res) => {
-    Process.find().populate("relatedClient").sort({createdAt: -1}).then((processes) => {
-        res.render('admin/consult-process', { processes: processes })
-    }).catch((err) => {
-        req.flash('error_msg', `Ocorreu um erro ao listar os processos. Erro: ${err}`)
-    })
-})*/
-
 router.get('/consult-processes', async (req, res) => {
     try {
         const page = parseInt(req.query.page) -1 || 0
@@ -447,12 +438,9 @@ router.get('/consult-processes', async (req, res) => {
         const btnPages = totalPages > 0 && [...Array(totalPages)].map((val, i) =>{
             i++
             return {
-                element: `<button class="btn btn-outline-secondary">${i}</button>`
+                element: `<a href="?page=${i}" class="btn btn-outline-secondary mx-1">${i}</a>`
             }
         })
-
-        console.log(btnPages)
-
 
         const response = {
             error: false,
@@ -464,7 +452,7 @@ router.get('/consult-processes', async (req, res) => {
         }
         
         //res.status(200).json(response)
-        res.status(200).render('admin/consult-process', {processes: processes})
+        res.status(200).render('admin/consult-process', {processes: processes, pages: btnPages})
     }
     catch(err){
         console.log(err)
