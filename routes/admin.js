@@ -419,7 +419,6 @@ router.get('/consult-processes', async (req, res) => {
         const limit = parseInt(req.query.limit) || 10
         let sort = req.query.sort || 'createdAt'
         
-
         req.query.sort ? (sort = req.query.sort.split(',')) : (sort = [sort])
 
         let sortBy = {}
@@ -431,7 +430,6 @@ router.get('/consult-processes', async (req, res) => {
 
         const processes = await Process.find().populate('relatedClient').sort(sortBy).skip(page * limit).limit(limit)
         const total = await Process.countDocuments()
-
 
         const totalPages = Math.ceil(total / limit)
 
@@ -451,8 +449,8 @@ router.get('/consult-processes', async (req, res) => {
             processes
         }
         
-        //res.status(200).json(response)
-        res.status(200).render('admin/consult-process', {processes: processes, pages: btnPages})
+        res.status(200).json(response)
+        //res.status(200).render('admin/consult-process', {processes: processes, pages: btnPages})
     }
     catch(err){
         console.log(err)
