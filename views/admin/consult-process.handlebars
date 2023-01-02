@@ -48,13 +48,13 @@
                             </div>
                             <input type="submit" value="Filtar" class="btn btn-primary">
                         </div>
-                    </form>
-                    
+                    </form>                    
                 </div>
                 <div class="card-body d-flex justify-content-center flex-row flex-wrap">
                     {{#each processes}}
                         <div class="my-2 px-2 py-4 border border-secondary rounded w-100">
                             <div class="w-100">
+                                <p>{{#formatDate createdAt}}{{/formatDate}}</p>
                                 <p class="p-0 m-0">Número do processo:</p>
                                 <p>{{numberProcess}}</p>
                                 <hr>
@@ -77,9 +77,10 @@
                         <h3> Não há registro de processos</h3>
                     {{/each}}
                     <div class="d-flex flex-row my-2">
-                        {{#pages}}
+                        <p>Total de processos registrados: {{totalDocuments}}</p>
+                        {{#totalPages}}
                             {{{element}}}
-                        {{/pages}}
+                        {{/totalPages}}
                     </div>
                     
                 </div>

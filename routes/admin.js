@@ -13,6 +13,7 @@ const bcrypt = require('bcryptjs')
 const multer = require('multer')
 const path = require("path")
 const uploadAttach = require('../helpers/uploadAttachments')
+const { connect } = require('http2')
 
 router.get('/', (req, res) => {
     //User.findOne().then((user) => {
@@ -413,8 +414,24 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
     }) 
 })
 
+router.get('/consult-processes', (req, res) => {
+    const page = req.query.page
+    const limit = req.query.limit
+
+    const startIndex = (page - 1) * limit 
+    const endIndex = page * limit
+
+    Process.find().populate('relatedClient').sort().skip().limit(limit).then((processes) => {
+        Process.find().countDocuments().then((totalDocuments) => {
+            res.render('admin/consult-process', {processes, totalDocuments})
+        })
+    })
+})
+
+/*
 router.get('/consult-processes', async (req, res) => {
     try {
+        const url = req.url
         const page = parseInt(req.query.page) -1 || 0
         const limit = parseInt(req.query.limit) || 10
         let sort = req.query.sort || 'createdAt'
@@ -426,8 +443,7 @@ router.get('/consult-processes', async (req, res) => {
             sortBy[sort[0]] = sort[1]
         } else {
             sortBy[sort[0]] = 'ASC'
-        }
-
+        } 
         const processes = await Process.find().populate('relatedClient').sort(sortBy).skip(page * limit).limit(limit)
         const total = await Process.countDocuments()
 
@@ -442,6 +458,7 @@ router.get('/consult-processes', async (req, res) => {
 
         const response = {
             error: false,
+            url,
             page: page + 1,
             limit,
             totalPages,
@@ -460,7 +477,7 @@ router.get('/consult-processes', async (req, res) => {
         })
     }
 })
-
+*/
 router.get('/edit-process/:id', (req, res) => {
     Process.findOne({_id: req.params.id}).populate("relatedClient").then((process) => {
         res.render('admin/edit-process', { process: process })
