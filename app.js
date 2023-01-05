@@ -19,9 +19,26 @@ const handle = handlebars.create({
     helpers: {
         formatDate: (date) => {
             return moment(date).format('DD/MM/YYYY hh:mm')
+        },
+        pagination: (page, totalPages, limit, sort) => {
+            let output = '';
+  
+            for (let i = 1; i <= totalPages; i++) {
+                // Marca a página atual como "ativa"
+                const pageNUM = parseInt(page)
+                const activeClass = i === pageNUM ? 'btn-success' : 'btn-secondary ';
+
+                // Gera o HTML para o link da página
+                output += `
+                    <a class="btn ${activeClass}" href="/admin/consult-processes?sort=${sort}&limit=${limit}&page=${i}">${i}</a>
+                `;
+            }
+
+            return output;
         }
     }
 })
+
 const nodemailer = require('nodemailer')
 const bodyParser = require('body-parser')
 const session = require("express-session")

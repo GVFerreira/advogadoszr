@@ -9,57 +9,40 @@
                 
                 <div class="card-header d-flex justify-content-between">
                     <form method="GET" class=" mb-2">
-                        <div class="d-flex align-items-end gap-2">
+                        <div class="d-flex align-items-end gap-5">
                             <div>
-                                <label for="">Data de criação:</label>
-                                <select name="createdAt" id="createdAt" class="form-select">
-                                    <option value="0">- Selecione -</option>
-                                    <option value="-1">Decrescente</option>
-                                    <option value="1">Crescente</option>
-                                </select>
-                            </div>
-                            <input type="submit" value="Filtar" class="btn btn-primary">
-                        </div>
-                    </form>
-                    <form method="GET" class="mb-2">
-                        <div class="d-flex align-items-end gap-2">
-                            <div>
-                                <label for="">Ordem alfabética:</label>
+                                <label for="sort">Ordem:</label>
                                 <select name="sort" id="sort" class="form-select">
-                                    <option value="0">- Selecione -</option>
-                                    <option value="-1">A -  Z</option>
-                                    <option value="1">Z - A</option>
+                                    <option value="ASC">De A -> Z</option>
+                                    <option value="DESC">De Z -> A</option>
                                 </select>
                             </div>
-                            <input type="submit" value="Filtar" class="btn btn-primary">
-                        </div>
-                    </form>
-                    <form method="GET">
-                        <div class="d-flex align-items-end gap-2">
                             <div>
-                                <label>Limite por página:</label>
+                                <label for="limit">Limite por página:</label>
                                 <select name="limit" id="limit" class="form-select">
-                                    <option value="0">- Selecione -</option>
                                     <option value="5">5</option>
                                     <option value="10">10</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
                                 </select>
                             </div>
+                            <div class="d-none">
+                                <input type="text" name="page" id="page" value="1">
+                            </div>
                             <input type="submit" value="Filtar" class="btn btn-primary">
                         </div>
-                    </form>                    
+                    </form>                  
                 </div>
                 <div class="card-body d-flex justify-content-center flex-row flex-wrap">
                     {{#each processes}}
                         <div class="my-2 px-2 py-4 border border-secondary rounded w-100">
                             <div class="w-100">
                                 <p>{{#formatDate createdAt}}{{/formatDate}}</p>
+                                <p class="p-0 m-0">Nome do cliente:</p>
+                                <p>{{clientName}}</p>
+                                <hr>
                                 <p class="p-0 m-0">Número do processo:</p>
                                 <p>{{numberProcess}}</p>
-                                <hr>
-                                <p class="p-0 m-0">Nome do cliente:</p>
-                                <p>{{relatedClient.name}}</p>
                                 <hr>
                                 <p class="p-0 m-0">Código:</p>
                                 <p>{{code}}</p>
@@ -74,15 +57,17 @@
                             </div>
                         </div>
                     {{else}}
-                        <h3> Não há registro de processos</h3>
+                        <div>
+                            <h3> Não há registro de processos</h3>
+                        </div>
                     {{/each}}
-                    <div class="d-flex flex-row my-2">
+                
+                    <div class="d-flex flex-column justify-content-center my-2">
                         <p>Total de processos registrados: {{totalDocuments}}</p>
-                        {{#totalPages}}
-                            {{{element}}}
-                        {{/totalPages}}
+                        <div class="d-flex flex-row justify-content-center gap-3">
+                            {{#pagination page totalPages limit sort}}{{/pagination}}
+                        </div>
                     </div>
-                    
                 </div>
             </div>
         </div>

@@ -383,101 +383,59 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                 
             }
 
-            const newProcess = new Process({
-                relatedClient: req.body.relatedClient,
-                numberProcess: req.body.numberProcess,
-                process: req.body.process,
-                received: req.body.received,
-                registered: req.body.registered,
-                waitingQueries: req.body.waitingQueries,
-                checkingDocs: req.body.checkingDocs,
-                orderAnalysis: req.body.orderAnalysis,
-                dispatch: req.body.dispatch,
-                finished: req.body.finished,
-                comments: req.body.comments,
-                monetaryPendency: req.body.monetaryPendency,
-                attachments: req.files,
-                code: codeProcess
+            Client.findOne({_id: req.body.relatedClient}).then((client) => {
+                const clientName = client.name
+                const newProcess = new Process({
+                    relatedClient: req.body.relatedClient,
+                    clientName,
+                    numberProcess: req.body.numberProcess,
+                    process: req.body.process,
+                    received: req.body.received,
+                    registered: req.body.registered,
+                    waitingQueries: req.body.waitingQueries,
+                    checkingDocs: req.body.checkingDocs,
+                    orderAnalysis: req.body.orderAnalysis,
+                    dispatch: req.body.dispatch,
+                    finished: req.body.finished,
+                    comments: req.body.comments,
+                    monetaryPendency: req.body.monetaryPendency,
+                    attachments: req.files,
+                    code: codeProcess
+                })
+    
+                
+                //salvar dados do formulário
+                newProcess.save().then(() => {
+                    req.flash("success_msg", `O processo foi cadastrado com sucesso. Esse é o código de acompanhamento: ${codeProcess}`)
+                    res.redirect('/admin/consult-processes')
+                }).catch((err) => {
+                    req.flash("error_msg", `Deu um erro aqui: ${err}`)
+                    res.redirect('/admin')
+                })
             })
 
             
-            //salvar dados do formulário
-            newProcess.save().then(() => {
-                req.flash("success_msg", `O processo foi cadastrado com sucesso. Esse é o código de acompanhamento: ${codeProcess}`)
-                res.redirect('/admin/consult-processes')
-            }).catch((err) => {
-                req.flash("error_msg", `Deu um erro aqui: ${err}`)
-                console.log(req.body.relatedClient.name)
-                res.redirect('/admin')
-            })
         })
     }) 
 })
 
-router.get('/consult-processes', (req, res) => {
-    const page = req.query.page
-    const limit = req.query.limit
-
-    const startIndex = (page - 1) * limit 
-    const endIndex = page * limit
-
-    Process.find().populate('relatedClient').sort().skip().limit(limit).then((processes) => {
-        Process.find().countDocuments().then((totalDocuments) => {
-            res.render('admin/consult-process', {processes, totalDocuments})
-        })
-    })
-})
-
-/*
 router.get('/consult-processes', async (req, res) => {
-    try {
-        const url = req.url
-        const page = parseInt(req.query.page) -1 || 0
-        const limit = parseInt(req.query.limit) || 10
-        let sort = req.query.sort || 'createdAt'
-        
-        req.query.sort ? (sort = req.query.sort.split(',')) : (sort = [sort])
+    const page = req.query.page || 1
+    const sort = req.query.sort || "ASC"
+    const limit = req.query.limit || 10
+    const processesPerPage = limit
+    const skip = (page - 1) * processesPerPage
 
-        let sortBy = {}
-        if (sort[1]) {
-            sortBy[sort[0]] = sort[1]
-        } else {
-            sortBy[sort[0]] = 'ASC'
-        } 
-        const processes = await Process.find().populate('relatedClient').sort(sortBy).skip(page * limit).limit(limit)
-        const total = await Process.countDocuments()
+    const totalProcesses = await Process.countDocuments()
 
-        const totalPages = Math.ceil(total / limit)
-
-        const btnPages = totalPages > 0 && [...Array(totalPages)].map((val, i) =>{
-            i++
-            return {
-                element: `<a href="?page=${i}" class="btn btn-outline-secondary mx-1">${i}</a>`
-            }
+    Process.find().populate('relatedClient').sort({clientName: sort}).skip(skip).limit(limit).then((processes) => {
+        Process.find().countDocuments().then((totalDocuments) => {
+            const totalPages = Math.ceil(totalProcesses / processesPerPage)
+            res.render('admin/consult-processes', {processes, limit, sort, page, totalPages, totalDocuments})
         })
-
-        const response = {
-            error: false,
-            url,
-            page: page + 1,
-            limit,
-            totalPages,
-            btnPages,
-            processes
-        }
-        
-        res.status(200).json(response)
-        //res.status(200).render('admin/consult-process', {processes: processes, pages: btnPages})
-    }
-    catch(err){
-        console.log(err)
-        res.status(500).json({
-            error: true,
-            message: "Erro interno no servidor"
-        })
-    }
+    })   
 })
-*/
+
 router.get('/edit-process/:id', (req, res) => {
     Process.findOne({_id: req.params.id}).populate("relatedClient").then((process) => {
         res.render('admin/edit-process', { process: process })
