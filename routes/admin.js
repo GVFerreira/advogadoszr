@@ -83,6 +83,13 @@ router.post('/sending-mail', uploadAttach.array('attachments'), (req, res) => {
     })
 })
 
+router.get('/send-mass-mail', (req, res) => {
+    Process.find().sort({clientName: "ASC"}).then((processes) => {
+        res.render('admin/send-mass-mail', {processes})
+    })
+})
+
+
 router.get('/sending-mass-mail', (req, res) => {
     Client.find().then((clients) => {
         const user = 'contato@gvfwebdesign.com.br'
