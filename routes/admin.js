@@ -89,6 +89,71 @@ router.get('/send-mass-mail', (req, res) => {
     })
 })
 
+router.post('/sending-mass-mail-by-group', (req, res) => {
+    Process.find({process: req.body.process}).then((processes) => {
+        const user = 'contato@gvfwebdesign.com.br'
+        const pass = 'Contato*8351*'
+
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.umbler.com',
+            port: 587,
+            auth: {
+                user,
+                pass
+            },
+        })
+
+        const receiver = processes.clientEmail
+        const subject = req.body.subject
+        const message = req.body.message
+
+        transporter.sendMail(
+            {
+                from: `Agência GVF <${user}>`,
+                to: receiver,
+                subject,
+                text: message,
+            }
+        )
+
+        req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
+        res.redirect('/admin')
+    })
+})
+
+router.post('/sending-mass-mail-by-selection', (req, res) => {
+    const selectedEmails = req.body.selected
+    const emailsArray = [].concat(selectedEmails)
+    const user = 'contato@gvfwebdesign.com.br'
+    const pass = 'Contato*8351*'
+
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.umbler.com',
+        port: 587,
+        auth: {
+            user,
+            pass
+        },
+    })
+
+    emailsArray.forEach(email => {
+        const receiver = email
+        const subject = req.body.subject
+        const message = req.body.message
+
+        transporter.sendMail(
+            {
+                from: `Agência GVF <${user}>`,
+                to: receiver,
+                subject,
+                text: message,
+            }
+        )
+    })
+
+    req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
+    res.redirect('/admin')
+})
 
 router.get('/sending-mass-mail', (req, res) => {
     Client.find().then((clients) => {
@@ -392,9 +457,11 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
 
             Client.findOne({_id: req.body.relatedClient}).then((client) => {
                 const clientName = client.name
+                const clientEmail = client.email
                 const newProcess = new Process({
                     relatedClient: req.body.relatedClient,
                     clientName,
+                    clientEmail,
                     numberProcess: req.body.numberProcess,
                     process: req.body.process,
                     received: req.body.received,

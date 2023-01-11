@@ -10,6 +10,9 @@ const Process = new Schema({
     clientName: {
         type: String,
     },
+    clientEmail: {
+        type: String,
+    },
     numberProcess: {
         type: String
     },
