@@ -602,8 +602,4 @@ router.get('/delete-process/:id', (req, res) => {
     })
 })
 
-router.get('/teste', (req, res) => {
-    res.render('email/template-email')
-})
-
 module.exports = router
