@@ -102,21 +102,26 @@ router.post('/sending-mass-mail-by-group', (req, res) => {
                 pass
             },
         })
+ 
+        processes.forEach((process) => {
+            const receiver = process.clientEmail
+            const subject = req.body.subject
+            const message = req.body.message
 
-        const receiver = processes.clientEmail
-        const subject = req.body.subject
-        const message = req.body.message
-
-        transporter.sendMail(
-            {
-                from: `Agência GVF <${user}>`,
-                to: receiver,
-                subject,
-                text: message,
-            }
-        )
-
+            transporter.sendMail(
+                {
+                    from: `Agência GVF <${user}>`,
+                    to: receiver,
+                    subject,
+                    text: message,
+                }
+            )
+        })
+        
         req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
+        res.redirect('/admin')
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro: ${err}`)
         res.redirect('/admin')
     })
 })
@@ -520,7 +525,7 @@ router.get('/edit-process/:id', (req, res) => {
 })
 
 router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res) => {
-    Process.findByIdAndUpdate({_id: req.params.id}, req.body).then(() => {
+    Process.findByIdAndUpdate({_id: req.params.id}, req.body, req.files).then(() => {
         //verificar o switch e enviar o e-mail de acordo com o status
         if(req.body.sendNotification === "on") {
             Client.findOne({_id: req.body.relatedClient}).then((client) => {

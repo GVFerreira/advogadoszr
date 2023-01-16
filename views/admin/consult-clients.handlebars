@@ -23,11 +23,29 @@
                                 <hr>
                                 <p class="p-0 m-0">País:</p>
                                 <p>{{country}}</p>
-                                <div class="d-flex flex-row gap-5 w-50">
-                                    <a href="/admin/edit-client/{{_id}}" class="btn btn-warning w-25">Editar</a>
-                                    <a href="/admin/delete-client/{{_id}}" class="btn btn-danger w-25">Excluir</a>
+                                <div class="d-flex flex-row gap-3 w-50">
+                                    <a href="/admin/edit-client/{{id}}" class="btn btn-warning">Editar</a>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=".exampleModal{{id}}">Excluir</button>
                                 </div>
                             </div>
+                            <div class="modal fade exampleModal{{id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Você tem certeza?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>O cliente será excluído para sempre. Você tem certeza que deseja excluí-lo?</p>
+                                        <p>{{name}}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                                        <a href="/admin/delete-client/{{id}}" class="btn btn-danger">Excluir</a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
                     {{else}}
                         <h3> Não há registro de processos</h3>
