@@ -330,22 +330,42 @@ router.get('/register-client', (req, res) => {
 })
 
 router.post('/registering-client', (req, res) => {
-    const newClient = new Client({
-        name: req.body.name,
-        email: req.body.email,
-        tel: req.body.tel,
-        country: req.body.country,
-        observations: req.body.observations
-    })
+    let errors = []
 
-    newClient.save().then(() => {
-        req.flash('success_msg', 'Cadasrto do cliente feito com sucesso')
-        res.redirect('/admin/consult-clients')
-    }).catch((err) => {
-        req.flash('error_msg', `Ocorreu um erro ao criar: ${err}`)
-        res.redirect('/admin')
-    })
+    if(!req.body.name || typeof !req.body.name == undefined || req.body.name == null) {
+        errors.push({text: "Nome digitado de forma inválida"})
+    }
+
+    if(!req.body.email || typeof !req.body.email == undefined || req.body.email == null) {
+        errors.push({text: "E-mail digitado de forma inválida"})
+    }
+
+    if(!req.body.country || typeof !req.body.country == undefined || req.body.country == null) {
+        errors.push({text: "Pais digitado de forma inválida"})
+    }
+
+    if(errors.length > 0) {
+        res.render("admin/register-client", {errors: errors})
+    } else {
+        const newClient = new Client({
+            name: req.body.name,
+            email: req.body.email,
+            tel: req.body.tel,
+            country: req.body.country,
+            observations: req.body.observations
+        })
+
+        newClient.save().then(() => {
+            req.flash('success_msg', 'Cadasrto do cliente feito com sucesso')
+            res.redirect('/admin/consult-clients')
+        }).catch((err) => {
+            req.flash('error_msg', `Ocorreu um erro: ${err}`)
+            res.redirect('/admin/consult-clients')
+        })
+    
+    }
 })
+
 
 router.get('/consult-clients', (req, res) => {
     Client.find().sort({createdAt: "DESC"}).then((clients) => {
@@ -363,13 +383,31 @@ router.get('/edit-client/:id', (req, res) => {
 })
 
 router.post('/editing-client/:id', (req, res) => {
-    Client.findByIdAndUpdate({_id: req.params.id}, req.body).then(() => {
-        req.flash('success_msg', 'Cadastro do cliente editado com sucesso')
-        res.redirect('/admin/consult-clients')
-    }).catch((err) => {
-        req.flash('error_msg', `Ocorreu um erro: ${err}`)
-        res.render('admin/edit-client')
-    })
+    let errors = []
+
+    if(!req.body.name || typeof !req.body.name == undefined || req.body.name == null) {
+        errors.push({text: "Nome digitado de forma inválida"})
+    }
+
+    if(!req.body.email || typeof !req.body.email == undefined || req.body.email == null) {
+        errors.push({text: "E-mail digitado de forma inválida"})
+    }
+
+    if(!req.body.country || typeof !req.body.country == undefined || req.body.country == null) {
+        errors.push({text: "Pais digitado de forma inválida"})
+    }
+
+    if(errors.length > 0) {
+        res.render("admin/register-client", {errors: errors})
+    } else {
+        Client.findByIdAndUpdate({_id: req.params.id}, req.body).then(() => {
+            req.flash('success_msg', 'Cadastro do cliente editado com sucesso')
+            res.redirect('/admin/consult-clients')
+        }).catch((err) => {
+            req.flash('error_msg', `Ocorreu um erro: ${err}`)
+            res.render('admin/edit-client')
+        })
+    }  
 })
 
 router.get('/delete-client/:id', (req, res) => {
@@ -388,7 +426,7 @@ router.get('/delete-client/:id', (req, res) => {
 /* ==== PROCESS ==== */
 router.get('/register-process', (req, res) => {
     Client.find().then((clients) => {
-        res.render('admin/register-process', { clients: clients })
+        res.render('admin/register-process', { clients })
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro ao carregar o formulário. Erro: ${err}`)
         res.redirect('/admin/consult-processes')
@@ -396,106 +434,127 @@ router.get('/register-process', (req, res) => {
 })
 
 router.post('/registering-process', uploadAttach.array('attachments'), (req, res) => {
-    bcrypt.genSalt(10, (error, salt) => {
-        let code = ''
-        bcrypt.hash(code, salt, (error, hash) => {
-            let codeProcess = ''
-            code = hash
-            codeProcess = code.substring(40, 45).replace(/[^A-Z a-z 0-9]/g, "X").toUpperCase()
+    let errors = []
 
-            //verificar o switch e enviar o e-mail de acordo com o status
-            if(req.body.sendNotification === "on") {
-                Client.findOne({_id: req.body.relatedClient}).then((client) => {
-                    const user = 'contato@gvfwebdesign.com.br'
-                    const pass = 'Contato*8351*'
+    if(!req.body.relatedClient || typeof !req.body.relatedClient == undefined || req.body.relatedClient == null || req.body.relatedClient == "0") {
+        errors.push({text: "Nenhum cliente foi selecionado"})
+    }
 
-                    const receiver = client.email
-                    const clientName = client.name
-                    const subject = `O processo ${req.body.numberProcess} foi atualizado.`
-                    const comments = req.body.comments
-                    const numberProcess = req.body.numberProcess
-                    const attachments = req.files
+    if(!req.body.process || typeof !req.body.process == undefined || req.body.process == null || req.body.process == "0") {
+        errors.push({text: "Nenhum tipo de processo foi selecionado"})
+    }
 
-                    const transporter = nodemailer.createTransport({
-                        host: 'smtp.umbler.com',
-                        port: 587,
-                        auth: {
-                            user,
-                            pass
-                        },
-                    })
-
-                    const handlebarOptions = {
-                        viewEngine: {
-                          partialsDir: path.join(__dirname, '..', 'views/email'),
-                          defaultLayout: false,
-                        },
-                        viewPath: path.join(__dirname, '..', 'views/email'),
-                      };
-
-                    transporter.use('compile', hbs(handlebarOptions))
-
-                    const mailOptions = {
-                        from: `Agência GVF <${user}>`,
-                        to: receiver,
-                        subject,
-                        template: 'template-email',
-                        attachments,
-                        context: {
-                            comments,
-                            codeProcess,
-                            numberProcess,
-                            clientName
-                        }
-                    }
-
-                    transporter.sendMail(mailOptions, (err, info) => {
-                        if(err) {
-                            console.log(`Error: ${err}`)
-                        } else {
-                            console.log(`Message sent: ${info}`)
-                        }
-                    })
-                })
-                
-            }
-
-            Client.findOne({_id: req.body.relatedClient}).then((client) => {
-                const clientName = client.name
-                const clientEmail = client.email
-                const newProcess = new Process({
-                    relatedClient: req.body.relatedClient,
-                    clientName,
-                    clientEmail,
-                    numberProcess: req.body.numberProcess,
-                    process: req.body.process,
-                    received: req.body.received,
-                    registered: req.body.registered,
-                    waitingQueries: req.body.waitingQueries,
-                    checkingDocs: req.body.checkingDocs,
-                    orderAnalysis: req.body.orderAnalysis,
-                    dispatch: req.body.dispatch,
-                    finished: req.body.finished,
-                    comments: req.body.comments,
-                    monetaryPendency: req.body.monetaryPendency,
-                    attachments: req.files,
-                    code: codeProcess
-                })
-    
-                
-                //salvar dados do formulário
-                newProcess.save().then(() => {
-                    req.flash("success_msg", `O processo foi cadastrado com sucesso. Esse é o código de acompanhamento: ${codeProcess}`)
-                    res.redirect('/admin/consult-processes')
-                }).catch((err) => {
-                    req.flash("error_msg", `Deu um erro aqui: ${err}`)
-                    res.redirect('/admin')
-                })
-            })
-
-            
+    if(errors.length > 0) {
+        Client.find().then((clients) => {
+            const comments = req.body.comments
+            const numberProcess = req.body.numberProcess
+            res.render('admin/register-process', { clients, errors, comments, numberProcess })
+        }).catch((err) => {
+            req.flash('error_msg', `Ocorreu um erro ao carregar o formulário. Erro: ${err}`)
+            res.redirect('/admin/consult-processes')
         })
-    }) 
+    } else {
+        bcrypt.genSalt(10, (error, salt) => {
+            let code = ''
+            bcrypt.hash(code, salt, (error, hash) => {
+                let codeProcess = ''
+                code = hash
+                codeProcess = code.substring(40, 45).replace(/[^A-Z a-z 0-9]/g, "X").toUpperCase()
+
+                //verificar o switch e enviar o e-mail de acordo com o status
+                if(req.body.sendNotification === "on") {
+                    Client.findOne({_id: req.body.relatedClient}).then((client) => {
+                        const user = 'contato@gvfwebdesign.com.br'
+                        const pass = 'Contato*8351*'
+
+                        const receiver = client.email
+                        const clientName = client.name
+                        const subject = `O processo ${req.body.numberProcess} foi atualizado.`
+                        const comments = req.body.comments
+                        const numberProcess = req.body.numberProcess
+                        const attachments = req.files
+
+                        const transporter = nodemailer.createTransport({
+                            host: 'smtp.umbler.com',
+                            port: 587,
+                            auth: {
+                                user,
+                                pass
+                            },
+                        })
+
+                        const handlebarOptions = {
+                            viewEngine: {
+                            partialsDir: path.join(__dirname, '..', 'views/email'),
+                            defaultLayout: false,
+                            },
+                            viewPath: path.join(__dirname, '..', 'views/email'),
+                        };
+
+                        transporter.use('compile', hbs(handlebarOptions))
+
+                        const mailOptions = {
+                            from: `Agência GVF <${user}>`,
+                            to: receiver,
+                            subject,
+                            template: 'template-email',
+                            attachments,
+                            context: {
+                                comments,
+                                codeProcess,
+                                numberProcess,
+                                clientName
+                            }
+                        }
+
+                        transporter.sendMail(mailOptions, (err, info) => {
+                            if(err) {
+                                console.log(`Error: ${err}`)
+                            } else {
+                                console.log(`Message sent: ${info}`)
+                            }
+                        })
+                    })
+                    
+                }
+
+                Client.findOne({_id: req.body.relatedClient}).then((client) => {
+                    const clientName = client.name
+                    const clientEmail = client.email
+                    const newProcess = new Process({
+                        relatedClient: req.body.relatedClient,
+                        clientName,
+                        clientEmail,
+                        numberProcess: req.body.numberProcess,
+                        process: req.body.process,
+                        received: req.body.received,
+                        registered: req.body.registered,
+                        waitingQueries: req.body.waitingQueries,
+                        checkingDocs: req.body.checkingDocs,
+                        orderAnalysis: req.body.orderAnalysis,
+                        dispatch: req.body.dispatch,
+                        finished: req.body.finished,
+                        comments: req.body.comments,
+                        monetaryPendency: req.body.monetaryPendency,
+                        attachments: req.files,
+                        code: codeProcess
+                    })
+        
+                    
+                    //salvar dados do formulário
+                    newProcess.save().then(() => {
+                        req.flash("success_msg", `O processo foi cadastrado com sucesso. Esse é o código de acompanhamento: ${codeProcess}`)
+                        res.redirect('/admin/consult-processes')
+                    }).catch((err) => {
+                        req.flash("error_msg", `Deu um erro aqui: ${err}`)
+                        res.redirect('/admin')
+                    })
+                })
+
+                
+            })
+        })
+    }
 })
 
 router.get('/consult-processes', async (req, res) => {
