@@ -48,6 +48,7 @@ const multer  = require('multer')
 const admin = require('./routes/admin')
 const users = require('./routes/users')
 const db = require("./config/db")
+require('dotenv').config()
 const { isAdmin } = require('./helpers/isAdmin')
 
 /*AUTHENTICATION*/
@@ -59,7 +60,7 @@ const router = require('./routes/users')
     app.use(express.static(path.join(__dirname, "public")))
 
     app.use(session({
-        secret: "123456",
+        secret: process.env.SESSION_SECRET,
         resave: true,
         saveUninitialized: true
     }))
@@ -87,7 +88,7 @@ const router = require('./routes/users')
     })
 
 //Mongoose
-    mongoose.connect("mongodb+srv://gustavo_admin:UPsqha23mljKbA4T@cluster0.bbkeaad.mongodb.net/rzadvogados?retryWrites=true&w=majority").then(() => {
+    mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bbkeaad.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`).then(() => {
         console.log("MongoDB connected...")
     }).catch((err) => {
         console.log(`Erro: ${err}`)
@@ -98,33 +99,38 @@ const router = require('./routes/users')
         res.render('index')
     })
 
-    app.post('/consulting-process', (req, res) => {
-        Process.findOne({code: req.body.codeInsert}).populate('relatedClient').then((search_result) => {
-            Client.find({id: req.body.relatedClient}).then((client) => {
-                res.render('view-process', {search_result: search_result, client: client})
-            })
-        }).catch((err) => {
-            req.flash('error_msg', `Ocorreu um erro: ${err}`)
-            res.redirect('/')
-        })
+    app.get('/ts1', (req, res) => {
+        res.render('email/email-individual')
     })
 
-    app.get('/downlaod', (req, res) => {
-        res.download(path.join(__dirname, `/img/facebook.png`))
+    app.get('/ts2', (req, res) => {
+        res.render('email/template-email')
+    })
+
+    app.post('/consulting-process', (req, res) => {
+        if(req.body.codeInsert === undefined || req.body.codeInsert === null || req.body.codeInsert === '') {
+            req.flash('error_msg', `Digite um código`)
+            res.redirect('/')
+        } else {
+            Process.findOne({code: req.body.codeInsert}).populate('relatedClient').then((search_result) => {
+                Client.find({id: req.body.relatedClient}).then((client) => {
+                    res.render('view-process', {search_result: search_result, client: client})
+                })
+            }).catch((err) => {
+                req.flash('error_msg', `Ocorreu um erro: ${err}`)
+                res.redirect('/')
+            })
+        }
     })
 
     app.get('/download/:filename', (req, res) => {
         res.download(`public/uploads/attachments/${req.params.filename}`)
     })
 
-    app.get('/teste', (req, res) => {
-        res.render('view-process')
-    })
-
-    app.use('/admin', /*isAdmin,*/ admin)
+    app.use('/admin', isAdmin, admin)
     app.use('/users', users)
 
 /*SERVER*/
-    app.listen(process.env.PORT || 8000, () => {
+    app.listen(process.env.PORT || 3000, () => {
         console.log('Server ON')
     })

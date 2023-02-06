@@ -1,3 +1,8 @@
+<style>
+    .red {
+        color: #F00;
+    }
+</style>
 <main class="my-5">
     <section>
         <div class="container">
@@ -7,21 +12,21 @@
                 </div>
                 <div class="card-body">
                     <form action="/admin/sending-mail" method="post" enctype="multipart/form-data">
-                        <label for="receiver">Destinatário:</label>
+                        <label for="receiver">Destinatário: <span class="red">*</span></label>
                         <input type="email" placeholder="email@example.com" name="receiver" id="receiver" class="form-control mb-4" required>
                         
-                        <label for="subject">Assunto:</label>
+                        <label for="subject">Assunto: <span class="red">*</span></label>
                         <input type="text" name="subject" id="subject" class="form-control mb-4" required>
                         
-                        <label for="message">Mensagem:</label> 
-                        <textarea name="message" id="message" rows="10" cols="25" class="form-control mb-4"></textarea>
+                        <label for="message">Mensagem:  <span class="red">*</span></label> 
+                        <textarea name="message" id="message" rows="10" cols="25" class="form-control mb-4" required></textarea>
 
                         <div class="mb-4">
                             <label for="formFileMultiple" class="form-label">Anexos do processo</label>
                             <input type="file" class="form-control" id="formFileMultiple" name="attachments" multiple>
                         </div>
                         
-                        <input type="submit" value="Enviar" class="btn btn-primary">
+                        <input type="submit" value="Enviar" class="btn btn-primary mt-3">
                     </form>
                 </div>
             </div>

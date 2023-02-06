@@ -3,22 +3,28 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body style="background-color: #e3e3e3;">
-        <header style="width: 100%; padding: 2rem 0 6rem 0; display: flex; justify-content: center; background-color: #333;">
-            <section style="width: 100%; display: flex; justify-content: center;">
-                <img src="https://raw.githubusercontent.com/GVFerreira/rzadvogados/8d339e47d8287f8dc92253e3cbbd5224f05951ad/public/img/logo_name-white.svg?token=GHSAT0AAAAAAB3H2VMNJ4L2FFTY7N3AOCMMY36XKHA" width="15%" alt="">
-            </section>
+    <body style="width: 100%; background-color: #e3e3e3;">
+        <header style="width: 100%; padding: 2rem 0; background-color: #333;">
+            <table style="width: 100%;">
+                <tbody>
+                    <td style="width: 100%;" align="center">
+                        <a href="https://advogadoszr.com">
+                            <img src="https://advogadoszr.com/wp-content/uploads/2023/01/logo_name-white.png" style="width: 15rem;" alt="Advogados ZR">
+                        </a>
+                    </td>
+                </tbody>
+            </table>
         </header>
 
-        <main style="width: 100%; margin: -4rem 0 0 0;">
-            <section style=" width: 85%; margin: 0 auto; padding: 1rem .5rem 5rem; background-color: #FFF; border-radius: .2rem .2rem 0 0; z-index: 100;">
+        <main style="width: 100%;">
+            <section style=" width: 85%; margin: 0 auto; padding: 2rem .5rem; background-color: #FFF; border-radius: .2rem .2rem 0 0; z-index: 100;">
                 <h1 style="margin: 2rem 0; text-align: center;">Olá, {{clientName}}</h1>
                 <article style="padding: 1rem 2rem;">
                     <p style="margin: 0;">Houve uma atualização no processo {{numberProcess}}</p>
                     <p>Acompanhe no portal com este código:</p>
-                    <h2 style="text-align: center;">{{codeProcess}}</h2>
+                    <h3 style="margin-bottom: 1rem">{{codeProcess}}</h3>
+                    <p><a href="https://portal.advogadoszr.com" style="color: #e42828;">Portal de acompanhamento</a></p>
                 </article>
                 <article style="padding: 1rem 2rem;">
                     <p>Comentário do advogado:</p>
@@ -26,49 +32,73 @@
                 </article>
             </section>
 
-            <section style="width: 85%; margin: 0 auto; padding: 1rem .5rem; background-color: #333; border-radius: 0 0 .2rem .2rem;">
-                <article style="padding: 1rem 2rem;">
-                    <h2 style="margin: 0 0 2rem 0; color: #FFF">Nos acompanhe nas redes sociais</h2>
-                    <ul style="list-style: none; padding: 0; display: flex; justify-content: space-evenly; align-items: center;">
-                        <li>
-                            <a href="" style="text-decoration: none; color: #FFF; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                                <img src="https://raw.githubusercontent.com/GVFerreira/rzadvogados/8d339e47d8287f8dc92253e3cbbd5224f05951ad/public/img/facebook.png?token=GHSAT0AAAAAAB3H2VMMBMVUXVNYVFY4MBHIY36XHAA" style="width: 3rem;" alt="">
-                                <p>Facebook</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" style="text-decoration: none; color: #FFF; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                                <img src="https://raw.githubusercontent.com/GVFerreira/rzadvogados/8d339e47d8287f8dc92253e3cbbd5224f05951ad/public/img/instagram.png?token=GHSAT0AAAAAAB3H2VMNW2D7VRI66Q62GQSKY36XIXA" style="width: 3rem;" alt="">
+            <section style="width: 85%; margin: 0 auto; padding: 2rem .5rem; background-color: #333; border-radius: 0 0 .2rem .2rem;">
+                <article style="width: 100%; padding: 1rem 2rem;">
+                    <h3 style="margin: 0 0 2rem 0; color: #FFF">Nos acompanhe nas redes sociais</h3>
+                    <table style="width: 100%;">
+                        <thead align="center">
+                            <th style="width: 33.33%;" align="center">
+                                <a href="https://api.whatsapp.com/send?phone=351915663246">
+                                    <img src="https://advogadoszr.com/wp-content/uploads/2023/01/whatsapp.png" style="width: 3rem;" alt="WhatsApp logo">
+                                </a>
+                            </th>
+                            <th style="width: 33.33%;" align="center">
+                                <a href="https://instagram.com/advogadoszr">
+                                    <img src="https://advogadoszr.com/wp-content/uploads/2023/01/instagram.png" style="width: 3rem;" alt="Instagram logo">
+                                </a>
+                            </th>
+                            <th style="width: 33.33%;" align="center">
+                                <a href="https://www.linkedin.com/company/advogadoszr/">
+                                    <img src="https://advogadoszr.com/wp-content/uploads/2023/01/linkedin.png" style="width: 3rem;" alt="LinkedIn logo">
+                                </a>
+                            </th>
+                        </thead>
+                        <tbody align="center">
+                            <td style="width: 33.33%; text-decoration: none; color: #FFF;" align="center">
+                                <p>WhatsApp</p>
+                            </td>
+                            <td style="width: 33.33%; text-decoration: none; color: #FFF;" align="center">
                                 <p>Instagram</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" style="text-decoration: none; color: #FFF; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                                <img src="https://raw.githubusercontent.com/GVFerreira/rzadvogados/8d339e47d8287f8dc92253e3cbbd5224f05951ad/public/img/twitter.png?token=GHSAT0AAAAAAB3H2VMMZKW3PIEIS7PNRMUQY36XJCQ" style="width: 3rem;" alt="">
-                                <p>Twitter</p>
-                            </a>
-                        </li>
-                    </ul>
+                            </td>
+                            <td style="width: 33.33%; text-decoration: none; color: #FFF;" align="center">
+                                <p>LinkedIn</p>
+                            </td>
+                        </tbody>
+                    </table>
+                   
                 </article>
             </section>
 
-            <section style="width: 85%; margin: 2rem auto 0; padding: 1rem .5rem; background-color: #FFF; border-radius: .2rem;">
+            <section style="width: 85%; margin: 2rem auto 0; padding: 2rem .5rem; background-color: #FFF; border-radius: .2rem;">
                 <div>
                     <p style=" margin: 0; text-align: center;">Precisa de ajuda?</p>
-                    <p style="text-align: center;"><a href="" style="color: #ff7272;">Fale conosco</a></p>
+                    <p style="text-align: center;"><a href="mailto:info@advogadoszr.com" style="color: #e42828;">Fale conosco</a></p>
                 </div>
             </section>
         </main>
         
-        <footer style="width: 100%; margin: 2rem 0;">
+        <footer style="width: 100%; margin: 2rem 0; padding: 1.5rem 0;">
             <section style="width: 85%; margin: 0 auto; padding: 1rem .5rem;">
-                <p>Endereço - Cidade - UF - CEP</p>
-                <div style="display: flex; justify-content: center; margin-bottom: .75rem">
-                    <img src="https://raw.githubusercontent.com/GVFerreira/rzadvogados/8d339e47d8287f8dc92253e3cbbd5224f05951ad/public/img/logo_name-white.svg?token=GHSAT0AAAAAAB3H2VMNJ4L2FFTY7N3AOCMMY36XKHA" width="15%" alt="">
-                </div>
+                <p>Rua Fialho de Almeida, 14 - Floor 2°</p>
+                <p>1070-129 | Lisboa, Portugal</p>
+                <table style="width: 100%;">
+                    <tbody>
+                        <td style="width: 100%;" align="center">
+                            <a href="https://advogadoszr.com">
+                                <img src="https://advogadoszr.com/wp-content/uploads/2023/01/logo_name-black.png" style="width: 15rem;" alt="Advogados ZR">
+                            </a>
+                        </td>
+                    </tbody>
+                </table>
             </section>
         </footer>
     </body>
 </html>
+
+
+
+
+
+
 
 

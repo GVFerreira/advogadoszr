@@ -1,3 +1,8 @@
+<style>
+    .red {
+        color: #F00
+    }
+</style>
 <main class="my-5">
     <section>
         <div class="container">
@@ -8,8 +13,8 @@
                 <div class="card-body">
                     <h4>Selecione os processos que deverão ser alertados</h4>
                     <form action="/admin/sending-mass-mail-by-group" method="post">
-                        <label for="process">Tipo de processo</label>
-                        <select name="process" id="process" class="form-select mb-3">
+                        <label for="process">Tipo de processo: <span class="red">*</span></label>
+                        <select name="process" id="process" class="form-select mb-3" required>
                             <option value="0">Escolha um tipo de processo</option>
                             <option value="001 - PEDIDO DE NACIONALIDADE 1">001 - PEDIDO DE NACIONALIDADE 1</option>
                             <option value="002 - PEDIDO DE NACIONALIDADE 2">002 - PEDIDO DE NACIONALIDADE 2</option>
@@ -24,19 +29,21 @@
                             <option value="011 - OUTROS">011 - OUTROS</option>
                         </select>
 
-                        <label for="subject">Assunto do e-mail</label>
-                        <input type="text" name="subject" id="subject" class="form-control mb-3">
+                        <label for="subject">Assunto do e-mail: <span class="red">*</span></label>
+                        <input type="text" name="subject" id="subject" class="form-control mb-3" required>
 
-                        <label for="message">Mensagem para o corpo do e-mail</label>
-                        <textarea name="message" id="message" cols="30" rows="10" class="form-control mb-4"></textarea>
+                        <label for="message">Mensagem para o corpo do e-mail: <span class="red">*</span></label>
+                        <textarea name="message" id="message" cols="30" rows="10" class="form-control mb-4" required></textarea>
 
                         <input type="submit" value="Enviar para grupos" class="btn btn-success">
                     </form>
+                    <hr class="mt-5">
                     <div class="d-flex flex-row justiy-content-center align-items-center gap-3">
-                        <hr class="my-5 w-25">
+                        <hr class="w-50">
                         <p>OU</p>
-                        <hr class="my-5 w-25">
+                        <hr class="w-50">
                     </div>
+                    <hr class="mb-5">
                     <h4>Selecione o processo</h4>
                     <form action="/admin/sending-mass-mail-by-selection" method="post">
                         <table class="table table-hover border border-rounded mb-3">
@@ -46,7 +53,7 @@
                                     <th class="text-center">N° Processo</th>
                                     <th class="text-center">Processo</th>
                                     <th class="text-center">E-mail</th>
-                                    <th class="text-center">Pendência monetária</th>
+                                    <th class="text-center">Pendência financeira</th>
                                     <th class="text-center">Selecionar</th>
                                 </tr>
                             </thead>
@@ -69,10 +76,10 @@
                                 {{/each}}
                             </tbody>
                         </table>
-                        <label for="subject">Assunto do e-mail</label>
-                        <input type="text" name="subject" id="subject" class="form-control mb-3">
-                        <label for="message">Mensagem para o corpo do e-mail</label>
-                        <textarea name="message" id="message" cols="30" rows="10" class="form-control mb-4"></textarea>
+                        <label for="subject">Assunto do e-mail: <span class="red">*</span></label>
+                        <input type="text" name="subject" id="subject" class="form-control mb-3" required>
+                        <label for="message">Mensagem para o corpo do e-mail: <span class="red">*</span></label>
+                        <textarea name="message" id="message" cols="30" rows="10" class="form-control mb-4" required></textarea>
                         <input type="submit" value="Enviar para selecionados" class="btn btn-success">
                     </form>
                 </div>

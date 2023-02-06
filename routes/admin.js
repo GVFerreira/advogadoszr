@@ -8,12 +8,14 @@ const Process = mongoose.model("processes")
     require('../models/User')
 const User = mongoose.model("users")
 const nodemailer = require('nodemailer')
+const {transporter, handlebarOptions} = require('../helpers/senderMail')
 const hbs = require('nodemailer-express-handlebars')
 const bcrypt = require('bcryptjs')
 const multer = require('multer')
 const path = require("path")
 const uploadAttach = require('../helpers/uploadAttachments')
 const { connect } = require('http2')
+require('dotenv').config()
 
 router.get('/', (req, res) => {
     //User.findOne().then((user) => {
@@ -31,37 +33,18 @@ router.get('/send-mail', (req, res) => {
     res.render('admin/send-mail')
 })
 
-router.post('/sending-mail', uploadAttach.array('attachments'), (req, res) => {
-    const user = 'contato@gvfwebdesign.com.br'
-    const pass = 'Contato*8351*'
-    
+router.post('/sending-mail', uploadAttach.array('attachments'), (req, res) => { 
     const receiver = req.body.receiver
     const subject = req.body.subject
     const message = req.body.message
     const attachments = req.files
 
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.umbler.com',
-        port: 587,
-        auth: {
-            user,
-            pass
-        },
-    })
-
-    const handlebarOptions = {
-        viewEngine: {
-          partialsDir: path.join(__dirname, '..', 'views/email'),
-          defaultLayout: false,
-        },
-        viewPath: path.join(__dirname, '..', 'views/email'),
-    }
-
     transporter.use('compile', hbs(handlebarOptions))
 
     const mailOptions = {
-        from: `Agência GVF <${user}>`,
+        from: `Zottis Rezende Advogados <${process.env.USER_MAIL}>`,
         to: receiver,
+        replyTo: process.env.MAIL_REPLY,
         subject,
         template: 'email-individual',
         attachments,
@@ -72,12 +55,10 @@ router.post('/sending-mail', uploadAttach.array('attachments'), (req, res) => {
 
     transporter.sendMail(mailOptions, (err, info) => {
         if(err) {
-            console.log(err)
-            req.flash('error_msg', `Houve um erro ao enviar este e-mail`)
+            req.flash('error_msg', `Houve um erro ao enviar este e-mail: ${err}`)
             res.redirect('/admin')
         } else {
-            console.log(info)
-            req.flash('success_msg', `Envio feito com sucesso`)
+            req.flash('success_msg', `Envio feito com sucesso para ${receiver}`)
             res.redirect('/admin')
         }
     })
@@ -90,108 +71,82 @@ router.get('/send-mass-mail', (req, res) => {
 })
 
 router.post('/sending-mass-mail-by-group', (req, res) => {
+
     Process.find({process: req.body.process}).then((processes) => {
-        const user = 'contato@gvfwebdesign.com.br'
-        const pass = 'Contato*8351*'
-
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.umbler.com',
-            port: 587,
-            auth: {
-                user,
-                pass
-            },
-        })
- 
-        processes.forEach((process) => {
-            const receiver = process.clientEmail
-            const subject = req.body.subject
-            const message = req.body.message
-
-            transporter.sendMail(
-                {
-                    from: `Agência GVF <${user}>`,
-                    to: receiver,
-                    subject,
-                    text: message,
-                }
-            )
-        })
-        
-        req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
-        res.redirect('/admin')
+        if(req.body.process === "0") {
+            req.flash('error_msg', `Nenhum tipo de processo foi selecionado`)
+            res.redirect('/admin/send-mass-mail')
+        } else {
+            processes.forEach((processI) => {
+                const receiver = processI.clientEmail
+                const subject = req.body.subject
+                const message = req.body.message
+    
+                transporter.use('compile', hbs(handlebarOptions))
+    
+                transporter.sendMail(
+                    {
+                        from: `Zottis Rezende Advogados <${process.env.USER_MAIL}>`,
+                        to: receiver,
+                        replyTo: process.env.MAIL_REPLY,
+                        subject,
+                        template: 'email-individual',
+                        text: message,
+                        context: {
+                            message
+                        }
+                    }
+                )
+            })
+            
+            req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
+            res.redirect('/admin')
+        }
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro: ${err}`)
         res.redirect('/admin')
     })
 })
 
-router.post('/sending-mass-mail-by-selection', (req, res) => {
-    const selectedEmails = req.body.selected
-    const emailsArray = [].concat(selectedEmails)
-    const user = 'contato@gvfwebdesign.com.br'
-    const pass = 'Contato*8351*'
-
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.umbler.com',
-        port: 587,
-        auth: {
-            user,
-            pass
-        },
-    })
-
-    emailsArray.forEach(email => {
-        const receiver = email
-        const subject = req.body.subject
-        const message = req.body.message
-
-        transporter.sendMail(
-            {
-                from: `Agência GVF <${user}>`,
-                to: receiver,
-                subject,
-                text: message,
-            }
-        )
-    })
-
-    req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
-    res.redirect('/admin')
-})
-
-router.get('/sending-mass-mail', (req, res) => {
-    Client.find().then((clients) => {
-        const user = 'contato@gvfwebdesign.com.br'
-        const pass = 'Contato*8351*'
-
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.umbler.com',
-            port: 587,
-            auth: {
-                user,
-                pass
-            },
-        })
+router.post('/sending-mass-mail-by-selection', async (req, res) => {
+    try {
+        const selectedEmails = req.body.selected
+        if(selectedEmails === undefined) {
+            req.flash('error_msg', 'Nenhum processo foi selecionado para ser feito o envio do e-mail.')
+            res.redirect('/admin/send-mass-mail')
+        } else {
+            const emailsArray = [].concat(selectedEmails)
+            emailsArray.forEach(email => {
+                const receiver = email
+                const subject = req.body.subject
+                const message = req.body.message
         
-        clients.forEach(client => {
-            const receiver = client.email
-            const subject = 'Não se esqueça do seu processo. Confira em nosso portal'
-
-            transporter.sendMail(
-                {
-                    from: `Agência GVF <${user}>`,
-                    to: receiver,
-                    subject,
-                    text: 'Esse é um teste de disparo',
-                }
-            )
-        })
+                transporter.use('compile', hbs(handlebarOptions))
         
-        req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
+                transporter.sendMail(
+                    {
+                        from: `Zottis Rezende Advogados <${process.env.USER_MAIL}>`,
+                        to: receiver,
+                        replyTo: process.env.MAIL_REPLY,
+                        subject,
+                        template: 'email-individual',
+                        text: message,
+                        context: {
+                            message
+                        }
+                    }
+                )
+            })
+        
+            req.flash('success_msg', 'Todos os e-mails foram disparados com sucesso')
+            res.redirect('/admin')
+        }
+    }
+    catch(err) {
+        console.log(err)
+        req.flash('error_msg', 'Ocorreu um erro. Entre em contato com o desenvolvedor do sistema')
         res.redirect('/admin')
-    })
-        
+    }
     
 })
 
