@@ -3,7 +3,7 @@
         height: 80vh !important;
     }
 </style>
-<main class="my-5">
+<main class="my-5" style="flex: 1 1 0">
     <section>
         <div class="container">
             <div class="card">
@@ -11,20 +11,43 @@
                     <h1 class="p-0 m-0">Consulte os usuários</h1>
                     <a href="/admin/register-user" class="btn btn-success">ADICIONAR NOVO <b>+</b></a>
                 </div>
-                <div class="card-body overflow-auto d-flex flex-row justify-content-center flex-wrap">
+                <div class="card-body overflow-auto d-flex justify-content-start flex-column flex-wrap">
                     {{#each users}}
-                    <div class="w-100">
-                        <div>
-                            <h3 class="p-0 mb-1">Nome: {{name}}</h3>
-                            <p class="mb-1">E-mail: {{email}}</p>
-                            <p class="mb-1">Data de criação: {{#formatDate createdAt}}{{/formatDate}}</p>
+                        <div class="my-2 px-2 py-4 border border-secondary rounded w-100">
+                            <div class="w-100">
+                                <p class="p-0 m-0">Nome:</p>
+                                <p>{{name}}</p>
+                                <hr>
+                                <p class="p-0 m-0">E-mail:</p>
+                                <p>{{email}}</p>
+                                <hr>
+                                <p class="p-0 m-0">Criado em:</p>
+                                <p>{{#formatDate createdAt}}{{/formatDate}}</p>
+                                <hr>
+                                <div class="d-flex flex-row gap-3 w-50">
+                                    <a href="/admin/edit-user/{{id}}" class="btn btn-warning">Editar</a>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=".exampleModal{{id}}">Excluir</button>
+                                </div>
+                            </div>
+                            <div class="modal fade exampleModal{{id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Você tem certeza?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>O cliente será excluído para sempre. Você tem certeza que deseja excluí-lo?</p>
+                                        <p>{{name}}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                                        <a href="/admin/delete-client/{{id}}" class="btn btn-danger">Excluir</a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
-                        <div class="d-flex gap-3 mt-3 w-50">
-                            <a href="/admin/edit-user/{{_id}}" class="btn btn-warning w-25">Editar</a>
-                            <a href="/admin/delete-user/{{_id}}" class="btn btn-danger w-25">Excluir</a>
-                        </div>
-                        <hr>
-                    </div>
                     {{else}}
                         <h3>Não há registro de usuários</h3>
                     {{/each}}

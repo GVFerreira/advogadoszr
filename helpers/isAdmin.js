@@ -4,6 +4,6 @@ module.exports = {
             return next()
         }
         req.flash("error_msg", "Você deve ser um administrador e estar autenticado para acessar essa página")
-        res.redirect("/")
+        res.redirect("/users")
     }
 }
