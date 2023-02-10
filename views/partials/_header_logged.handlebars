@@ -1,58 +1,200 @@
-<header>
-    <div class="container d-flex justify-content-between align-items-center py-4">
+<style>
+  header {
+   background-color: #333;
+  }
+  #menuB {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #FFF;
+    height: 110px
+  }
+  #nav ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+  }
+  #nav ul li {
+    display: flex;
+    align-items: center;
+  }
+  #nav li a {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    color: #FFF;
+    text-decoration: none;
+  }
+  #nav li img {
+    margin: 0 10px 0 0;
+  }
+  #nav li p {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  #nav #btn-mobile {
+    display: none;
+  }
+  @media(max-width: 991px) {
+    #nav #menu {
+      display: block;
+      position: absolute;
+      width: 60%;
+      top: 110px;
+      right: 6.5rem;
+      background: #333333f6;
+      z-index: 2000;
+      transition: .4s;
+      visibility: hidden;
+      overflow-y: hidden;
+      border-radius: 0 0 5px 5px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    #nav #menu #lista ul {
+      display: block;
+      margin: 2rem;
+    }
+    #nav #menu #lista ul li a {
+      margin: 1.5rem 0;
+    }
+    #nav #menu #lista ul li {
+      align-items: flex-end;
+    }
+    #nav.active #menu {
+      visibility: visible;
+    }
+    #nav #btn-mobile {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      padding: .5rem .8rem;
+      cursor: pointer;
+      background: none;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+    }
+    #nav #btn-mobile #hamburguer {
+      box-sizing: content-box;
+      width: 20px;
+      border-top: 2px solid #FFF;
+    }
+    #nav #btn-mobile #hamburguer::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      margin: .4rem 0;
+      background: #FFF;
+      transition: .3s;
+      position: relative;
+    }
+    #nav #btn-mobile #hamburguer::after {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #FFF;
+      transition: .3s;
+      position: relative;
+    }
+    #nav.active #btn-mobile #hamburguer {
+      border-top-color: transparent
+    }
+    #nav.active #btn-mobile #hamburguer::before {
+      transform: rotate(135deg);
+    }
+    #nav.active #btn-mobile #hamburguer::after {
+      transform: rotate(-135deg);
+      top: -10px
+    }
+  }
+  @media(max-width: 768px) {
+    #nav.active #menu {
+      width: 100%;
+      right: 0
+    }
+    #nav.active #btn-mobile #hamburguer::after {
+      top: -10px
+    }
+  }
+  @media(max-width: 425px) {
+    #nav.active #btn-mobile #hamburguer::after {
+      transform: rotate(-135deg);
+      top: -10px
+    }
+  }
+  @media(max-width: 375px) {
+    #nav.active #btn-mobile #hamburguer::after {
+      transform: rotate(-135deg);
+      top: -10px
+    }
+  }
+  @media(max-width: 320px) {
+    #nav #menu #lista ul {
+      margin: 1.5rem 0;
+    }
+    #nav #menu #lista ul li a {
+      margin: 1rem 0;
+    }
+    #nav.active #btn-mobile #hamburguer::after {
+      transform: rotate(-135deg);
+      top: -10px
+    }
+  }
+</style>
+
+<header id="header">
+  <div class="container" id="menuB">
+    <div>
         <a href="/admin">
-            <img src="/img/logo_name-white.svg" alt="Advogados ZR"></a>
-        <nav>
-            <ul class="m-0 p-0 d-flex justify-content-between align-items-center flex-row gap-5">
-                <li>
-                    <a href="/admin/consult-clients" class="h5">Clientes</a>
-                </li>
-                <li>
-                    <a href="/admin/consult-processes" class="h5">Processos</a>
-                </li>
-                <li>
-                    <a href="/admin/consult-users" class="h5">Usuários</a>
-                </li>
-                <li class="btn btn-danger">
-                    <a href="/users/logout" class="h5">SAIR</a>
-                </li>
-            </ul>
-        </nav>
+            <img src="/img/logo_name-white.svg" alt="Advogados ZR" width="150px" id="logoAZR">
+        </a>
     </div>
+    
+    <div id="nav">
+      <button id="btn-mobile">
+        <span id="hamburguer"></span>
+      </button>
+      <nav id="menu">
+        <div id="lista" class="container">
+          <ul>
+            <li>
+              <a href="/admin/consult-clients">
+                <p>Clientes</p>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/consult-processes">
+                <p>Processos</p>
+              </a>
+            </li>
+            <li>
+              <a href="/admin/consult-users">
+                <p>Usuários</p>
+              </a>
+            </li>
+            <li class="btn btn-danger text-center">
+              <a href="/users/logout">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                <p>Sair</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
 </header>
 
-<style>
-    header {
-        background: #333;
-    }
+<script>
+  const btnMobile = document.getElementById('btn-mobile')
 
-    header .container {
+  function toggleMenu() {
+    const nav = document.getElementById('nav')
+    nav.classList.toggle('active')
+  }
 
-    }
-
-    header .container img {
-        width: 10rem;
-    }
-
-    header .container nav {
-
-    }
-
-    header .container nav ul {
-
-    }
-
-    header .container nav ul li {
-        list-style: none;
-    }
-
-    header .container nav ul li a {
-        color: #E3E3E3;
-        text-decoration: none;
-    }
-
-    header .container nav ul li a:hover{
-        color: #FFF;
-        border-bottom: 1px solid #FFF;
-    }
-</style>
+  btnMobile.addEventListener('click', toggleMenu)
+</script>

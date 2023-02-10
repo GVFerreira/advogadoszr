@@ -55,6 +55,7 @@ router.post('/sending-mail', uploadAttach.array('attachments'), (req, res) => {
 
     transporter.sendMail(mailOptions, (err, info) => {
         if(err) {
+            console.log(err)
             req.flash('error_msg', `Houve um erro ao enviar este e-mail: ${err}`)
             res.redirect('/admin')
         } else {
@@ -277,6 +278,16 @@ router.post('/editing-user', (req, res) => {
     })
 })
 
+router.get('/delete-user/:id', (req, res) => {
+    User.findByIdAndDelete({_id: req.params.id}).then(() => {
+        req.flash('success_msg', 'Cadastro do usuário excluído com sucesso')
+        res.redirect('/admin/consult-users')
+    }).catch((err) => {
+        req.flash('error_msg', `Ocorreu um erro: ${err}`)
+        res.render('admin/consult-users')
+    })
+})
+
 /* ==== CLIENT ==== */
 /* ==== CLIENT ==== */
 /* ==== CLIENT ==== */
@@ -320,7 +331,6 @@ router.post('/registering-client', (req, res) => {
     
     }
 })
-
 
 router.get('/consult-clients', (req, res) => {
     Client.find().sort({createdAt: "DESC"}).then((clients) => {
@@ -375,7 +385,6 @@ router.get('/delete-client/:id', (req, res) => {
     })
 })
 
-
 /* ==== PROCESS ==== */
 /* ==== PROCESS ==== */
 /* ==== PROCESS ==== */
@@ -419,38 +428,19 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                 //verificar o switch e enviar o e-mail de acordo com o status
                 if(req.body.sendNotification === "on") {
                     Client.findOne({_id: req.body.relatedClient}).then((client) => {
-                        const user = 'contato@gvfwebdesign.com.br'
-                        const pass = 'Contato*8351*'
-
                         const receiver = client.email
                         const clientName = client.name
-                        const subject = `O processo ${req.body.numberProcess} foi atualizado.`
+                        const subject = `O processo ${req.body.numberProcess} foi criado.`
                         const comments = req.body.comments
                         const numberProcess = req.body.numberProcess
                         const attachments = req.files
 
-                        const transporter = nodemailer.createTransport({
-                            host: 'smtp.umbler.com',
-                            port: 587,
-                            auth: {
-                                user,
-                                pass
-                            },
-                        })
-
-                        const handlebarOptions = {
-                            viewEngine: {
-                            partialsDir: path.join(__dirname, '..', 'views/email'),
-                            defaultLayout: false,
-                            },
-                            viewPath: path.join(__dirname, '..', 'views/email'),
-                        };
-
                         transporter.use('compile', hbs(handlebarOptions))
 
                         const mailOptions = {
-                            from: `Agência GVF <${user}>`,
+                            from: `Zottis Rezende Advogados <${process.env.USER_MAIL}>`,
                             to: receiver,
+                            replyTo: process.env.MAIL_REPLY,
                             subject,
                             template: 'template-email',
                             attachments,
@@ -543,10 +533,6 @@ router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res
         //verificar o switch e enviar o e-mail de acordo com o status
         if(req.body.sendNotification === "on") {
             Client.findOne({_id: req.body.relatedClient}).then((client) => {
-                const user = 'contato@gvfwebdesign.com.br'
-                const pass = 'Contato*8351*'
-                
-                //sendind data
                 const receiver = client.email
                 const clientName = client.name
                 const subject = `O processo ${req.body.numberProcess} foi atualizado.`
@@ -555,28 +541,12 @@ router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res
                 const codeProcess = req.body.code
                 const attachments = req.files
 
-                const transporter = nodemailer.createTransport({
-                    host: 'smtp.umbler.com',
-                    port: 587,
-                    auth: {
-                        user,
-                        pass
-                    },
-                })
-
-                const handlebarOptions = {
-                    viewEngine: {
-                      partialsDir: path.join(__dirname, '..', 'views/email'),
-                      defaultLayout: false,
-                    },
-                    viewPath: path.join(__dirname, '..', 'views/email'),
-                  };
-
                 transporter.use('compile', hbs(handlebarOptions))
 
                 const mailOptions = {
-                    from: `Agência GVF <${user}>`,
+                    from: `Zottis Rezende Advogados <${process.env.USER_MAIL}>`,
                     to: receiver,
+                    replyTo: process.env.MAIL_REPLY,
                     subject,
                     template: 'template-email',
                     attachments,

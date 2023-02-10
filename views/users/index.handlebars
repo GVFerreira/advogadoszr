@@ -1,3 +1,20 @@
+<style>
+    @media(max-width: 380px) {
+        main {
+            margin: 0 !important;
+        }
+
+        main .container {
+            margin: 0 !important;
+            padding: 0 1.2rem !important;
+        }
+
+        main .card {
+            width: 100% !important;
+            margin: 1.2rem 0 !important;
+        }
+    }
+</style>
 <main class="mt-4 mb-5" style="flex: 1 1 0">
     <section class="container d-flex justify-content-center px-5 my-5">
         <div class="card w-50 my-5">
@@ -7,7 +24,7 @@
             <div class="card-body">
                 <form action="/users/login" method="POST">
                     <label for="email">E-mail:</label>
-                    <input type="email" name="email" class="form-control mb-4" required>
+                    <input type="email" name="email" class="form-control mb-4" autofocus required>
 
                     <label for="password">Senha:</label>
                     <input type="password" name="password" class="form-control mb-4" required>
