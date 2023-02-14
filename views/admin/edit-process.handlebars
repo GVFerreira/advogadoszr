@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     {{#process}}
-                        <form action="/admin/editing-process/{{_id}}" method="POST">
+                        <form action="/admin/editing-process/{{_id}}" method="POST" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col">
                                     <input type="hidden" name="code" id="code" class="form-control mb-4" value="{{code}}">

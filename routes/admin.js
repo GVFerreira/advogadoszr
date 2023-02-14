@@ -529,7 +529,24 @@ router.get('/edit-process/:id', (req, res) => {
 })
 
 router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res) => {
-    Process.findByIdAndUpdate({_id: req.params.id}, req.body, req.files).then(() => {
+    Process.findOne({_id: req.params.id}).then((process) => {
+        process.numberProcess = req.body.numberProcess
+        process.received = req.body.received
+        process.registered = req.body.registered
+        process.waitingQueries = req.body.waitingQueries
+        process.checkingDocs = req.body.checkingDocs
+        process.orderAnalysis = req.body.orderAnalysis
+        process.dispatch = req.body.dispatch
+        process.finished = req.body.finished
+        process.comments = req.body.comments
+        process.monetaryPendency = req.body.monetaryPendency
+        process.code = req.body.code
+        if(process.attachments.length === 0) {
+            process.attachments = req.files
+        } else {
+            process.attachments = [...process.attachments].concat(req.files)
+        }
+
         //verificar o switch e enviar o e-mail de acordo com o status
         if(req.body.sendNotification === "on") {
             Client.findOne({_id: req.body.relatedClient}).then((client) => {
@@ -566,10 +583,15 @@ router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res
                     }
                 })
             })
-            
+               
         }
-        req.flash('success_msg', 'Processo atualizado com sucesso')
-        res.redirect('/admin/consult-processes')
+        process.save().then(() => {
+            req.flash('success_msg', 'Processo atualizado com sucesso')
+            res.redirect('/admin/consult-processes')
+        }).catch((err) => {
+            req.flash('error_msg', `Ocorreu um erro ao salvar a atualização. Erro: ${err}.`)
+            res.redirect('/admin/consult-processes')
+        })
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro ao salvar a atualização. Erro: ${err}.`)
         res.redirect('/admin/consult-processes')

@@ -5,7 +5,6 @@ const upload = multer(
     }
 )
 const path = require('path')
-const crypto = require('crypto')
 
 module.exports = (multer(
     {
