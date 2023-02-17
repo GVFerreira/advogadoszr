@@ -1,3 +1,18 @@
+<style>
+    @media(max-width: 764px) {
+        .btns-actions {
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            gap: 1.2rem !important
+        }
+
+        .btns-actions > * {
+            width: 80% !important;
+        }
+    }
+</style>
 <main class="my-5" style="flex: 1 1 0">
     <section>
         <div class="container">
@@ -51,7 +66,7 @@
                                 <p class="p-0 m-0">Comentários:</p>
                                 <p>{{comments}}</p>
                             </div>
-                            <div class="d-flex flex-row gap-5 w-50">
+                            <div class="btns-actions d-flex flex-row gap-5 w-50">
                                 <button type="button" class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target=".view{{id}}">Visualizar</button>
                                 <a href="/admin/edit-process/{{id}}" class="btn btn-success w-25">Atualizar</a>
                                 <button type="button" class="btn btn-danger w-25" data-bs-toggle="modal" data-bs-target=".exampleModal{{id}}">Excluir</button>

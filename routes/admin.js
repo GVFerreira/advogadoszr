@@ -529,22 +529,22 @@ router.get('/edit-process/:id', (req, res) => {
 })
 
 router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res) => {
-    Process.findOne({_id: req.params.id}).then((process) => {
-        process.numberProcess = req.body.numberProcess
-        process.received = req.body.received
-        process.registered = req.body.registered
-        process.waitingQueries = req.body.waitingQueries
-        process.checkingDocs = req.body.checkingDocs
-        process.orderAnalysis = req.body.orderAnalysis
-        process.dispatch = req.body.dispatch
-        process.finished = req.body.finished
-        process.comments = req.body.comments
-        process.monetaryPendency = req.body.monetaryPendency
-        process.code = req.body.code
-        if(process.attachments.length === 0) {
-            process.attachments = req.files
+    Process.findOne({_id: req.params.id}).then((currentProcess) => {
+        currentProcess.numberProcess = req.body.numberProcess
+        currentProcess.received = req.body.received
+        currentProcess.registered = req.body.registered
+        currentProcess.waitingQueries = req.body.waitingQueries
+        currentProcess.checkingDocs = req.body.checkingDocs
+        currentProcess.orderAnalysis = req.body.orderAnalysis
+        currentProcess.dispatch = req.body.dispatch
+        currentProcess.finished = req.body.finished
+        currentProcess.comments = req.body.comments
+        currentProcess.monetaryPendency = req.body.monetaryPendency
+        currentProcess.code = req.body.code
+        if(currentProcess.attachments.length === 0) {
+            currentProcess.attachments = req.files
         } else {
-            process.attachments = [...process.attachments].concat(req.files)
+            currentProcess.attachments = [...currentProcess.attachments].concat(req.files)
         }
 
         //verificar o switch e enviar o e-mail de acordo com o status
@@ -552,7 +552,7 @@ router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res
             Client.findOne({_id: req.body.relatedClient}).then((client) => {
                 const receiver = client.email
                 const clientName = client.name
-                const subject = `O processo ${req.body.numberProcess} foi atualizado.`
+                const subject = `Houve uma atualização no processo Nº ${req.body.numberProcess} referente a ${clientName}.`
                 const comments = req.body.comments
                 const numberProcess = req.body.numberProcess
                 const codeProcess = req.body.code
@@ -585,7 +585,7 @@ router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res
             })
                
         }
-        process.save().then(() => {
+        currentProcess.save().then(() => {
             req.flash('success_msg', 'Processo atualizado com sucesso')
             res.redirect('/admin/consult-processes')
         }).catch((err) => {
