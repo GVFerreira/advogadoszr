@@ -12,14 +12,14 @@
                 </div>
                 <div class="card-body">
                     {{#process}}
-                        <form action="/admin/editing-process/{{_id}}" method="POST" enctype="multipart/form-data">
+                        <form action="/admin/editing-process/{{_id}}/{{relatedClient.id}}" method="POST" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col">
                                     <input type="hidden" name="code" id="code" class="form-control mb-4" value="{{code}}">
 
                                     <label for="relatedClient">Cliente atrelado:</label>
                                     <select name="relatedClient" id="relatedClient" class="form-select">
-                                        <option value="{{relatedClient._id}}">{{relatedClient.name}}</option>
+                                        <option value="{{relatedClient.id}}">{{relatedClient.name}}</option>
                                     </select>
                                     <span class="d-block mb-4 small" style="color: #FF0000">Valor não editável</span>
                                     

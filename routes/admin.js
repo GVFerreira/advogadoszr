@@ -464,12 +464,10 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                 }
 
                 Client.findOne({_id: req.body.relatedClient}).then((client) => {
-                    const clientName = client.name
-                    const clientEmail = client.email
                     const newProcess = new Process({
                         relatedClient: req.body.relatedClient,
-                        clientName,
-                        clientEmail,
+                        clientName: client.name,
+                        clientEmail: client.email,
                         numberProcess: req.body.numberProcess,
                         process: req.body.process,
                         received: req.body.received,
@@ -521,75 +519,81 @@ router.get('/consult-processes', async (req, res) => {
 
 router.get('/edit-process/:id', (req, res) => {
     Process.findOne({_id: req.params.id}).populate("relatedClient").then((process) => {
-        res.render('admin/edit-process', { process: process })
+        res.render('admin/edit-process', { process })
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro carregar o formulário. Erro: ${err}`)
         res.redirect('/admin/consult-processes')
     })
 })
 
-router.post('/editing-process/:id', uploadAttach.array('attachments'), (req, res) => {
-    Process.findOne({_id: req.params.id}).then((currentProcess) => {
-        currentProcess.numberProcess = req.body.numberProcess
-        currentProcess.received = req.body.received
-        currentProcess.registered = req.body.registered
-        currentProcess.waitingQueries = req.body.waitingQueries
-        currentProcess.checkingDocs = req.body.checkingDocs
-        currentProcess.orderAnalysis = req.body.orderAnalysis
-        currentProcess.dispatch = req.body.dispatch
-        currentProcess.finished = req.body.finished
-        currentProcess.comments = req.body.comments
-        currentProcess.monetaryPendency = req.body.monetaryPendency
-        currentProcess.code = req.body.code
-        if(currentProcess.attachments.length === 0) {
-            currentProcess.attachments = req.files
-        } else {
-            currentProcess.attachments = [...currentProcess.attachments].concat(req.files)
-        }
+router.post('/editing-process/:id/:idClient', uploadAttach.array('attachments'), (req, res) => {
+    Process.findOne({id: req.params.id}).then((currentProcess) => {
+        Client.findOne({id: req.params.idClient}).then((client) => {
+            console.log(currentProcess.relatedClient, req.params.idClient, client.id)
+            currentProcess.relatedClient = req.params.idClient
+            currentProcess.clientName = client.name
+            currentProcess.clientEmail = client.email
+            currentProcess.process = req.body.process
+            currentProcess.numberProcess = req.body.numberProcess
+            currentProcess.received = req.body.received
+            currentProcess.registered = req.body.registered
+            currentProcess.waitingQueries = req.body.waitingQueries
+            currentProcess.checkingDocs = req.body.checkingDocs
+            currentProcess.orderAnalysis = req.body.orderAnalysis
+            currentProcess.dispatch = req.body.dispatch
+            currentProcess.finished = req.body.finished
+            currentProcess.comments = req.body.comments
+            currentProcess.monetaryPendency = req.body.monetaryPendency
+            if(currentProcess.attachments.length === 0) {
+                currentProcess.attachments = req.files
+            } else {
+                currentProcess.attachments = [...currentProcess.attachments].concat(req.files)
+            }
 
-        //verificar o switch e enviar o e-mail de acordo com o status
-        if(req.body.sendNotification === "on") {
-            Client.findOne({_id: req.body.relatedClient}).then((client) => {
-                const receiver = client.email
-                const clientName = client.name
-                const subject = `Houve uma atualização no processo Nº ${req.body.numberProcess} referente a ${clientName}.`
-                const comments = req.body.comments
-                const numberProcess = req.body.numberProcess
-                const codeProcess = req.body.code
-                const attachments = req.files
+            //verificar o switch e enviar o e-mail de acordo com o status
+            if(req.body.sendNotification === "on") {
+                    const receiver = client.email
+                    const clientName = client.name
+                    const subject = `Houve uma atualização no processo Nº ${req.body.numberProcess} referente a ${clientName}.`
+                    const comments = req.body.comments
+                    const numberProcess = req.body.numberProcess
+                    const codeProcess = req.body.code
+                    const attachments = req.files
 
-                transporter.use('compile', hbs(handlebarOptions))
+                    transporter.use('compile', hbs(handlebarOptions))
 
-                const mailOptions = {
-                    from: `Zottis Rezende Advogados <${process.env.USER_MAIL}>`,
-                    to: receiver,
-                    replyTo: process.env.MAIL_REPLY,
-                    subject,
-                    template: 'template-email',
-                    attachments,
-                    context: {
-                        comments,
-                        codeProcess,
-                        numberProcess,
-                        clientName
+                    const mailOptions = {
+                        from: `Zottis Rezende Advogados <${process.env.USER_MAIL}>`,
+                        to: receiver,
+                        replyTo: process.env.MAIL_REPLY,
+                        subject,
+                        template: 'template-email',
+                        attachments,
+                        context: {
+                            comments,
+                            codeProcess,
+                            numberProcess,
+                            clientName
+                        }
                     }
-                }
 
-                transporter.sendMail(mailOptions, (err, info) => {
-                    if(err) {
-                        console.log(`Error: ${err}`)
-                    } else {
-                        console.log(`Message sent: ${info}`)
-                    }
-                })
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if(err) {
+                            console.log(`Error: ${err}`)
+                        } else {
+                            console.log(`Message sent: ${info}`)
+                        }
+                    })
+            }
+            currentProcess.save().then(() => {
+                req.flash('success_msg', 'Processo atualizado com sucesso')
+                res.redirect('/admin/consult-processes')
+            }).catch((err) => {
+                req.flash('error_msg', `Ocorreu um erro ao salvar a atualização. Erro: ${err}.`)
+                res.redirect('/admin/consult-processes')
             })
-               
-        }
-        currentProcess.save().then(() => {
-            req.flash('success_msg', 'Processo atualizado com sucesso')
-            res.redirect('/admin/consult-processes')
         }).catch((err) => {
-            req.flash('error_msg', `Ocorreu um erro ao salvar a atualização. Erro: ${err}.`)
+            req.flash('error_msg', `Erro inesperado. Erro: ${err}.`)
             res.redirect('/admin/consult-processes')
         })
     }).catch((err) => {

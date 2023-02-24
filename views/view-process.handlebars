@@ -83,12 +83,13 @@
         margin: 0;
     }
 </style>
+
 <main class="my-5" style="flex: 1 1 0">
     <section>
         <div class="container">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="h1 p-0 m-0">Painel do cliente</h2>
+                    <h1 class="text-center p-0 m-0">Painel do cliente</h1>
                 </div>
                 <div class="card-body">
                     <form action="/consulting-process" method="POST">
@@ -107,8 +108,8 @@
                     <hr>
                     <section>
                         {{#search_result}}
-                            <p class="h3"><strong>Nome:</strong> {{relatedClient.name}}</p>
-                            <p class="h3"><strong>N° Processo:</strong> {{numberProcess}}</p>
+                            <h3>Nome: <span class="text-capitalize">{{relatedClient.name}}</span></h3>
+                            <h3>Processo N°:{{numberProcess}}</h3>
                             <div class="process-progress my-5 px-3">
                                 <div class="step">
                                     <div class="circle">
