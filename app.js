@@ -105,8 +105,8 @@ const router = require('./routes/users')
 
 //Mongoose
     const dbPROD = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bbkeaad.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
-    const dbDEV = 'mongodb://localhost:27017/advogadoszr'
-    mongoose.connect('mongodb://127.0.0.1:27017/advogadoszr').then(() => {
+    const dbDEV = 'mongodb://127.0.0.1:27017/advogadoszr'
+    mongoose.connect(dbPROD).then(() => {
         console.log("MongoDB connected...")
     }).catch((err) => {
         console.log(`Erro: ${err}`)
@@ -145,7 +145,7 @@ const router = require('./routes/users')
         res.download(`public/uploads/attachments/${req.params.filename}`)
     })
 
-    app.use('/admin', /*isAdmin,*/ admin)
+    app.use('/admin', isAdmin, admin)
     app.use('/users', users)
 
 /*SERVER*/
