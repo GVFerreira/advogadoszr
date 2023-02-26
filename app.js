@@ -35,6 +35,22 @@ const handle = handlebars.create({
             }
 
             return output;
+        },
+        paginationClient: (page, totalPages, limit, sort) => {
+            let output = '';
+  
+            for (let i = 1; i <= totalPages; i++) {
+                // Marca a página atual como "ativa"
+                const pageNUM = parseInt(page)
+                const activeClass = i === pageNUM ? 'btn-success' : 'btn-secondary ';
+
+                // Gera o HTML para o link da página
+                output += `
+                    <a class="btn ${activeClass}" href="/admin/consult-clients?sort=${sort}&limit=${limit}&page=${i}">${i}</a>
+                `;
+            }
+
+            return output;
         }
     }
 })
@@ -88,7 +104,9 @@ const router = require('./routes/users')
     })
 
 //Mongoose
-    mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bbkeaad.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`).then(() => {
+    const dbPROD = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bbkeaad.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+    const dbDEV = 'mongodb://localhost:27017/advogadoszr'
+    mongoose.connect('mongodb://127.0.0.1:27017/advogadoszr').then(() => {
         console.log("MongoDB connected...")
     }).catch((err) => {
         console.log(`Erro: ${err}`)

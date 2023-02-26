@@ -71,8 +71,7 @@ router.get('/send-mass-mail', (req, res) => {
     })
 })
 
-router.post('/sending-mass-mail-by-group', (req, res) => {
-
+router.post('/sending-mass-mail-by-group', uploadAttach.array('attachments'), (req, res) => {
     Process.find({process: req.body.process}).then((processes) => {
         if(req.body.process === "0") {
             req.flash('error_msg', `Nenhum tipo de processo foi selecionado`)
@@ -82,6 +81,7 @@ router.post('/sending-mass-mail-by-group', (req, res) => {
                 const receiver = processI.clientEmail
                 const subject = req.body.subject
                 const message = req.body.message
+                const attachments = req.files
     
                 transporter.use('compile', hbs(handlebarOptions))
     
@@ -92,7 +92,7 @@ router.post('/sending-mass-mail-by-group', (req, res) => {
                         replyTo: process.env.MAIL_REPLY,
                         subject,
                         template: 'email-individual',
-                        text: message,
+                        attachments,
                         context: {
                             message
                         }
@@ -109,7 +109,7 @@ router.post('/sending-mass-mail-by-group', (req, res) => {
     })
 })
 
-router.post('/sending-mass-mail-by-selection', async (req, res) => {
+router.post('/sending-mass-mail-by-selection', uploadAttach.array('attachments'), async (req, res) => {
     try {
         const selectedEmails = req.body.selected
         if(selectedEmails === undefined) {
@@ -121,6 +121,7 @@ router.post('/sending-mass-mail-by-selection', async (req, res) => {
                 const receiver = email
                 const subject = req.body.subject
                 const message = req.body.message
+                const attachments = req.files
         
                 transporter.use('compile', hbs(handlebarOptions))
         
@@ -131,7 +132,7 @@ router.post('/sending-mass-mail-by-selection', async (req, res) => {
                         replyTo: process.env.MAIL_REPLY,
                         subject,
                         template: 'email-individual',
-                        text: message,
+                        attachments,
                         context: {
                             message
                         }
@@ -332,9 +333,20 @@ router.post('/registering-client', (req, res) => {
     }
 })
 
-router.get('/consult-clients', (req, res) => {
-    Client.find().sort({createdAt: "DESC"}).then((clients) => {
-        res.render('admin/consult-clients', { clients: clients })
+router.get('/consult-clients', async (req, res) => {
+    const page = req.query.page || 1
+    const sort = req.query.sort || "ASC"
+    const limit = req.query.limit || 10
+    const clientPerPage = limit
+    const skip = (page - 1) * clientPerPage
+
+    const totalClients = await Client.countDocuments()
+
+    Client.find().sort({name: sort}).skip(skip).limit(limit).then((clients) => {
+        Client.find().countDocuments().then((totalDocuments) => {
+            const totalPages = Math.ceil(totalClients / clientPerPage)
+            res.render('admin/consult-clients', {clients, limit, sort, page, totalPages, totalDocuments})
+        })
     }).catch((err) => {
         req.flash('erro_msg', `Ocorreu um erro ao listar os clientes. Erro: ${err}`)
         res.redirect('/admin')
@@ -445,6 +457,7 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                             template: 'template-email',
                             attachments,
                             context: {
+                                clientName,
                                 comments,
                                 codeProcess,
                                 numberProcess,
@@ -526,11 +539,9 @@ router.get('/edit-process/:id', (req, res) => {
     })
 })
 
-router.post('/editing-process/:id/:idClient', uploadAttach.array('attachments'), (req, res) => {
-    Process.findOne({id: req.params.id}).then((currentProcess) => {
-        Client.findOne({id: req.params.idClient}).then((client) => {
-            console.log(currentProcess.relatedClient, req.params.idClient, client.id)
-            currentProcess.relatedClient = req.params.idClient
+router.post('/editing-process', uploadAttach.array('attachments'), (req, res) => {
+    Process.findOne({_id: req.body.id}).then((currentProcess) => {
+        Client.findOne({_id: req.body.relatedClient}).then((client) => {
             currentProcess.clientName = client.name
             currentProcess.clientEmail = client.email
             currentProcess.process = req.body.process
@@ -544,6 +555,7 @@ router.post('/editing-process/:id/:idClient', uploadAttach.array('attachments'),
             currentProcess.finished = req.body.finished
             currentProcess.comments = req.body.comments
             currentProcess.monetaryPendency = req.body.monetaryPendency
+
             if(currentProcess.attachments.length === 0) {
                 currentProcess.attachments = req.files
             } else {
@@ -554,10 +566,10 @@ router.post('/editing-process/:id/:idClient', uploadAttach.array('attachments'),
             if(req.body.sendNotification === "on") {
                     const receiver = client.email
                     const clientName = client.name
-                    const subject = `Houve uma atualização no processo Nº ${req.body.numberProcess} referente a ${clientName}.`
                     const comments = req.body.comments
                     const numberProcess = req.body.numberProcess
                     const codeProcess = req.body.code
+                    const subject = `Houve uma atualização no processo Nº ${numberProcess} referente a ${clientName}.`
                     const attachments = req.files
 
                     transporter.use('compile', hbs(handlebarOptions))
@@ -570,6 +582,7 @@ router.post('/editing-process/:id/:idClient', uploadAttach.array('attachments'),
                         template: 'template-email',
                         attachments,
                         context: {
+                            clientName,
                             comments,
                             codeProcess,
                             numberProcess,
