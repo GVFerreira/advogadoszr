@@ -145,7 +145,7 @@ const router = require('./routes/users')
         res.download(`public/uploads/attachments/${req.params.filename}`)
     })
 
-    app.use('/admin', isAdmin, admin)
+    app.use('/admin', /*isAdmin,*/ admin)
     app.use('/users', users)
 
 /*SERVER*/
