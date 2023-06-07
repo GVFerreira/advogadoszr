@@ -22,8 +22,8 @@
         .card-body .process-progress .step {
             width: 100%;
         }
+        
         .card-body .process-progress .step .circle {
-            
             flex-direction: row;
         }
         .card-body .process-progress .step .circle .ballon {
@@ -36,10 +36,7 @@
             align-items: start;
         }
     }
-</style>
 
-{{!--PROGRESS BAR--}}
-<style>
     .process-progress {
         display: flex;
         flex: row;
@@ -84,6 +81,7 @@
     }
 </style>
 
+
 <main class="my-5" style="flex: 1 1 0">
     <section>
         <div class="container">
@@ -98,7 +96,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" id="codeInsert" name="codeInsert" placeholder="Código" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                    <input type="text" class="form-control" id="codeInsert" name="codeInsert" placeholder="Código" aria-label="Código" aria-describedby="button-addon2">
                                     <button class="btn btn-primary" type="submit" id="button-addon2">Buscar<i class="ms-2 bi bi-search"></i></button>
                                 </div>
                             </div>
@@ -109,7 +107,8 @@
                     <section>
                         {{#search_result}}
                             <h3>Nome: <span class="text-capitalize">{{relatedClient.name}}</span></h3>
-                            <h3>Processo N°:{{numberProcess}}</h3>
+                            <h3>Processo N°: {{numberProcess}}</h3>
+                            <h3>Início do processo: {{#formatDateWithoutHour createdAt}}{{/formatDateWithoutHour}}</h3>
                             <div class="process-progress my-5 px-3">
                                 <div class="step">
                                     <div class="circle">

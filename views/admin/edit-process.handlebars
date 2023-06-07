@@ -37,7 +37,7 @@
                                     <label for="datailsProcess">Detalhes do processo:</label>
                     
                                     <div class="card p-4 mb-4">
-                                        <label for="">1. Recebido</label>
+                                        <label for="">1. Consulta jurídica</label>
                                         {{#if process.received}}
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="received" id="received1" value="1" checked>
@@ -58,7 +58,7 @@
                                             </div>
                                         {{/if}}
 
-                                        <label for="">2. Registrado</label>
+                                        <label for="">2. Aguarda documentos</label>
                                         {{#if process.registered}}
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="registered" id="registered1" value="1" checked>
@@ -79,7 +79,7 @@
                                             </div>
                                         {{/if}}
 
-                                        <label for="">3. Aguardando consultas</label>
+                                        <label for="">3. Documentos recebidos</label>
                                         {{#if process.waitingQueries}}
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries1" value="1" checked>
@@ -100,7 +100,7 @@
                                             </div>
                                         {{/if}}
 
-                                        <label for="">4. Verificando documentos</label>
+                                        <label for="">4. Pedido realizado</label>
                                         {{#if process.checkingDocs}}
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs1" value="1" checked>
@@ -121,7 +121,7 @@
                                             </div>
                                         {{/if}}
 
-                                        <label for="">5. Análise do pedido</label>
+                                        <label for="">5. Aguarda análise</label>
                                         {{#if process.orderAnalysis}}
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis1" value="1" checked>
@@ -142,7 +142,7 @@
                                             </div>
                                         {{/if}}
 
-                                        <label for="">6. Despacho</label>
+                                        <label for="">6. Pedido concluído</label>
                                         {{#if process.dispatch}}
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="dispatch" id="dispatch1" value="1" checked>
@@ -163,7 +163,7 @@
                                             </div>
                                         {{/if}}
 
-                                        <label for="">7. Finalizado</label>
+                                        <label for="">7. Exigência</label>
                                         {{#if process.finished}}
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="finished" id="finished1" value="1" checked>

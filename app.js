@@ -20,6 +20,9 @@ const handle = handlebars.create({
         formatDate: (date) => {
             return moment(date).format('DD/MM/YYYY hh:mm')
         },
+        formatDateWithoutHour: (date) => {
+            return moment(date).format('DD/MM/YYYY')
+        },
         pagination: (page, totalPages, limit, sort) => {
             let output = '';
   

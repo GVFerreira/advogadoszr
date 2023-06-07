@@ -18,12 +18,7 @@ const { connect } = require('http2')
 require('dotenv').config()
 
 router.get('/', (req, res) => {
-    //User.findOne().then((user) => {
-        res.render('admin/index', /*{user: user}*/)
-    //}).catch((err) => {
-        //req.flash('error_msg', `Houve um erro interno ao carregar o usuário: ${err}`)
-        //res.redirect('/')
-    //})
+    res.render('admin/index')
 })
 
 /* ==== EMAIL ==== */
@@ -401,7 +396,7 @@ router.get('/delete-client/:id', (req, res) => {
 /* ==== PROCESS ==== */
 /* ==== PROCESS ==== */
 router.get('/register-process', (req, res) => {
-    Client.find().then((clients) => {
+    Client.find().sort({name: "ASC"}).then((clients) => {
         res.render('admin/register-process', { clients })
     }).catch((err) => {
         req.flash('error_msg', `Ocorreu um erro ao carregar o formulário. Erro: ${err}`)
@@ -454,7 +449,7 @@ router.post('/registering-process', uploadAttach.array('attachments'), (req, res
                             to: receiver,
                             replyTo: process.env.MAIL_REPLY,
                             subject,
-                            template: 'template-email',
+                            template: 'welcome',
                             attachments,
                             context: {
                                 clientName,
