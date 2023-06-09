@@ -17,6 +17,33 @@
     }
 </style>
 <main class="my-5" style="flex: 1 1 0">
+    {{#if showPolicyPopup}}
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
+            <div class="modal-dialog modal-sm policy-popup">
+                <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h6 class="modal-title p-0" id="staticBackdropLabel">Política de privacidade e cookies</h6>
+                </div>
+                <div class="modal-body">
+                    <p>Ao continuar navegando neste site, você concorda com a nossa política de privacidade e cookies.</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="/accept-policy" method="post">
+                    <button type="submit" class="btn btn-success">Aceitar</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            .policy-popup {
+                position: fixed;
+                bottom: 0px;
+                left: 3%;
+                z-index: 999;
+            }
+        </style>
+    {{/if}}
     <section>
         <div class="container">
             <div class="card">

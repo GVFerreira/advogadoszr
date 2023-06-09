@@ -1,24 +1,37 @@
 {{!-- RESPONSIVE --}}
 <style>
     @media(max-width: 764px){
-        .card-body .row{
+        .card-body .row {
             display: flex;
             flex-direction: column;
             margin: 0;
             padding: 0;
             width: 100%;
         }
+
         .card-body .row .col {
             margin: 0;
             padding: 0;
             width: 100%;
         }
+
         .card-body .process-progress {
             display: flex;
             padding: 0 !important;
             flex-direction: column !important;
             gap: 1.2rem;
         }
+
+        .card-body .process-progress .connect {
+            top: 0;
+            left: 7.5%;
+            transform: translateY(0);
+            transform: translateX(-92.5%);
+            height: 90%;
+            width: 2px;
+            margin: 5% 0; 
+        }
+
         .card-body .process-progress .step {
             width: 100%;
         }
@@ -26,9 +39,11 @@
         .card-body .process-progress .step .circle {
             flex-direction: row;
         }
+
         .card-body .process-progress .step .circle .ballon {
             margin-right: 25px;
         }
+
         .card-body .process-progress .step .circle .description {
             height: auto;
             flex-direction: row;
@@ -42,13 +57,29 @@
         flex: row;
         justify-content: space-between;
         align-items: center;
+        position: relative;
     }
+
+    .process-progress .connect {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000;
+        position: absolute;
+        top: 25%;
+        left: 0;
+        transform: translateY(-75%);
+        height: 2px;
+        width: 90%;
+        margin: 0 5%;
+    }
+
     .circle {
         display: flex;
         flex-direction: column;
         align-items: center;
-
     }
+
     .circle .ballon {
         width: 50px;
         height: 50px;
@@ -58,23 +89,28 @@
         justify-content: center;
         align-items: center;
     }
+
     .circle .btn {
         cursor: default !important;
     }
+
     .circle .ballon .ballon-text {
         font-weight: bold;
         position: absolute;
         z-index: 10;
     }
+
     .circle .ballon .ballon-text p {
         margin: 0;
     }
+
     .circle .description {
         display: flex;
         flex-direction: column;
         align-items: center;
         height: 60px;
     }
+
     .circle .description p {
         font-weight: bold;
         margin: 0;
@@ -110,147 +146,99 @@
                             <h3>Processo N°: {{numberProcess}}</h3>
                             <h3>Início do processo: {{#formatDateWithoutHour createdAt}}{{/formatDateWithoutHour}}</h3>
                             <div class="process-progress my-5 px-3">
+                                <div class="connect"></div>
+
                                 <div class="step">
                                     <div class="circle">
-                                        {{#if received}}
-                                            <div class="ballon btn btn-success" title="Aguarda realização da consulta jurídica">
-                                                <div class="ballon-text">
-                                                    <p>1</p>
-                                                </div>
+                                        <div class="ballon btn btn-{{received}}" title="Aguarda realização da consulta jurídica">
+                                            <div class="ballon-text">
+                                                <p>1</p>
                                             </div>
-                                        {{else}}
-                                            <div class="ballon btn btn-secondary" title="Aguarda realização da consulta jurídica">
-                                                <div class="ballon-text">
-                                                    <p>1</p>
-                                                </div>
-                                            </div>
-                                        {{/if}}
+                                        </div>
                                         <div class="description">
                                             <p>Consulta</p>
                                             <p>jurídica</p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="step">
                                     <div class="circle">
-                                        {{#if registered}}
-                                            <div class="ballon btn btn-success" title="Realizada consulta, aguarda entrega do documentos solicitados.">
-                                                <div class="ballon-text">
-                                                    <p>2</p>
-                                                </div>
+                                        <div class="ballon btn btn-{{registered}}" title="Realizada consulta, aguarda entrega do documentos solicitados.">
+                                            <div class="ballon-text">
+                                                <p>2</p>
                                             </div>
-                                        {{else}}
-                                            <div class="ballon btn btn-secondary" title="Realizada consulta, aguarda entrega do documentos solicitados.">
-                                                <div class="ballon-text">
-                                                    <p>2</p>
-                                                </div>
-                                            </div>
-                                        {{/if}}
+                                        </div>
                                         <div class="description">
                                             <p>Aguarda</p>
                                             <p>documentos</p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="step">
                                     <div class="circle">
-                                        {{#if waitingQueries}}
-                                            <div class="ballon btn btn-success" title="Recebidos documentos no escritório, processo em preparação para entrega no Serviço responsável">
-                                                <div class="ballon-text">
-                                                    <p>3</p>
-                                                </div>
+                                        <div class="ballon btn btn-{{waitingQueries}}" title="Recebidos documentos no escritório, processo em preparação para entrega no Serviço responsável">
+                                            <div class="ballon-text">
+                                                <p>3</p>
                                             </div>
-                                        {{else}}
-                                            <div class="ballon btn btn-secondary" title="Recebidos documentos no escritório, processo em preparação para entrega no Serviço responsável">
-                                                <div class="ballon-text">
-                                                    <p>3</p>
-                                                </div>
-                                            </div>
-                                        {{/if}}
+                                        </div>
                                         <div class="description">
                                             <p>Documentos</p>
                                             <p>recebidos</p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="step">
                                     <div class="circle">
-                                        {{#if checkingDocs}}
-                                            <div class="ballon btn btn-success" title="Pedido entregue ao Serviço responsável.">
-                                                <div class="ballon-text">
-                                                    <p>4</p>
-                                                </div>
+                                        <div class="ballon btn btn-{{checkingDocs}}" title="Pedido entregue ao Serviço responsável.">
+                                            <div class="ballon-text">
+                                                <p>4</p>
                                             </div>
-                                        {{else}}
-                                            <div class="ballon btn btn-secondary" title="Pedido entregue ao Serviço responsável.">
-                                                <div class="ballon-text">
-                                                    <p>4</p>
-                                                </div>
-                                            </div>
-                                        {{/if}}
+                                        </div>
                                         <div class="description">
                                             <p>Pedido</p>
                                             <p>realizado</p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="step">
                                     <div class="circle">
-                                        {{#if orderAnalysis}}
-                                            <div class="ballon btn btn-success" title="Aguarda análise do pedido por parte da Serviço responsável.">
-                                                <div class="ballon-text">
-                                                    <p>5</p>
-                                                </div>
+                                        <div class="ballon btn btn-{{orderAnalysis}}" title="Aguarda análise do pedido por parte da Serviço responsável.">
+                                            <div class="ballon-text">
+                                                <p>5</p>
                                             </div>
-                                        {{else}}
-                                            <div class="ballon btn btn-secondary" title="Aguarda análise do pedido por parte da Serviço responsável.">
-                                                <div class="ballon-text">
-                                                    <p>5</p>
-                                                </div>
-                                            </div>
-                                        {{/if}}
+                                        </div>
                                         <div class="description">
                                             <p>Aguarda</p>
                                             <p>análise</p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="step">
                                     <div class="circle">
-                                        {{#if dispatch}}
-                                            <div class="ballon btn btn-success" title="O pedido foi concluído e aprovado.">
-                                                <div class="ballon-text">
-                                                    <p>6</p>
-                                                </div>
+                                        <div class="ballon btn btn-{{dispatch}}" title="O pedido foi concluído e aprovado.">
+                                            <div class="ballon-text">
+                                                <p>6</p>
                                             </div>
-                                        {{else}}
-                                            <div class="ballon btn btn-secondary" title="O pedido foi concluído e aprovado.">
-                                                <div class="ballon-text">
-                                                    <p>6</p>
-                                                </div>
-                                            </div>
-                                        {{/if}}
+                                        </div>
                                         <div class="description">
                                             <p>Pedido</p>
                                             <p>concluído</p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="step">
                                     <div class="circle">
-                                        {{#if finished}}
-                                            <div class="ballon btn btn-warning" title="O Serviço Responsável exigiu a apresentação de novos documentos ou esclarecimentos">
-                                                <div class="ballon-text">
-                                                    <p>7</p>
-                                                </div>
+                                        <div class="ballon btn btn-{{finished}}" title="O Serviço Responsável exigiu a apresentação de novos documentos ou esclarecimentos">
+                                            <div class="ballon-text">
+                                                <p>7</p>
                                             </div>
-                                        {{else}}
-                                            <div class="ballon btn btn-secondary" title="O Serviço Responsável exigiu a apresentação de novos documentos ou esclarecimentos">
-                                                <div class="ballon-text">
-                                                    <p>7</p>
-                                                </div>
-                                            </div>
-                                        {{/if}}
+                                        </div>
                                         <div class="description">
                                             <p>Exigência</p>
                                         </div>

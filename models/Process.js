@@ -21,25 +21,25 @@ const Process = new Schema({
         required: true
     },
     received: {
-        type: Number
+        type: String
     },
     registered: {
-        type: Number
+        type: String
     },
     waitingQueries: {
-        type: Number
+        type: String
     },
     checkingDocs: {
-        type: Number
+        type: String
     },
     orderAnalysis: {
-        type: Number
+        type: String
     },
     dispatch: {
-        type: Number
+        type: String
     },
     finished: {
-        type: Number
+        type: String
     },
     comments: {
         type: String

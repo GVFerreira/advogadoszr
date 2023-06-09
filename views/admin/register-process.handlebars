@@ -50,73 +50,102 @@
                                 <div class="card p-4 mb-4">
                                     <label for="">1. Consulta jurídica</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="received" id="received1" value="1">
-                                        <label class="form-check-label" for="received1">Sim</label>
+                                        <input class="form-check-input" type="radio" name="received" id="received1" value="secondary" checked>
+                                        <label class="form-check-label" for="received1">Não iniciado</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="received" id="received2" value="0" checked>
-                                        <label class="form-check-label mb-4" for="received2">Não</label>
+                                        <input class="form-check-input" type="radio" name="received" id="received2" value="warning">
+                                        <label class="form-check-label" for="received2">Em andamento</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="received" id="received3" value="success">
+                                        <label class="form-check-label" for="received3">Concluído</label>
                                     </div>
 
-                                    <label for="">2. Aguarda documentos</label>
+                                    <label class="mt-4">2. Aguarda documentos</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="registered" id="registered1" value="1">
-                                        <label class="form-check-label" for="registered1">Sim</label>
+                                        <input class="form-check-input" type="radio" name="registered" id="registered1" value="secondary" checked>
+                                        <label class="form-check-label" for="registered1">Não iniciado</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="registered" id="registered2" value="0" checked>
-                                        <label class="form-check-label mb-4" for="registered2">Não</label>
-                                    </div>
-
-                                    <label for="">3. Documentos recebidos</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries1" value="1">
-                                        <label class="form-check-label" for="waitingQueries1">Sim</label>
+                                        <input class="form-check-input" type="radio" name="registered" id="registered2" value="warning">
+                                        <label class="form-check-label" for="registered2">Em andamento</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries2" value="0" checked>
-                                        <label class="form-check-label mb-4" for="waitingQueries2">Não</label>
+                                        <input class="form-check-input" type="radio" name="registered" id="registered3" value="success">
+                                        <label class="form-check-label" for="registered3">Concluído</label>
                                     </div>
 
-                                    <label for="">4. Pedido realizado</label>
+                                    <label class="mt-4">3. Documentos recebidos</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs1" value="1">
-                                        <label class="form-check-label" for="checkingDocs1">Sim</label>
+                                        <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries1" value="secondary" checked>
+                                        <label class="form-check-label" for="waitingQueries1">Não iniciado</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs2" value="0" checked>
-                                        <label class="form-check-label mb-4" for="checkingDocs2">Não</label>
-                                    </div>
-
-                                    <label for="">5. Aguarda análise</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis1" value="1">
-                                        <label class="form-check-label" for="orderAnalysis1">Sim</label>
+                                        <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries2" value="warning">
+                                        <label class="form-check-label" for="waitingQueries2">Em andamento</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis2" value="0" checked>
-                                        <label class="form-check-label mb-4" for="orderAnalysis2">Não</label>
+                                        <input class="form-check-input" type="radio" name="waitingQueries" id="waitingQueries3" value="success">
+                                        <label class="form-check-label" for="waitingQueries3">Concluído</label>
                                     </div>
 
-                                    <label for="">6. Pedido concluido</label>
+                                    <label class="mt-4">4. Pedido realizado</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="dispatch" id="dispatch1" value="1">
-                                        <label class="form-check-label" for="dispatch1">Sim</label>
+                                        <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs1" value="secondary" checked>
+                                        <label class="form-check-label" for="checkingDocs1">Não iniciado</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="dispatch" id="dispatch2" value="0" checked>
-                                        <label class="form-check-label mb-4" for="dispatch2">Não</label>
+                                        <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs2" value="warning">
+                                        <label class="form-check-label" for="checkingDocs2">Em andamento</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="checkingDocs" id="checkingDocs3" value="success">
+                                        <label class="form-check-label" for="checkingDocs3">Concluído</label>
                                     </div>
 
-                                    <label for="">7. Exigência</label>
+                                    <label class="mt-4">5. Aguarda análise</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="finished" id="finished1" value="1">
-                                        <label class="form-check-label" for="finished1">Sim</label>
+                                        <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis1" value="secondary" checked>
+                                        <label class="form-check-label" for="orderAnalysis1">Não iniciado</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="finished" id="finished2" value="0" checked>
-                                        <label class="form-check-label" for="finished2">Não</label>
+                                        <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis2" value="warning">
+                                        <label class="form-check-label" for="orderAnalysis2">Em andamento</label>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="orderAnalysis" id="orderAnalysis3" value="success">
+                                        <label class="form-check-label" for="orderAnalysis3">Concluído</label>
+                                    </div>
+
+                                    <label class="mt-4">6. Pedido concluido</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="dispatch" id="dispatch1" value="secondary" checked>
+                                        <label class="form-check-label" for="dispatch1">Não iniciado</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="dispatch" id="dispatch2" value="warning">
+                                        <label class="form-check-label" for="dispatch2">Em andamento</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="dispatch" id="dispatch3" value="success">
+                                        <label class="form-check-label" for="dispatch3">Concluído</label>
+                                    </div>
+
+                                    <label class="mt-4">7. Exigência</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="finished" id="finished1" value="secondary" checked>
+                                        <label class="form-check-label" for="finished1">Não iniciado</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="finished" id="finished2" value="warning">
+                                        <label class="form-check-label" for="finished2">Em andamento</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="finished" id="finished3" value="success">
+                                        <label class="form-check-label" for="finished3">Concluído</label>
+                                    </div>
+
                                     <div class="form-check form-switch mt-3">
                                         <input type="checkbox" class="form-check-input d-flex" role="switch" id="monetaryPendency" name="monetaryPendency">
                                         <label class="form-check-label" for="monetaryPendency">Pendências financeira?</label>

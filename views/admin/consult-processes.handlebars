@@ -120,96 +120,20 @@
 
                                         <label for="datailsProcess">Detalhes do processo:</label>
                                         <div class="card px-2 py-4 mb-3">
-                                            <label>1. Recebido</label>
-                                            {{#if received}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Sim</p>
-                                                    <i class="bi bi-file-check-fill text-success"></i>
-                                                </div>
-                                            {{else}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Não</p>
-                                                    <i class="bi bi-x-square-fill text-danger"></i>
-                                                </div>
-                                            {{/if}}
+                                            <p class="btn btn-{{received}}">1. Recebido</p>
 
-                                            <label>2. Registrado</label>
-                                            {{#if registered}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Sim</p>
-                                                    <i class="bi bi-file-check-fill text-success"></i>
-                                                </div>
-                                            {{else}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Não</p>
-                                                    <i class="bi bi-x-square-fill text-danger"></i>
-                                                </div>
-                                            {{/if}}
-
-                                            <label>3. Aguardando consultas</label>
-                                            {{#if waitingQueries}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Sim</p>
-                                                    <i class="bi bi-file-check-fill text-success"></i>
-                                                </div>
-                                            {{else}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Não</p>
-                                                    <i class="bi bi-x-square-fill text-danger"></i>
-                                                </div>
-                                            {{/if}}
-
-                                            <label>4. Verificando documentos</label>
-                                            {{#if checkingDocs}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Sim</p>
-                                                    <i class="bi bi-file-check-fill text-success"></i>
-                                                </div>
-                                            {{else}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Não</p>
-                                                    <i class="bi bi-x-square-fill text-danger"></i>
-                                                </div>
-                                            {{/if}}
-
-                                            <label>5. Análise do pedido</label>
-                                            {{#if orderAnalysis}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Sim</p>
-                                                    <i class="bi bi-file-check-fill text-success"></i>
-                                                </div>
-                                            {{else}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Não</p>
-                                                    <i class="bi bi-x-square-fill text-danger"></i>
-                                                </div>
-                                            {{/if}}
-
-                                            <label>6. Despacho</label>
-                                            {{#if dispatch}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Sim</p>
-                                                    <i class="bi bi-file-check-fill text-success"></i>
-                                                </div>
-                                            {{else}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Não</p>
-                                                    <i class="bi bi-x-square-fill text-danger"></i>
-                                                </div>
-                                            {{/if}}
-
-                                            <label>7. Finalizado</label>
-                                            {{#if finished}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Sim</p>
-                                                    <i class="bi bi-file-check-fill text-success"></i>
-                                                </div>
-                                            {{else}}
-                                                <div class="d-flex gap-2">
-                                                    <p class="mb-3">Não</p>
-                                                    <i class="bi bi-x-square-fill text-danger"></i>
-                                                </div>
-                                            {{/if}}
+                                            <p class="btn btn-{{registered}}">2. Registrado</p>
+                                            
+                                            <p class="btn btn-{{waitingQueries}}">3. Aguardando consultas</p>
+                                            
+                                            <p class="btn btn-{{checkingDocs}}">4. Verificando documentos</p>
+                                            
+                                            <p class="btn btn-{{orderAnalysis}}">5. Análise do pedido</p>
+                                            
+                                            <p class="btn btn-{{dispatch}}">6. Despacho</p>
+                                            
+                                            <p class="btn btn-{{finished}}">7. Finalizado</p>
+                                            
                                         </div>
 
                                         <label>Comentários da fase do processo:</label>
@@ -238,15 +162,13 @@
                                                         <a href="/download/{{filename}}" class="mb-2">{{originalname}}</a>
                                                     </li>
                                                 {{else}}
-                                                    <li>
-                                                        <p class="m-0 p-0">Não foi anexado nenhum arquivo</p>
-                                                    </li>
+                                                    <p class="m-0 p-0">Não foi anexado nenhum arquivo</p>
                                                 {{/each}}
                                             </ol>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
                                     </div>
                                 </div>
                             </div>

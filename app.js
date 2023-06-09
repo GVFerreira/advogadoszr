@@ -68,6 +68,7 @@ const admin = require('./routes/admin')
 const users = require('./routes/users')
 const db = require("./config/db")
 require('dotenv').config()
+const cookieParser = require('cookie-parser')
 const { isAdmin } = require('./helpers/isAdmin')
 
 /*AUTHENTICATION*/
@@ -105,6 +106,7 @@ const router = require('./routes/users')
         res.locals.user = req.user || null
         next()
     })
+    app.use(cookieParser())
 
 //Mongoose
     const dbPROD = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bbkeaad.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
@@ -117,15 +119,15 @@ const router = require('./routes/users')
 
 /*ROUTES*/
     app.get('/', (req, res) => {
+        const policyAccepted = req.cookies.policyAccepted
+        const showPolicyPopup = !policyAccepted
         res.render('index')
     })
 
-    app.get('/ts1', (req, res) => {
-        res.render('email/email-individual')
-    })
-
-    app.get('/ts2', (req, res) => {
-        res.render('email/template-email')
+    app.post('/accept-policy', (req, res) => {
+        //Setar cookie de aceite de política por 1 ano
+        res.cookie('policyAccepted', true, { maxAge: 31536000000 })
+        res.redirect('/')
     })
 
     app.post('/consulting-process', (req, res) => {
@@ -148,8 +150,11 @@ const router = require('./routes/users')
         res.download(`public/uploads/attachments/${req.params.filename}`)
     })
 
-    app.use('/admin', /*isAdmin,*/ admin)
+    app.use('/admin', isAdmin, admin)
     app.use('/users', users)
+    app.use((req, res, next) => {
+        res.status(404).render("404", {title: "Error 404"})
+    })
 
 /*SERVER*/
     app.listen(process.env.PORT || 3000, () => {
